@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "id": "281d",
+      "username": "user1",
+      "email": "user@gmail.com",
+      "password": "321"
+    },
+    {
+      "id": "4c31",
+      "username": "dsds",
+      "email": "dsds",
+      "password": "dsds"
+    },
+    {
+      "id": "b0ce",
+      "username": "sdsd",
+      "email": "dsds",
+      "password": "dsds"
+    },
+    {
+      "id": "792b",
+      "username": "sdsd",
+      "email": "sdsds",
+      "password": "sdsdsd"
+    },
+    {
+      "id": "5d8d",
+      "username": "sdsd",
+      "email": "sdsd",
+      "password": "sdsd"
+    },
+    {
+      "id": "ed28",
+      "username": "sdsd",
+      "email": "sds",
+      "password": "ewew"
+    },
+    {
+      "id": "6436",
+      "username": "sdsd",
+      "email": "sds",
+      "password": "sds"
+    }
+  ]
+}

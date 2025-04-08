@@ -1,0 +1,38 @@
+.card-body {
+
+    width: 100%;
+    color: white;
+    backdrop-filter: blur(15px);
+    height: 50px;
+
+}
+
+.card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
+    font-size: 18px
+}
+
+.icon {
+    background-color: rgba(255, 255, 255, 0.429);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+}
+
+.card {
+
+    transition: 0.15s;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3)
+    
+}
+
+.card:hover {
+    
+    transform: scale(1.05);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.594)
+
+}

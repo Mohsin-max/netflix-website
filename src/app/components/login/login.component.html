@@ -1,0 +1,26 @@
+<form [formGroup]="loginFormData" class="formBox" (ngSubmit)="login()" *ngIf="!isLoggedIn">
+    <h3 class="h5 mb-2">Login your account</h3>
+    <p class="small text-muted mb-3">The netflix made this website available to netflix members only.</p>
+    <div class="d-grid gap-3 w-50">
+
+        <input type="email" class="form-control border-dark rounded-pill" id="exampleInputEmail1"
+            aria-describedby="emailHelp" placeholder="Enter your email..." formControlName="email">
+        <div *ngIf="email.touched || email.dirty">
+
+            <span class="errorMessage" *ngIf="email.errors?.['required']">*email is required</span>
+
+        </div>
+
+        <input type="password" class="form-control border-dark rounded-pill" id="exampleInputPassword1"
+            placeholder="Enter your password..." formControlName="password">
+        <div *ngIf="password.touched || password.dirty">
+
+            <span class="errorMessage" *ngIf="password.errors?.['required']">*password is required</span>
+
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary rounded-pill w-50 mt-3"
+        [disabled]="loginFormData.invalid">Login</button>
+</form>

@@ -1,0 +1,33 @@
+<div class="container-fluid py-4">
+
+    <div class="row mt-5">
+
+        <div class="column">
+            <h2 class="text-center text-danger border-bottom">Trending Movies</h2>
+        </div>
+
+
+        <div class="column mt-5 d-flex flex-wrap justify-content-center gap-3">
+
+
+            <div *ngFor="let trending of trendingData; let i = index">
+
+
+                @if(!arrTrending[i]){
+                <!-- Skeleton -->
+                <app-skeleton-card></app-skeleton-card>
+
+                }@else{
+
+                <!-- Real -->
+                <app-movie-card routerLink="/movie-details/{{trending.id}}" [movieDetails]="trending"></app-movie-card>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

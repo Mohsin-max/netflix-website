@@ -1,0 +1,32 @@
+<div class="container-fluid py-4">
+
+    <div class="row mt-5 border-bottom">
+
+        <div class="column">
+            <h2 class="text-center text-danger">Action Movies</h2>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="column  mt-5 d-flex flex-wrap justify-content-center gap-4">
+
+            <div *ngFor="let action of actionData;let i = index">
+                @if (!arrAction[i]) {
+
+                <app-skeleton-card></app-skeleton-card>
+
+                }@else {
+
+                <app-movie-card [movieDetails]="action"></app-movie-card>
+                }
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

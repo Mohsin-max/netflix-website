@@ -1,0 +1,25 @@
+.main-poster {
+    max-height: 350px;
+}
+
+.cast-card {
+    width: 100%;
+    max-width: 220px;
+    height: 80px;
+}
+
+@media (max-width: 768px) {
+    .main-poster {
+        max-height: 300px;
+    }
+
+    .cast-card {
+        height: 70px;
+    }
+}
+
+@media (max-width: 576px) {
+    .cast-card {
+        width: 100%;
+    }
+}

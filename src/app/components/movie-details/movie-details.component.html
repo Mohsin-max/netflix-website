@@ -1,0 +1,98 @@
+<div class="container-fluid">
+
+    <!-- Movie Details Section -->
+    <div class="row mt-3 mt-md-5 border-bottom py-1 py-md-4 px-2 px-md-3 position-relative" style="min-height: auto;">
+
+        <!-- Left Column Poster -->
+        <div class="col-12 col-md-6 mb-3 mb-md-0 d-flex justify-content-center position-relative">
+            <!-- Glow Effect -->
+            <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                class="position-absolute glow-image w-100 h-100"
+                style="filter: blur(20px) brightness(1.5); z-index: 0; object-fit: cover;">
+
+            <!-- Main Poster -->
+            <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                class="img-fluid rounded-3 position-relative z-1 main-poster" style="max-height: 400px; width: auto;"
+                alt="{{arrMovieDetails.title}}">
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-12 col-md-6 position-relative mt-3 mt-md-0">
+            <h1 class="h3 h1-md">{{arrMovieDetails.title}}</h1>
+            <h3 class="fs-6 mt-2 text-muted">{{arrMovieDetails.tagline}}</h3>
+            <p class="small text-muted mt-3">{{arrMovieDetails.overview}}</p>
+
+            <!-- Tags Row -->
+            <div class="d-flex flex-wrap gap-2 align-items-center mt-4">
+                <!-- Status Tag -->
+                <span class="rounded-pill small px-3 py-1 text-white"
+                    [ngClass]="{'bg-success': arrMovieDetails.status == 'Released', 'bg-danger': arrMovieDetails.status != 'Released'}">
+                    {{arrMovieDetails.status}}
+                </span>
+
+                <!-- Date Tag -->
+                <span class="rounded-pill small px-3 py-1 bg-light text-dark border">
+                    <i class="ri-calendar-2-line me-1"></i>
+                    {{arrMovieDetails.release_date | date:'d MMM yyyy'}}
+                </span>
+
+                <!-- Language Tag -->
+                <span class="rounded-pill small px-3 py-1 bg-light text-dark border">
+                    <i class="ri-global-line me-1"></i>
+                    {{arrMovieDetails.original_language | uppercase}}
+                </span>
+
+                <!-- Runtime Tag -->
+                <span class="rounded-pill small px-3 py-1 bg-light text-dark border">
+                    <i class="ri-time-line me-1"></i>
+                    {{getHoursAndMinutes(arrMovieDetails.runtime)}}
+                </span>
+
+                <!-- Country Tag -->
+                <span *ngIf="arrMovieDetails.origin_country"
+                    class="rounded-pill small px-3 py-1 bg-light text-dark border">
+                    <i class="ri-map-pin-line me-1"></i>
+                    {{arrMovieDetails.origin_country}}
+                </span>
+            </div>
+
+            <!-- Trailer Button -->
+            <a href="https://www.themoviedb.org/video/play?key={{movieVideoKey}}" target="_blank" class="d-block mt-4">
+                <button class="btn btn-danger w-100">
+                    <i class="ri-play-fill"></i> Watch Trailer
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Top Cast Section -->
+    <div class="row mt-4 mt-md-5 py-4">
+        <div class="col-12">
+            <h2 class="text-center h4 h1-md mb-4">Top Cast</h2>
+        </div>
+
+        <div class="col-12">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-4 justify-content-center">
+                <div *ngFor="let cast of arrMovieCast | paginate:{itemsPerPage:pSize,currentPage:p}"
+                    class="col d-flex justify-content-center">
+                    <div class="d-flex align-items-center p-2 rounded-3 bg-body-secondary cast-card">
+                        <img [src]="cast.profile_path ? 'https://image.tmdb.org/t/p/original/' + cast.profile_path : 'https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg'"
+                            class="rounded-3 me-2 cast-image" width="50" height="50"
+                            style="object-fit: cover; min-width: 50px;">
+                        <div class="cast-info" style="max-width: calc(100% - 60px);">
+                            <h4 class="mb-0 fw-bold text-truncate" style="font-size: 0.8rem;">{{cast.character ||
+                                'Unknown'}}</h4>
+                            <p class="mb-0 text-muted text-truncate" style="font-size: 0.7rem;">{{cast.name ||
+                                'Unknown'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+
+    <pagination-controls class="my-4 text-center" (pageChange)="p = $event"
+        style="font-size: 0.9rem;"></pagination-controls>
