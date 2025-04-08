@@ -18,7 +18,7 @@ import { UserService } from '../../services/user.service';
 })
 export class HomeComponent {
 
-  constructor(private service: MovieApiService, private authService: AuthService, private userService: UserService) { }
+  constructor(private service: MovieApiService, private authService: AuthService) { }
 
   arrTrending: Movie[] = []
   trendingData: Movie[] = []
@@ -187,15 +187,19 @@ export class HomeComponent {
 
   signup() {
 
-    this.userService.postUserData(this.signupFormData.value).subscribe(res => {
+    // this.userService.postUserData(this.signupFormData.value).subscribe(res => {
 
-      if (res) {
+    //   if (res) {
 
-        this.authService.login()
-        this.signupFormData.reset()
-      }
+    //     this.authService.login()
+    //     this.signupFormData.reset()
+    //   }
 
-    })
+    // })
+
+    localStorage.setItem('user', JSON.stringify(this.signupFormData.value))
+    this.authService.login()
+    this.signupFormData.reset()
 
   }
 
