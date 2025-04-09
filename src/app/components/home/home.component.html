@@ -36,10 +36,10 @@
 
     <!-- Movie Sections -->
     <div class="row mt-4 mt-md-5 mx-0">
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="accordionExample" >
 
             <!-- Trending Movies -->
-            <div class="accordion-item border-0 mb-3 position-relative">
+            <div class="accordion-item border-0 mb-3 position-relative" [ngStyle]="{'pointer-events': isLoggedIn ? 'auto' : 'none'}">
                 <h2 class="accordion-header border-bottom">
                     <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -217,41 +217,3 @@
         </div>
     </div>
 </div>
-
-
-<!-- Signup Form -->
-
-<!-- <form [formGroup]="signupFormData" class="formBox" (ngSubmit)="signup()" *ngIf="!isLoggedIn">
-    <h3 class="h5 mb-2 text-center">Create an account to see all movies</h3>
-    <p class="small text-muted mb-3 text-center">The Netflix made this website available to Netflix members only.</p>
-
-    <div class="d-flex flex-column align-items-center justify-content-center gap-3 w-100 px-3 px-md-0">
-
-        <div class="w-100" style="max-width: 400px;">
-            <input type="text" class="form-control border-dark w-100 rounded-3" placeholder="Enter your username..."
-                formControlName="username">
-            <div *ngIf="username.touched || username.dirty">
-                <span class="errorMessage" *ngIf="username.errors?.['required']">*username is required</span>
-            </div>
-        </div>
-
-        <div class="w-100" style="max-width: 400px;">
-            <input type="email" class="form-control border-dark w-100 rounded-3" id="exampleInputEmail1"
-                aria-describedby="emailHelp" placeholder="Enter your email..." formControlName="email">
-            <div *ngIf="email.touched || email.dirty">
-                <span class="errorMessage" *ngIf="email.errors?.['required']">*email is required</span>
-            </div>
-        </div>
-
-        <div class="w-100" style="max-width: 400px;">
-            <input type="password" class="form-control border-dark w-100 rounded-3" id="exampleInputPassword1"
-                placeholder="Enter your password..." formControlName="password">
-            <div *ngIf="password.touched || password.dirty">
-                <span class="errorMessage" *ngIf="password.errors?.['required']">*password is required</span>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary rounded-3 w-100 mt-2" style="max-width: 400px;"
-            [disabled]="signupFormData.invalid">Sign up</button>
-    </div>
-</form> -->

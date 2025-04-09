@@ -40,14 +40,14 @@ export class NavbarComponent implements OnInit {
 
   }, 500)
 
-  logut() {
+  logout() {
 
     if (confirm('are you sure want to logout')) {
 
       this.authService.logout();
 
       window.scrollTo({
-        top: 800,
+        top: 200,
         behavior: 'smooth'
       })
 

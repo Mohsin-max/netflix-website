@@ -16,6 +16,7 @@ import { UserService } from '../../services/user.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
+
 export class HomeComponent {
 
   constructor(private service: MovieApiService, private authService: AuthService) { }
@@ -68,7 +69,7 @@ export class HomeComponent {
 
     this.service.getTrendingApi().subscribe(res => {
 
-      this.trendingData = res.results.slice(0, 8)
+      this.trendingData = res.results
       this.showDelayedCard(this.arrTrending, this.trendingData)
       this.combinedData.push(...this.trendingData)
 
@@ -134,7 +135,7 @@ export class HomeComponent {
   @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
 
     const scrollPosition = window.pageYOffset
-    const maxScroll = 600
+    const maxScroll = 700
 
     if (!this.isLoggedIn) {
 
@@ -155,27 +156,11 @@ export class HomeComponent {
 
   signup() {
 
-    // this.userService.postUserData(this.signupFormData.value).subscribe(res => {
-
-    //   if (res) {
-
-    //     this.authService.login()
-    //     this.signupFormData.reset()
-    //   }
-
-    // })   
 
     localStorage.setItem('user', JSON.stringify(this.signupFormData.value))
     this.authService.login()
     this.signupFormData.reset()
 
-    this.service.getTrendingApi().subscribe(res => {
-
-      this.trendingData = res.results
-      this.showDelayedCard(this.arrTrending, this.trendingData)
-      this.combinedData.push(...this.trendingData)
-
-    })
 
 
     this.service.getActionApi().subscribe(res => {
@@ -213,7 +198,6 @@ export class HomeComponent {
 
       this.showDelayedCard(this.arrSciFi, this.sciFiData)
       this.combinedData.push(...this.sciFiData)
-
 
     })
 
