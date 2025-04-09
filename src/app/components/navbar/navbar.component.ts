@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit {
       this.authService.logout();
 
       window.scrollTo({
-        top: 200,
+        top: 700,
         behavior: 'smooth'
       })
 
