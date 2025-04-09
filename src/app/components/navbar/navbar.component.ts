@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { debounce } from '../../debounce';
 import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Route, Router, RouterModule } from '@angular/router';
 import { Movie } from '../../interfaces/movie';
 import { AuthService } from '../../services/auth.service';
 
@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private service: MovieApiService, private authService: AuthService) { }
+  constructor(private service: MovieApiService, private authService: AuthService, private router:Router) { }
 
   searchedMovie: Movie[] = []
 
@@ -52,6 +52,8 @@ export class NavbarComponent implements OnInit {
       })
 
     }
+
+    this.router.navigate(['/'])
 
   }
 

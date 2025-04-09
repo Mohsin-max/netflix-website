@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -6,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private route:Router) { }
 
   private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('user'));
 

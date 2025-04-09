@@ -1,32 +1,26 @@
 <div class="container-fluid pb-5 px-0 px-md-3" style="background-color: white; overflow-x: hidden;">
-
     <!-- Carousel Section -->
     <div class="row">
         <div class="col-12 px-0">
             <div id="carouselExampleCaptions" class="carousel slide">
                 <div class="carousel-inner">
-                    <div class="carousel-item" *ngFor="let banner of bannerData;index as i" [ngClass]="{'active':i==0}">
-                        <img src="https://image.tmdb.org/t/p/original/{{banner.backdrop_path}}"
-                            class="d-block w-100 rounded-0 rounded-md-3 mt-0 mt-md-4" alt="...">
+                    <div class="carousel-item" *ngFor="let banner of bannerData; index as i" [ngClass]="{'active':i==0}">
+                        <img src="https://image.tmdb.org/t/p/original/{{banner.backdrop_path}}" class="d-block w-100 rounded-0 rounded-md-3 mt-0 mt-md-4" alt="...">
                         <div class="carousel-caption d-none d-md-block mb-3 mb-md-5 rounded-3 px-3">
                             <h4 class="text-danger d-block">{{banner.title || "No Title Found"}}</h4>
                             <p class="d-none d-lg-block">{{banner.overview}}</p>
                             <div class="d-flex gap-2 gap-md-4 justify-content-center">
-                                <a class="btn btn-success btn-sm btn-md"
-                                    routerLink="/movie-details/{{bannerData[i].id}}">Watch</a>
-                                <button class="btn btn-warning btn-sm btn-md">Download <i
-                                        class="ri-download-2-line"></i></button>
+                                <a class="btn btn-success btn-sm btn-md" routerLink="/movie-details/{{bannerData[i].id}}">Watch</a>
+                                <button class="btn btn-warning btn-sm btn-md">Download <i class="ri-download-2-line"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -36,98 +30,71 @@
 
     <!-- Movie Sections -->
     <div class="row mt-4 mt-md-5 mx-0">
-        <div class="accordion" id="accordionExample" >
+        <div class="accordion" id="accordionExample">
 
             <!-- Trending Movies -->
             <div class="accordion-item border-0 mb-3 position-relative" [ngStyle]="{'pointer-events': isLoggedIn ? 'auto' : 'none'}">
                 <h2 class="accordion-header border-bottom">
-                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/trending">Trending
-                                Movies</a></h4>
+                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/trending">Trending Movies</a></h4>
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body pt-0 px-0 px-md-3">
-                        <div
-                            class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
-                            <div *ngFor="let trending of trendingData; let i = index"
-                                class="col d-flex justify-content-center">
-                                @if(!arrTrending[i]){
-                                <app-skeleton-card></app-skeleton-card>
-                                }@else{
-                                <app-movie-card [routerLink]="[`/movie-details/${trending.id}`]"
-                                    [movieDetails]="trending"></app-movie-card>
-                                }
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
+                            <div *ngFor="let trending of trendingData; let i = index" class="col d-flex justify-content-center">
+                                <app-skeleton-card *ngIf="!arrTrending[i]"></app-skeleton-card>
+                                <app-movie-card *ngIf="arrTrending[i]" [routerLink]="[`/movie-details/${trending.id}`]" [movieDetails]="trending"></app-movie-card>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
+                <!-- Signup Form -->
                 <form [formGroup]="signupFormData" class="formBox" (ngSubmit)="signup()" *ngIf="!isLoggedIn">
                     <h3 class="h5 mb-2 text-center">Create an account to see all movies</h3>
-                    <p class="small text-muted mb-3 text-center">The Netflix made this website available to Netflix
-                        members only.</p>
+                    <p class="small text-muted mb-3 text-center">The Netflix made this website available to Netflix members only.</p>
 
                     <div class="d-flex flex-column align-items-center justify-content-center gap-4 w-100 px-3 px-md-0">
-
                         <div class="w-100" style="max-width: 400px;">
-                            <input type="text" class="form-control border-dark w-100 rounded-3"
-                                placeholder="Enter your username..." formControlName="username">
+                            <input type="text" class="form-control border-dark w-100 rounded-3" placeholder="Enter your username..." formControlName="username">
                             <div *ngIf="username.touched || username.dirty" class="position-relative">
-                                <span class="errorMessage" *ngIf="username.errors?.['required']">*username is
-                                    required</span>
+                                <span class="errorMessage" *ngIf="username.errors?.['required']">*username is required</span>
                             </div>
                         </div>
 
                         <div class="w-100" style="max-width: 400px;">
-                            <input type="email" class="form-control border-dark w-100 rounded-3" id="exampleInputEmail1"
-                                aria-describedby="emailHelp" placeholder="Enter your email..." formControlName="email">
+                            <input type="email" class="form-control border-dark w-100 rounded-3" placeholder="Enter your email..." formControlName="email">
                             <div *ngIf="email.touched || email.dirty" class="position-relative">
                                 <span class="errorMessage" *ngIf="email.errors?.['required']">*email is required</span>
                             </div>
                         </div>
 
                         <div class="w-100" style="max-width: 400px;">
-                            <input type="password" class="form-control border-dark w-100 rounded-3"
-                                id="exampleInputPassword1" placeholder="Enter your password..."
-                                formControlName="password">
+                            <input type="password" class="form-control border-dark w-100 rounded-3" placeholder="Enter your password..." formControlName="password">
                             <div *ngIf="password.touched || password.dirty" class="position-relative">
-                                <span class="errorMessage" *ngIf="password.errors?.['required']">*password is
-                                    required</span>
+                                <span class="errorMessage" *ngIf="password.errors?.['required']">*password is required</span>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary rounded-3 w-100" style="max-width: 400px;"
-                            [disabled]="signupFormData.invalid">Sign up</button>
+                        <button type="submit" class="btn btn-primary rounded-3 w-100" style="max-width: 400px;" [disabled]="signupFormData.invalid">Sign up</button>
                     </div>
                 </form>
-
-
             </div>
 
             <!-- Action Movies -->
             <div *ngIf="actionData[0]" class="accordion-item border-0 mb-3">
                 <h2 class="accordion-header border-bottom">
-                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
-                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/action">Action
-                                Movies</a></h4>
+                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/action">Action Movies</a></h4>
                     </button>
                 </h2>
                 <div id="collapseOne1" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body pt-0 px-0 px-md-3">
-                        <div
-                            class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
-                            <div *ngFor="let action of actionData; let i = index"
-                                class="col d-flex justify-content-center">
-                                @if(!arrAction[i]){
-                                <app-skeleton-card></app-skeleton-card>
-                                }@else{
-                                <app-movie-card [routerLink]="[`/movie-details/${action.id}`]"
-                                    [movieDetails]="action"></app-movie-card>
-                                }
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
+                            <div *ngFor="let action of actionData; let i = index" class="col d-flex justify-content-center">
+                                <app-skeleton-card *ngIf="!arrAction[i]"></app-skeleton-card>
+                                <app-movie-card *ngIf="arrAction[i]" [routerLink]="[`/movie-details/${action.id}`]" [movieDetails]="action"></app-movie-card>
                             </div>
                         </div>
                     </div>
@@ -137,24 +104,16 @@
             <!-- Adventure Movies -->
             <div *ngIf="adventureData[0]" class="accordion-item border-0 mb-3">
                 <h2 class="accordion-header border-bottom">
-                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
-                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none"
-                                routerLink="/adventure">Adventure Movies</a></h4>
+                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
+                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/adventure">Adventure Movies</a></h4>
                     </button>
                 </h2>
                 <div id="collapseOne2" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body pt-0 px-0 px-md-3">
-                        <div
-                            class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
-                            <div *ngFor="let adventure of adventureData; let i = index"
-                                class="col d-flex justify-content-center">
-                                @if(!arrAdventure[i]){
-                                <app-skeleton-card></app-skeleton-card>
-                                }@else{
-                                <app-movie-card [routerLink]="[`/movie-details/${adventure.id}`]"
-                                    [movieDetails]="adventure"></app-movie-card>
-                                }
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
+                            <div *ngFor="let adventure of adventureData; let i = index" class="col d-flex justify-content-center">
+                                <app-skeleton-card *ngIf="!arrAdventure[i]"></app-skeleton-card>
+                                <app-movie-card *ngIf="arrAdventure[i]" [routerLink]="[`/movie-details/${adventure.id}`]" [movieDetails]="adventure"></app-movie-card>
                             </div>
                         </div>
                     </div>
@@ -164,24 +123,16 @@
             <!-- Animation Movies -->
             <div *ngIf="animationData[0]" class="accordion-item border-0 mb-3">
                 <h2 class="accordion-header border-bottom">
-                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
-                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none"
-                                routerLink="/animation">Animation Movies</a></h4>
+                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
+                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/animation">Animation Movies</a></h4>
                     </button>
                 </h2>
                 <div id="collapseOne3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body pt-0 px-0 px-md-3">
-                        <div
-                            class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
-                            <div *ngFor="let animation of animationData; let i = index"
-                                class="col d-flex justify-content-center">
-                                @if(!arrAnimation[i]){
-                                <app-skeleton-card></app-skeleton-card>
-                                }@else{
-                                <app-movie-card [routerLink]="[`/movie-details/${animation.id}`]"
-                                    [movieDetails]="animation"></app-movie-card>
-                                }
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
+                            <div *ngFor="let animation of animationData; let i = index" class="col d-flex justify-content-center">
+                                <app-skeleton-card *ngIf="!arrAnimation[i]"></app-skeleton-card>
+                                <app-movie-card *ngIf="arrAnimation[i]" [routerLink]="[`/movie-details/${animation.id}`]" [movieDetails]="animation"></app-movie-card>
                             </div>
                         </div>
                     </div>
@@ -191,29 +142,22 @@
             <!-- SciFi Movies -->
             <div *ngIf="sciFiData[0]" class="accordion-item border-0 mb-3">
                 <h2 class="accordion-header border-bottom">
-                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4">
-                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/scifi">SciFi
-                                Movies</a></h4>
+                    <button class="accordion-button bg-white p-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4">
+                        <h4 class="fs-5 mb-0"><a class="text-dark text-decoration-none" routerLink="/scifi">SciFi Movies</a></h4>
                     </button>
                 </h2>
                 <div id="collapseOne4" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body pt-0 px-0 px-md-3">
-                        <div
-                            class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
-                            <div *ngFor="let scifi of sciFiData; let i = index"
-                                class="col d-flex justify-content-center">
-                                @if(!arrSciFi[i]){
-                                <app-skeleton-card></app-skeleton-card>
-                                }@else{
-                                <app-movie-card [routerLink]="[`/movie-details/${scifi.id}`]"
-                                    [movieDetails]="scifi"></app-movie-card>
-                                }
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-3 justify-content-center">
+                            <div *ngFor="let scifi of sciFiData; let i = index" class="col d-flex justify-content-center">
+                                <app-skeleton-card *ngIf="!arrSciFi[i]"></app-skeleton-card>
+                                <app-movie-card *ngIf="arrSciFi[i]" [routerLink]="[`/movie-details/${scifi.id}`]" [movieDetails]="scifi"></app-movie-card>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

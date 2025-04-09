@@ -135,7 +135,7 @@ export class HomeComponent {
   @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
 
     const scrollPosition = window.pageYOffset
-    const maxScroll = 700
+    const maxScroll = 800
 
     if (!this.isLoggedIn) {
 
