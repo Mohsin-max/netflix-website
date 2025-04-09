@@ -18,23 +18,95 @@
 
 }
 
+.container-fluid {
+
+    position: relative;
+
+}
+
+// .formBox {
+//     position: absolute;
+//     // top: 100%;
+//     top: 750px;
+//     width: 100%;
+//     height:100vh;
+//     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.273), rgb(255, 255, 255), white, white);
+//     // padding: 200px 50px 100px 50px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .formBox {
+//     position: absolute;
+//     top: 0px;
+//     // margin: 0 auto;
+//     width: 100%;
+//     height: 100vh;
+//     padding-top: 200px;
+//     padding-bottom: 150px;
+//     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.273), rgb(255, 255, 255), white, white);
+//     // display: flex;
+//     // flex-direction: column;
+//     // justify-content: center;
+//     // align-items: center;
+//     // padding-top: 400px;
+//     // padding:  20px 50px 200px 50px;
+// }
+
 .formBox {
     position: absolute;
-    top: 100%;
-    // top: 1000px;
+    top: 0px;
     width: 100%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.378), white, white, white);
-    padding: 400px 50px;
+    height: 100%;
+    // padding: 100px 20px 150px 20px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.273), rgb(255, 255, 255), white, white);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 
-.errorMessage{
+
+// @media screen and (max-width: 768px) {
+//     .formBox {
+//         padding-top: 700px;
+//         height: 100%;
+//     }
+// }
+
+
+// @media screen and (max-width: 1024px) {
+//     .formBox {
+//         padding-top: 200px;
+//         padding-bottom: 120px;
+//     }
+// }
+
+// @media screen and (max-width: 768px) {
+//     .formBox {
+//         padding-top: 150px;
+//         padding-bottom: 100px;
+//     }
+// }
+
+// @media screen and (max-width: 576px) {
+//     .formBox {
+//         padding-top: 180px;
+//         padding-bottom: 80px;
+//     }
+// }
+
+
+
+.errorMessage {
 
     font-size: 12px;
     color: red;
     text-align: left;
+    margin-top: -20px;
+    position: absolute;
+    top: 20px;
 }

@@ -22,11 +22,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.authService.isLoggedIn$.subscribe(status => {
-
-      this.isLoggedIn = status
-
-    })
+    this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
 
   }
 

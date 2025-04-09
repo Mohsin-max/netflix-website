@@ -10,13 +10,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-lg-3 ps-0 ps-md-3">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Movies</a>
+                    <a class="nav-link active" aria-current="page" routerLink="#">Movies</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">TV Series</a>
+                    <a class="nav-link" routerLink="#">TV Series</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Documentary</a>
+                    <a class="nav-link" routerLink="#">Documentary</a>
                 </li>
             </ul>
 
@@ -29,7 +29,7 @@
                 </div>
             </form>
 
-            <button class="btn btn-danger ms-3" (click)="logut()" *ngIf="isLoggedIn">logout</button>
+            <button class="btn btn-danger ms-3 w-md-100 w-lg-25" (click)="logut()" *ngIf="isLoggedIn">logout</button>
         </div>
     </div>
 </nav>
@@ -37,11 +37,11 @@
 
 <!-- Search Results Box -->
 
-<div *ngIf="searchedMovie[0]"
+<div *ngIf="searchedMovie[0] && isLoggedIn"
     class="searchBox w-100 h-75 overflow-auto position-absolute z-3 d-flex flex-column gap-5 py-5">
 
     <div class="searchItems" role="button" *ngFor="let movie of searchedMovie">
-        <a href="/movie-details/{{movie.id}}" class="d-flex align-items-center gap-5 px-5 text-decoration-none">
+        <a routerLink="/movie-details/{{movie.id}}" class="d-flex align-items-center gap-5 px-5 text-decoration-none">
             <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style=" width: 60px;">
 
             <div>

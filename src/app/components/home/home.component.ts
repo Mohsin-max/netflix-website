@@ -59,6 +59,116 @@ export class HomeComponent {
 
     this.userData = data
 
+    this.service.getBannerApi().subscribe(res => {
+
+      this.bannerData = res.results
+
+
+    })
+
+    this.service.getTrendingApi().subscribe(res => {
+
+      this.trendingData = res.results.slice(0, 8)
+      this.showDelayedCard(this.arrTrending, this.trendingData)
+      this.combinedData.push(...this.trendingData)
+
+    })
+
+
+  }
+
+  showDelayedCard(singleDataArr: Movie[], allDataArr: Movie[]) {
+
+    let index: number = 0;
+
+    let interval = setInterval(() => {
+
+      if (index < allDataArr.length) {
+
+        singleDataArr[index] = allDataArr[index]
+        index++
+
+      } else {
+
+        clearInterval(interval)
+
+      }
+
+    }, 500);
+
+
+  }
+
+  // USER FORM GROUP
+
+  signupFormData: FormGroup = new FormGroup({
+
+    'username': new FormControl('', [Validators.required]),
+    'email': new FormControl('', [Validators.required]),
+    'password': new FormControl('', [Validators.required]),
+
+  })
+
+  // ALL GETERS
+
+  get username() {
+
+    return this.signupFormData.controls['username']
+
+  }
+  get email() {
+
+    return this.signupFormData.controls['email']
+
+  }
+  get password() {
+
+    return this.signupFormData.controls['password']
+
+  }
+
+
+
+  // SCROLLING LOCK FUNCTION
+
+  @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
+
+    const scrollPosition = window.pageYOffset
+    const maxScroll = 600
+
+    if (!this.isLoggedIn) {
+
+      if (scrollPosition > maxScroll) {
+
+        window.scrollTo({
+          top: maxScroll,
+          behavior: 'instant'
+        })
+
+      }
+    }
+
+
+  }
+
+  // SIGN UP FUNCTION
+
+  signup() {
+
+    // this.userService.postUserData(this.signupFormData.value).subscribe(res => {
+
+    //   if (res) {
+
+    //     this.authService.login()
+    //     this.signupFormData.reset()
+    //   }
+
+    // })   
+
+    localStorage.setItem('user', JSON.stringify(this.signupFormData.value))
+    this.authService.login()
+    this.signupFormData.reset()
+
     this.service.getTrendingApi().subscribe(res => {
 
       this.trendingData = res.results
@@ -66,6 +176,7 @@ export class HomeComponent {
       this.combinedData.push(...this.trendingData)
 
     })
+
 
     this.service.getActionApi().subscribe(res => {
 
@@ -106,104 +217,7 @@ export class HomeComponent {
 
     })
 
-    this.service.getBannerApi().subscribe(res => {
-
-      this.bannerData = res.results
-
-
-    })
-
-
-  }
-
-  showDelayedCard(singleDataArr: Movie[], allDataArr: Movie[]) {
-
-    let index: number = 0;
-
-    let interval = setInterval(() => {
-
-      if (index < allDataArr.length) {
-
-        singleDataArr[index] = allDataArr[index]
-        index++
-
-      } else {
-
-        clearInterval(interval)
-
-      }
-
-    }, 500);
-
-
-  }
-
-  signupFormData: FormGroup = new FormGroup({
-
-    'username': new FormControl('', [Validators.required]),
-    'email': new FormControl('', [Validators.required]),
-    'password': new FormControl('', [Validators.required]),
-
-  })
-
-  get username() {
-
-    return this.signupFormData.controls['username']
-
-  }
-  get email() {
-
-    return this.signupFormData.controls['email']
-
-  }
-  get password() {
-
-    return this.signupFormData.controls['password']
-
-  }
-
-
-
-
-  @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
-
-    const scrollPosition = window.pageYOffset
-    const maxScroll = 800
-
-    if (!this.isLoggedIn) {
-
-      if (scrollPosition > maxScroll) {
-
-        window.scrollTo({
-          top: maxScroll,
-          behavior: 'instant'
-        })
-
-      }
-    }
-
-
-  }
-
-  signup() {
-
-    // this.userService.postUserData(this.signupFormData.value).subscribe(res => {
-
-    //   if (res) {
-
-    //     this.authService.login()
-    //     this.signupFormData.reset()
-    //   }
-
-    // })
-
-    localStorage.setItem('user', JSON.stringify(this.signupFormData.value))
-    this.authService.login()
-    this.signupFormData.reset()
-
   }
 
 
 }
-
-
