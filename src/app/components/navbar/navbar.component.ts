@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Route, Router, RouterModule } from '@angular/router';
 import { Movie } from '../../interfaces/movie';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -42,16 +43,34 @@ export class NavbarComponent implements OnInit {
 
   logout() {
 
-    if (confirm('are you sure want to logout')) {
-
-      this.authService.logout();
-
-      this.router.navigate(['/'])
 
 
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      // text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, proceed!',
+      cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.logout();
+        this.router.navigate(['/'])
+
+
+      }
+    });
+
   }
 
 
+  signup() {
 
+    window.scrollTo({
+      top: window.innerHeight * 2,
+      behavior: 'smooth'
+    })
+  }
 }

@@ -27,12 +27,40 @@
 
     transition: 0.15s;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3)
-    
 }
 
 .card:hover {
-    
+
     transform: scale(1.05);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.594)
+}
+
+@media (min-width: 2000px) {
+
+    .card {
+
+        width: 23rem !important;
+        height: 25rem !important;
+
+    }
+
+    .card-title {
+
+        font-size: 25px;
+    }
+
+    .card-body {
+
+        height: 80px;
+        width: 100%;
+
+    }
+
+    .icon{
+
+        width: 40px;
+        height: 40px;
+
+    }
 
 }
