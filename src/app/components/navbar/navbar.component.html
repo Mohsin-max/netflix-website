@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary px-1">
     <div class="container-fluid">
-        <a class="navbar-brand text-danger fs-4" routerLink="/">Netflix</a>
+        <a class="navbar-brand text-danger fs-3 fw-bold" routerLink="/">Netflix</a>
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -10,13 +10,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-lg-3 ps-0 ps-md-3">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" routerLink="#">Movies</a>
+                    <a class="nav-link active text-dark" aria-current="page" routerLink="#">Movies</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="#">TV Series</a>
+                    <a class="nav-link text-dark" routerLink="#">TV Series</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="#">Documentary</a>
+                    <a class="nav-link text-dark" routerLink="#">Documentary</a>
                 </li>
             </ul>
 
@@ -29,7 +29,7 @@
                 </div>
             </form>
 
-            <button class="btn btn-danger ms-3 w-md-100 w-lg-25" (click)="logout()" *ngIf="isLoggedIn">logout</button>
+            <button class="btn btn-danger ms-3 w-md-100 w-lg-25" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
         </div>
     </div>
 </nav>

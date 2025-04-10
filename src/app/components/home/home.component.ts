@@ -51,29 +51,27 @@ export class HomeComponent {
 
   ngOnInit(): void {
 
-    this.authService.isLoggedIn$.subscribe(status => {
-
-      this.isLoggedIn = status
-    })
+    this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
 
     let data = localStorage.getItem('user') || '';
 
     this.userData = data
 
-    this.service.getBannerApi().subscribe(res => {
-
-      this.bannerData = res.results
-
-
-    })
+    this.service.getBannerApi().subscribe(res => this.bannerData = res.results)
 
     this.service.getTrendingApi().subscribe(res => {
 
       this.trendingData = res.results
       this.showDelayedCard(this.arrTrending, this.trendingData)
-      this.combinedData.push(...this.trendingData)
 
     })
+
+
+    if (this.userData) {
+
+      this.loadAllMovies()
+
+    }
 
 
   }
@@ -132,25 +130,25 @@ export class HomeComponent {
 
   // SCROLLING LOCK FUNCTION
 
-  @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
+  // @HostListener('window:scroll', ['$event']) onScroll(event: Event) {
 
-    const scrollPosition = window.pageYOffset
-    const maxScroll = 800
+  //   const scrollPosition = window.pageYOffset
+  //   const maxScroll = window.innerHeight * 1
 
-    if (!this.isLoggedIn) {
+  //   if (!this.isLoggedIn) {
 
-      if (scrollPosition > maxScroll) {
+  //     if (scrollPosition > maxScroll) {
 
-        window.scrollTo({
-          top: maxScroll,
-          behavior: 'instant'
-        })
+  //       window.scrollTo({
+  //         top: maxScroll,
+  //         behavior: 'instant'
+  //       })
 
-      }
-    }
+  //     }
+  //   }
 
 
-  }
+  // }
 
   // SIGN UP FUNCTION
 
@@ -160,47 +158,34 @@ export class HomeComponent {
     localStorage.setItem('user', JSON.stringify(this.signupFormData.value))
     this.authService.login()
     this.signupFormData.reset()
+    this.loadAllMovies()
 
+  }
 
-
+  loadAllMovies() {
     this.service.getActionApi().subscribe(res => {
-
       this.actionData = res.results
-
       this.showDelayedCard(this.arrAction, this.actionData)
       this.combinedData.push(...this.actionData)
-
     })
 
     this.service.getAdventureApi().subscribe(res => {
-
       this.adventureData = res.results
-
       this.showDelayedCard(this.arrAdventure, this.adventureData)
       this.combinedData.push(...this.adventureData)
-
-
     })
 
     this.service.getAnimationApi().subscribe(res => {
-
       this.animationData = res.results
-
       this.showDelayedCard(this.arrAnimation, this.animationData)
       this.combinedData.push(...this.animationData)
-
-
     })
 
     this.service.getSciFiApi().subscribe(res => {
-
       this.sciFiData = res.results
-
       this.showDelayedCard(this.arrSciFi, this.sciFiData)
       this.combinedData.push(...this.sciFiData)
-
     })
-
   }
 
 

@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private service: MovieApiService, private authService: AuthService, private router:Router) { }
+  constructor(private service: MovieApiService, private authService: AuthService, private router: Router) { }
 
   searchedMovie: Movie[] = []
 
@@ -46,15 +46,10 @@ export class NavbarComponent implements OnInit {
 
       this.authService.logout();
 
-      window.scrollTo({
-        top: 700,
-        behavior: 'smooth'
-      })
+      this.router.navigate(['/'])
+
 
     }
-
-    this.router.navigate(['/'])
-
   }
 
 
