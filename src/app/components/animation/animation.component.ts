@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { Movie } from '../../interfaces/movie';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-animation',
-  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent],
+  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent,RouterModule],
   templateUrl: './animation.component.html',
   styleUrl: './animation.component.scss'
 })

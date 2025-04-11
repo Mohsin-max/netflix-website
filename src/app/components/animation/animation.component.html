@@ -20,8 +20,8 @@
                 }@else{
 
                 <!-- Real -->
-                <app-movie-card [movieDetails]="animation"></app-movie-card>
-
+                <app-movie-card routerLink="/movie-details/{{animation.id}}" [movieDetails]="animation"></app-movie-card>
+ 
                 }
 
             </div>

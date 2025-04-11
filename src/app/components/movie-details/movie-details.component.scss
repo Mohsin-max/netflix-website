@@ -23,3 +23,85 @@
         width: 100%;
     }
 }
+
+@media (min-width: 2000px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .xxl-movie-container {
+        // max-width: 1800px;
+        margin: 0 auto;
+        overflow-x: hidden;
+    }
+
+    /* Movie Details Section */
+    .xxl-movie-section {
+        padding: 4rem 0 !important;
+    }
+
+    .xxl-movie-title {
+        font-size: 4rem !important;
+    }
+
+    .xxl-tagline {
+        font-size: 2.5rem !important;
+    }
+
+    .xxl-overview {
+        font-size: 2rem !important;
+        line-height: 1.8 !important;
+    }
+
+    .xxl-main-poster {
+        max-height: 600px !important;
+    }
+
+    .xxl-tag {
+        font-size: 2rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+
+    .xxl-trailer-btn {
+        font-size: 1.8rem !important;
+        padding: 0.75rem 2rem !important;
+        width: auto !important;
+        display: inline-block !important;
+    }
+
+    /* Cast Section */
+    .xxl-cast-title {
+        font-size: 3.5rem !important;
+        margin-bottom: 6rem !important;
+    }
+
+    .xxl-cast-card {
+        padding: 4rem 1rem !important;
+    }
+
+    .xxl-cast-image {
+        width: 80px !important;
+        height: 80px !important;
+        // min-width: 100px !important;
+    }
+
+    .xxl-character-name {
+        font-size: 1.4rem !important;
+    }
+
+    .xxl-actor-name {
+        font-size: 1.2rem !important;
+    }
+
+    /* Pagination */
+    .xxl-pagination {
+        font-size: 1.4rem !important;
+        margin: 3rem 0 !important;
+    }
+
+    .xxl-pagination ::ng-deep .ngx-pagination a,
+    .xxl-pagination ::ng-deep .ngx-pagination button {
+        font-size: 1.4rem !important;
+        padding: 0.75rem 1.5rem !important;
+    }
+}

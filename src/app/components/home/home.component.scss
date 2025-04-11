@@ -26,7 +26,7 @@ body {
 
 .formBox {
     position: absolute;
-    top: 28%;
+    top: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(255, 255, 255), white, white);
@@ -61,19 +61,19 @@ body {
 
 @media (min-width: 2000px) {
     .xxl-display-4 {
-        font-size: 3.7rem;
+        font-size: 4.5rem;
         font-weight: bold;
         margin-bottom: 1.5rem;
     }
 
     .xxl-fs-2 {
-        font-size: 1.9rem !important;
+        font-size: 2.5rem !important;
         margin: 0 auto 2rem;
     }
 
     .xxl-btn-lg {
         padding: 0.75rem 1.5rem;
-        font-size: 1.8rem;
+        font-size: 2.3rem;
     }
 
     .carousel-control-prev-icon,
@@ -93,12 +93,12 @@ body {
     }
 
     .xxl-signup-title {
-        font-size: 2.2rem !important;
+        font-size: 2.5rem !important;
         margin-bottom: 1.5rem !important;
     }
 
     .xxl-signup-subtitle {
-        font-size: 1.3rem !important;
+        font-size: 1.6rem !important;
         margin-bottom: 2rem !important;
     }
 
@@ -111,20 +111,20 @@ body {
     }
 
     .xxl-signup-input {
-        font-size: 1.5rem !important;
+        font-size: 1.6rem !important;
         padding: 1.2rem 1.5rem !important;
         // border-radius: 1rem !important;
         border-width: 2px !important;
     }
 
     .xxl-error-message {
-        font-size: 1.2rem !important;
+        font-size: 1.7rem !important;
         margin-top: 0.5rem !important;
     }
 
     .xxl-signup-btn {
         max-width: 600px !important;
-        font-size: 1.5rem !important;
+        font-size: 2rem !important;
         padding: 1.2rem !important;
         // border-radius: 1rem !important;
     }

@@ -20,7 +20,7 @@
                 }@else{
 
                 <!-- Real -->
-                <app-movie-card [movieDetails]="scifi"></app-movie-card>
+                <app-movie-card routerLink="/movie-details/{{scifi.id}}" [movieDetails]="scifi"></app-movie-card>
 
                 }
 

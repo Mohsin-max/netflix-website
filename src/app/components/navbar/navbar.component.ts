@@ -42,12 +42,8 @@ export class NavbarComponent implements OnInit {
   }, 500)
 
   logout() {
-
-
-
     Swal.fire({
       title: 'Are you sure?',
-      // text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -56,15 +52,15 @@ export class NavbarComponent implements OnInit {
       cancelButtonText: 'No, cancel!'
     }).then((result) => {
       if (result.isConfirmed) {
+        localStorage.removeItem('user');
         this.authService.logout();
-        this.router.navigate(['/'])
-
-
+        
+        localStorage.setItem('movieCount', '0');
+        
+        this.router.navigate(['/']);
       }
     });
-
   }
-
 
   signup() {
 

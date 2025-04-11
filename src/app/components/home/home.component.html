@@ -16,7 +16,7 @@
                             <p class="d-none d-lg-block xxl-fs-2">{{banner.overview}}</p>
                             <div class="d-flex gap-2 gap-md-4 justify-content-center">
                                 <a class="btn btn-success btn-sm btn-md xxl-btn-lg"
-                                    routerLink="/movie-details/{{bannerData[i].id}}">Watch</a>
+                                    (click)="bannerWatchBtn(bannerData[i].id)">Watch</a>
                                 <button class="btn btn-warning btn-sm btn-md xxl-btn-lg">Download <i
                                         class="ri-download-2-line"></i></button>
                             </div>
@@ -60,7 +60,8 @@
                             <div *ngFor="let trending of trendingData; let i = index"
                                 class="col d-flex justify-content-center">
                                 <app-skeleton-card *ngIf="!arrTrending[i]"></app-skeleton-card>
-                                <app-movie-card *ngIf="arrTrending[i]" [routerLink]="[`/movie-details/${trending.id}`]"
+                                <app-movie-card (click)="clickedMovie()" *ngIf="arrTrending[i]"
+                                    [routerLink]="[`/movie-details/${trending.id}`]"
                                     [movieDetails]="trending"></app-movie-card>
                             </div>
                         </div>
@@ -69,7 +70,7 @@
 
                 <!-- Signup Form -->
                 <form [formGroup]="signupFormData" class="formBox py-3 py-md-4 xxl-signup-form" (ngSubmit)="signup()"
-                    *ngIf="!isLoggedIn">
+                    *ngIf="showSignupForm && !isLoggedIn">
                     <h3 class="h5 mb-2 text-center xxl-signup-title">Create an account to see all movies</h3>
                     <p class="small text-muted mb-3 text-center xxl-signup-subtitle">The Netflix made this website
                         available to Netflix
@@ -113,7 +114,7 @@
             </div>
 
             <!-- Action Movies -->
-            <div *ngIf="actionData[0] && isLoggedIn" class="accordion-item border-0 mb-3 mb-md-4">
+            <div *ngIf="!showSignupForm" class="accordion-item border-0 mb-3 mb-md-4">
                 <h2 class="accordion-header mb-5 mb-md-5 border-bottom">
                     <button class="accordion-button bg-white p-2 p-md-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
@@ -129,7 +130,8 @@
                             <div *ngFor="let action of actionData; let i = index"
                                 class="col d-flex justify-content-center">
                                 <app-skeleton-card *ngIf="!arrAction[i]"></app-skeleton-card>
-                                <app-movie-card *ngIf="arrAction[i]" [routerLink]="[`/movie-details/${action.id}`]"
+                                <app-movie-card (click)="clickedMovie()" *ngIf="arrAction[i]"
+                                    [routerLink]="[`/movie-details/${action.id}`]"
                                     [movieDetails]="action"></app-movie-card>
                             </div>
                         </div>
@@ -138,7 +140,7 @@
             </div>
 
             <!-- Adventure Movies -->
-            <div *ngIf="adventureData[0] && isLoggedIn" class="accordion-item border-0 mb-3 mb-md-4">
+            <div *ngIf="!showSignupForm" class="accordion-item border-0 mb-3 mb-md-4">
                 <h2 class="accordion-header mb-5 mb-md-5 border-bottom">
                     <button class="accordion-button bg-white p-2 p-md-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
@@ -153,7 +155,7 @@
                             <div *ngFor="let adventure of adventureData; let i = index"
                                 class="col d-flex justify-content-center">
                                 <app-skeleton-card *ngIf="!arrAdventure[i]"></app-skeleton-card>
-                                <app-movie-card *ngIf="arrAdventure[i]"
+                                <app-movie-card (click)="clickedMovie()" *ngIf="arrAdventure[i]"
                                     [routerLink]="[`/movie-details/${adventure.id}`]"
                                     [movieDetails]="adventure"></app-movie-card>
                             </div>
@@ -163,7 +165,7 @@
             </div>
 
             <!-- Animation Movies -->
-            <div *ngIf="animationData[0] && isLoggedIn" class="accordion-item border-0 mb-3 mb-md-4">
+            <div *ngIf="!showSignupForm" class="accordion-item border-0 mb-3 mb-md-4">
                 <h2 class="accordion-header mb-5 mb-md-5 border-bottom">
                     <button class="accordion-button bg-white p-2 p-md-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
@@ -178,7 +180,7 @@
                             <div *ngFor="let animation of animationData; let i = index"
                                 class="col d-flex justify-content-center">
                                 <app-skeleton-card *ngIf="!arrAnimation[i]"></app-skeleton-card>
-                                <app-movie-card *ngIf="arrAnimation[i]"
+                                <app-movie-card (click)="clickedMovie()" *ngIf="arrAnimation[i]"
                                     [routerLink]="[`/movie-details/${animation.id}`]"
                                     [movieDetails]="animation"></app-movie-card>
                             </div>
@@ -188,7 +190,7 @@
             </div>
 
             <!-- SciFi Movies -->
-            <div *ngIf="sciFiData[0] && isLoggedIn" class="accordion-item border-0 mb-3 mb-md-4">
+            <div *ngIf="!showSignupForm" class="accordion-item border-0 mb-3 mb-md-4">
                 <h2 class="accordion-header mb-5 mb-md-5 border-bottom">
                     <button class="accordion-button bg-white p-2 p-md-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4">
@@ -204,7 +206,8 @@
                             <div *ngFor="let scifi of sciFiData; let i = index"
                                 class="col d-flex justify-content-center">
                                 <app-skeleton-card *ngIf="!arrSciFi[i]"></app-skeleton-card>
-                                <app-movie-card *ngIf="arrSciFi[i]" [routerLink]="[`/movie-details/${scifi.id}`]"
+                                <app-movie-card (click)="clickedMovie()" *ngIf="arrSciFi[i]"
+                                    [routerLink]="[`/movie-details/${scifi.id}`]"
                                     [movieDetails]="scifi"></app-movie-card>
                             </div>
                         </div>

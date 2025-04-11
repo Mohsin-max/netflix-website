@@ -19,7 +19,7 @@
 
                 }@else {
 
-                <app-movie-card [movieDetails]="action"></app-movie-card>
+                <app-movie-card routerLink="/movie-details/{{action.id}}" [movieDetails]="action"></app-movie-card>
                 }
 
 

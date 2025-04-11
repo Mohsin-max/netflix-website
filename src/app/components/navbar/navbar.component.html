@@ -60,10 +60,12 @@
                     </div>
                 </form>
 
-                <button class="btn btn-danger ms-3 w-lg-25 xxl-logout-btn" (click)="logout()" *ngIf="isLoggedIn">
+                <button class="btn btn-outline-danger ms-3 w-lg-25 xxl-logout-btn" (click)="logout()"
+                    *ngIf="isLoggedIn">
                     <i class="ri-logout-box-r-line me-2"></i>Logout
                 </button>
-                <button class="btn btn-primary ms-3 w-lg-25 xxl-signup-btn" (click)="signup()" *ngIf="!isLoggedIn">
+                <button class="btn btn-outline-primary fw-bold ms-3 w-lg-25 xxl-signup-btn" (click)="signup()"
+                    *ngIf="!isLoggedIn">
                     <i class="ri-user-add-line me-2"></i>Sign Up
                 </button>
             </div>
@@ -76,9 +78,10 @@
     class="searchBox w-100 h-75 overflow-auto position-absolute z-3 d-flex flex-column gap-5 py-5 xxl-search-results">
 
     <div class="searchItems xxl-search-item" role="button" *ngFor="let movie of searchedMovie">
-        <a routerLink="/movie-details/{{movie.id}}"
+        <a href="/movie-details/{{movie.id}}"
             class="d-flex align-items-center gap-5 px-5 text-decoration-none xxl-search-link">
-            <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" class="xxl-search-img">
+            <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" class="img-fluid xxl-search-img"
+                width="100px">
 
             <div class="xxl-search-text">
                 <h2 class="fs-4 text-dark xxl-search-title">{{movie.title}}</h2>

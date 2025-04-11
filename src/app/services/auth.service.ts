@@ -7,18 +7,20 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  constructor(private route:Router) { }
+  constructor(private route: Router) { }
 
   private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('user'));
 
   isLoggedIn$ = this.loggedIn.asObservable();
 
   logout() {
+    // localStorage.setItem('movieCount', '3');
+    this.loggedIn.next(false);
     localStorage.removeItem('user');
-    this.loggedIn.next(false); // Emit false to all listeners
+
   }
 
   login() {
-    this.loggedIn.next(true);  // sab ko bata do login ho gaya
+    this.loggedIn.next(true);
   }
 }

@@ -4,10 +4,11 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component';
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../interfaces/movie';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-scifi',
-  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent],
+  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent,RouterModule],
   templateUrl: './scifi.component.html',
   styleUrl: './scifi.component.scss'
 })
