@@ -42,21 +42,28 @@ export class NavbarComponent implements OnInit {
   }, 500)
 
   logout() {
+
     Swal.fire({
-      title: 'Are you sure?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, proceed!',
-      cancelButtonText: 'No, cancel!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!"
     }).then((result) => {
       if (result.isConfirmed) {
+
         localStorage.removeItem('user');
         this.authService.logout();
-        
-        localStorage.setItem('movieCount', '0');
-        
+
+        localStorage.setItem('movieCount', '3');
+
+
+        Swal.fire({
+          title: "Logout!",
+          icon: "success"
+        });
         this.router.navigate(['/']);
       }
     });
