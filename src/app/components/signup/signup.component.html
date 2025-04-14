@@ -1,4 +1,4 @@
-<form [formGroup]="signupFormData" class="formBox" (ngSubmit)="signup()" *ngIf="isLoggedIn">
+<!-- <form [formGroup]="signupFormData" class="formBox" (ngSubmit)="signup()" *ngIf="isLoggedIn">
     <h3 class="h5 mb-2">Create an account to see the all movies</h3>
     <p class="small text-muted mb-3">The netflix made this website available to netflix members only.</p>
     <div class="d-grid gap-3 w-50">
@@ -32,4 +32,47 @@
 
     <button type="submit" class="btn btn-primary rounded-pill w-50 mt-3" [disabled]="signupFormData.invalid">Sign
         up</button>
+</form> -->
+
+
+
+
+<form [formGroup]="signupFormData" class="formBox py-3 py-md-4 xxl-signup-form" (ngSubmit)="signup()">
+    <h3 class="h5 mb-2 text-center xxl-signup-title">Create an account to see all movies</h3>
+    <p class="small text-muted mb-3 text-center xxl-signup-subtitle">The Netflix made this website
+        available to Netflix
+        members only.</p>
+
+    <div
+        class="ff d-flex flex-column align-items-center justify-content-center gap-3 gap-md-4 w-100 px-3 px-md-0 xxl-signup-container">
+        <div class="w-100 xxl-input-container" style="max-width: 400px;">
+            <input type="text" class="form-control border-dark w-100 rounded-2 xxl-signup-input"
+                placeholder="Enter your username..." formControlName="username">
+            <div *ngIf="username.touched || username.dirty" class="position-relative">
+                <span class="errorMessage xxl-error-message" *ngIf="username.errors?.['required']">*username is
+                    required</span>
+            </div>
+        </div>
+
+        <div class="w-100 xxl-input-container" style="max-width: 400px;">
+            <input type="email" class="form-control border-dark w-100 rounded-2 xxl-signup-input"
+                placeholder="Enter your email..." formControlName="email">
+            <div *ngIf="email.touched || email.dirty" class="position-relative">
+                <span class="errorMessage xxl-error-message" *ngIf="email.errors?.['required']">*email
+                    is required</span>
+            </div>
+        </div>
+
+        <div class="w-100 xxl-input-container" style="max-width: 400px;">
+            <input type="password" class="form-control border-dark w-100 rounded-2 xxl-signup-input"
+                placeholder="Enter your password..." formControlName="password">
+            <div *ngIf="password.touched || password.dirty" class="position-relative">
+                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['required']">*password is
+                    required</span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary rounded-3 w-100 xxl-signup-btn" style="max-width: 400px;"
+            [disabled]="signupFormData.invalid">Sign up</button>
+    </div>
 </form>

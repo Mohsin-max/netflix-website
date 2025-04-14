@@ -1,64 +1,56 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { map } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import * as CryptoJS from "crypto-js";
+import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  imports: [CommonModule,ReactiveFormsModule  ],
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  @Output() loginSuccess = new EventEmitter<void>();
+  private readonly secretKey = "MyMovieApp123!";
 
+  loginFormData = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  });
 
-  constructor(private userService: UserService, private authService: AuthService) { }
+  get email() { return this.loginFormData.controls['email']; }
+  get password() { return this.loginFormData.controls['password']; }
 
-  userData: any[] = []
-  isLoggedIn: any;
+  constructor(private authService: AuthService) { }
 
-  ngOnInit(): void {
-
-    this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
-
+  decryptData(encryptedData: string): string {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, this.secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
   }
-
-  loginFormData: FormGroup = new FormGroup({
-
-    'email': new FormControl('', [Validators.required]),
-    'password': new FormControl('', [Validators.required]),
-
-  })
-
-  get email() {
-
-    return this.loginFormData.controls['email']
-
-  }
-  get password() {
-
-    return this.loginFormData.controls['password']
-
-  }
-
-
 
   login() {
+    if (this.loginFormData.invalid) return;
 
-    let { email, password } = this.loginFormData.value
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      Swal.fire('Error', 'No account found. Please sign up first.', 'error');
+      return;
+    }
 
-    this.userService.getUserData().pipe(
-      map(user => user.filter((f: any) => f.email == email && f.password == password))
-    ).subscribe(res => {
+    const userData = JSON.parse(storedUser);
+    const decryptedPassword = this.decryptData(userData.password);
 
-      this.loginFormData.reset()
-
-      this.authService.login()
-
-    })
-
-
+    if (
+      userData.email === this.loginFormData.value.email &&
+      decryptedPassword === this.loginFormData.value.password
+    ) {
+      this.authService.login();
+      this.loginSuccess.emit();
+      Swal.fire('Success', 'Logged in successfully!', 'success');
+    } else {
+      Swal.fire('Error', 'Invalid email or password', 'error');
+    }
   }
 }

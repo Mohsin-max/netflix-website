@@ -1,26 +1,27 @@
-<form [formGroup]="loginFormData" class="formBox" (ngSubmit)="login()" *ngIf="!isLoggedIn">
-    <h3 class="h5 mb-2">Login your account</h3>
-    <p class="small text-muted mb-3">The netflix made this website available to netflix members only.</p>
-    <div class="d-grid gap-3 w-50">
+<form [formGroup]="loginFormData" class="formBox py-3 py-md-4" (ngSubmit)="login()">
+    <h3 class="h5 mb-2 text-center">Login to continue watching</h3>
+    <p class="small text-muted mb-3 text-center">Enter your credentials to access all movies.</p>
 
-        <input type="email" class="form-control border-dark rounded-pill" id="exampleInputEmail1"
-            aria-describedby="emailHelp" placeholder="Enter your email..." formControlName="email">
-        <div *ngIf="email.touched || email.dirty">
-
-            <span class="errorMessage" *ngIf="email.errors?.['required']">*email is required</span>
-
+    <div class="d-flex flex-column align-items-center gap-3 w-100 px-3 px-md-0">
+        <div class="w-100" style="max-width: 400px;">
+            <input type="email" class="form-control border-dark w-100 rounded-2" 
+                   placeholder="Enter your email..." formControlName="email">
+            <div *ngIf="email.touched && email.invalid" class="text-danger small mt-1">
+                *Valid email is required
+            </div>
         </div>
 
-        <input type="password" class="form-control border-dark rounded-pill" id="exampleInputPassword1"
-            placeholder="Enter your password..." formControlName="password">
-        <div *ngIf="password.touched || password.dirty">
-
-            <span class="errorMessage" *ngIf="password.errors?.['required']">*password is required</span>
-
+        <div class="w-100" style="max-width: 400px;">
+            <input type="password" class="form-control border-dark w-100 rounded-2" 
+                   placeholder="Enter your password..." formControlName="password">
+            <div *ngIf="password.touched && password.invalid" class="text-danger small mt-1">
+                *Password is required
+            </div>
         </div>
 
+        <button type="submit" class="btn btn-primary rounded-3 w-100" style="max-width: 400px;"
+                [disabled]="loginFormData.invalid">
+            Login
+        </button>
     </div>
-
-    <button type="submit" class="btn btn-primary rounded-pill w-50 mt-3"
-        [disabled]="loginFormData.invalid">Login</button>
 </form>

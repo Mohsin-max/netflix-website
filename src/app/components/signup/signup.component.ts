@@ -1,67 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import * as CryptoJS from "crypto-js";
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  imports: [CommonModule, ReactiveFormsModule,],
+  styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
+  @Output() signupSuccess = new EventEmitter<void>();
+  private readonly secretKey = "MyMovieApp123!";
 
-  constructor(private userservice: UserService, private authService: AuthService) { }
+  signupFormData = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
 
+  get username() { return this.signupFormData.controls['username']; }
+  get email() { return this.signupFormData.controls['email']; }
+  get password() { return this.signupFormData.controls['password']; }
 
-  isLoggedIn: any;
-  ngOnInit(): void {
-
-    this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
-
+  encryptData(data: string): string {
+    return CryptoJS.AES.encrypt(data, this.secretKey).toString();
   }
-
-
-  signupFormData: FormGroup = new FormGroup({
-
-    'username': new FormControl('', [Validators.required]),
-    'email': new FormControl('', [Validators.required]),
-    'password': new FormControl('', [Validators.required]),
-
-  })
-
-
-  get username() {
-
-    return this.signupFormData.controls['username']
-
-  }
-  get email() {
-
-    return this.signupFormData.controls['email']
-
-  }
-  get password() {
-
-    return this.signupFormData.controls['password']
-
-  }
-
 
   signup() {
+    if (this.signupFormData.invalid) return;
 
-    this.userservice.postUserData(this.signupFormData.value).subscribe(res => {
+    const encryptedPassword = this.encryptData(this.signupFormData.value.password!);
+    const userData = {
+      ...this.signupFormData.value,
+      password: encryptedPassword
+    };
 
-      if (res) {
-
-        this.signupFormData.reset()
-        this.authService.login()
-
-      }
-
-    })
-
+    localStorage.setItem('user', JSON.stringify(userData));
+    this.signupSuccess.emit();
   }
-
 }
