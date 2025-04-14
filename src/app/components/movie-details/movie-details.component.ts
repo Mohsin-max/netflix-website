@@ -29,16 +29,19 @@ export class MovieDetailsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
-
-    this.isFavorite = favoriteMovies.some((movie: any) => movie.id === this.arrMovieDetails.id);
-
 
     window.scrollTo(0, 0)
 
     let movie_id = this.route.snapshot.paramMap.get('id');
 
-    this.service.getMovieDetailsApi(movie_id).subscribe(res => this.arrMovieDetails = res)
+    this.service.getMovieDetailsApi(movie_id).subscribe(res => {
+
+      this.arrMovieDetails = res
+      const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
+
+      this.isFavorite = favoriteMovies.some((movie: any) => movie.id === this.arrMovieDetails.id);
+
+    })
 
     this.service.getMovieVideoApi(movie_id).pipe(
 
@@ -47,11 +50,7 @@ export class MovieDetailsComponent implements OnInit {
     ).subscribe(res => this.movieVideoKey = res[0]?.key)
 
 
-    this.service.getMovieCastApi(movie_id).subscribe(res => {
-
-      this.arrMovieCast = res.cast
-
-    })
+    this.service.getMovieCastApi(movie_id).subscribe(res => this.arrMovieCast = res.cast)
 
   }
 
