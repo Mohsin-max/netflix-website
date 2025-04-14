@@ -6,6 +6,7 @@ import { AdventureComponent } from './components/adventure/adventure.component';
 import { AnimationComponent } from './components/animation/animation.component';
 import { ScifiComponent } from './components/scifi/scifi.component';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
+import { FavoriteComponent } from './components/favorite/favorite.component';
 
 export const routes: Routes = [
 
@@ -17,4 +18,5 @@ export const routes: Routes = [
     { path: 'animation', component: AnimationComponent },
     { path: 'scifi', component: ScifiComponent },
     { path: 'movie-details/:id', component: MovieDetailsComponent },
+    { path: 'favorite', component: FavoriteComponent }
 ];

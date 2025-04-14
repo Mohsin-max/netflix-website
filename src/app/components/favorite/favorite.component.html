@@ -1,0 +1,46 @@
+<div class="container-fluid py-4 favorites-container">
+    <div class="row">
+        <div class="col-12 py-5 mb-4 border-bottom">
+            <h2 class="text-center text-danger">Favorite Movies</h2>
+        </div>
+    </div>
+
+    <!-- Movies List -->
+    <div *ngIf="favoriteMovieArr.length > 0; else emptyState" class="row justify-content-start">
+        <div *ngFor="let movie of favoriteMovieArr" class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="movie-item p-3" (click)="navigateToDetails(movie.id)">
+                <div class="d-flex align-items-start">
+                    <!-- Movie Poster -->
+                    <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w200' + movie.poster_path : 'assets/default-poster.jpg'"
+                         class="img-fluid rounded me-3" style="width: 100px; height: 150px; object-fit: cover;">
+                    
+                    <!-- Movie Details -->
+                    <div class="movie-info">
+                        <h3 class="h5 mb-1">{{movie.title}}</h3>
+                        <p class="text-muted small mb-1">
+                            {{movie.release_date | date:'d MMM yyyy'}} • {{movie.original_language | uppercase}}
+                        </p>
+                        <div class="genre-tags">
+                            <span *ngFor="let genre of movie.genres?.slice(0, 3)" class="badge bg-secondary me-1 mb-1">
+                                {{genre.name}}
+                            </span>
+
+                            <i class="ri-heart-fill" (click)="removeFromFavorites(movie,$event)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #emptyState>
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-heart text-muted" style="font-size: 3rem;"></i>
+                <p class="text-muted mt-3">Your favorites list is empty</p>
+                <button class="btn btn-outline-danger" routerLink="/">Browse Movies</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

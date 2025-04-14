@@ -17,9 +17,18 @@
 
         <!-- Right Column -->
         <div class="col-12 col-md-6 position-relative mt-3 mt-md-0 xxl-details-col">
-            <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails.title}}</h1>
-            <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails.tagline}}</h3>
-            <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
+            <div class="d-flex">
+
+                <div>
+                    <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails.title}}</h1>
+                    <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails.tagline}}</h3>
+                    <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
+                </div>
+
+                <span (click)="addToFav($event,arrMovieDetails)">
+                    <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i>
+                </span>
+            </div>
 
             <!-- Tags -->
             <div class="d-flex flex-wrap gap-2 align-items-center mt-4 xxl-tags-row">
@@ -48,10 +57,11 @@
                     <i class="ri-map-pin-line me-1"></i>
                     {{arrMovieDetails.origin_country}}
                 </span>
+
             </div>
 
             <a href="https://www.themoviedb.org/video/play?key={{movieVideoKey}}" target="_blank"
-                class="d-block mt-4 xxl-trailer-link">
+                class="d-block mt-4 xxl-trailer-link w-50">
                 <button class="btn btn-danger xxl-trailer-btn">
                     <i class="ri-play-fill"></i> Watch Trailer
                 </button>

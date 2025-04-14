@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
 
     this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
-    
+
   }
 
 

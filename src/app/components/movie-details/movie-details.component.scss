@@ -8,6 +8,40 @@
     height: 80px;
 }
 
+
+.xxl-trailer-link{
+
+
+    width: 200px;
+
+}
+
+.ri-heart-line{
+
+    padding: 2px;
+    font-size: 25px;
+    cursor: pointer;
+
+}
+
+.ri-heart-fill{
+    
+
+    padding: 2px;
+    color: rgba(255, 0, 0, 0.775);
+    font-size: 25px;
+    cursor: pointer;
+
+}
+
+.ri-heart-fill:hover{
+    
+    transform: scale(1.04);
+    color: rgb(255, 0, 0);
+
+
+}
+
 @media (max-width: 768px) {
     .main-poster {
         max-height: 300px;

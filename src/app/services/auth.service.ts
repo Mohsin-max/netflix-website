@@ -14,7 +14,6 @@ export class AuthService {
   isLoggedIn$ = this.loggedIn.asObservable();
 
   logout() {
-    // localStorage.setItem('movieCount', '3');
     this.loggedIn.next(false);
     localStorage.removeItem('user');
 

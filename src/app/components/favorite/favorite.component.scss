@@ -1,0 +1,55 @@
+.favorites-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.movie-item {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.movie-item:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.movie-info {
+    flex: 1;
+}
+
+
+
+.ri-heart-fill{
+    
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 2px;
+    color: rgba(255, 0, 0, 0.775);
+    font-size: 25px;
+    
+
+}
+
+.ri-heart-fill:hover{
+    
+    transform: scale(1.04);
+    color: rgb(255, 0, 0);
+
+
+}
+
+
+@media (max-width: 768px) {
+    .movie-item {
+        padding: 1rem;
+    }
+    
+    .movie-info h3 {
+        font-size: 1rem;
+    }
+}

@@ -57,9 +57,6 @@ export class NavbarComponent implements OnInit {
         localStorage.removeItem('user');
         this.authService.logout();
 
-        localStorage.setItem('movieCount', '3');
-
-
         Swal.fire({
           title: "Logout!",
           icon: "success"
