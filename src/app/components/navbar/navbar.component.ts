@@ -54,7 +54,7 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        localStorage.removeItem('user');
+        // localStorage.removeItem('user');
         this.authService.logout();
 
         Swal.fire({

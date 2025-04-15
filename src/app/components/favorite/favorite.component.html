@@ -6,24 +6,21 @@
     </div>
 
     <!-- Movies List -->
-    <div *ngIf="favoriteMovieArr.length > 0; else emptyState" class="row justify-content-start">
+    <!-- <div *ngIf="favoriteMovieArr.length > 0; else emptyState" class="row justify-content-start">
         <div *ngFor="let movie of favoriteMovieArr" class="col-12 col-md-6 col-lg-4 mb-4">
             <div class="movie-item p-3" (click)="navigateToDetails(movie.id)">
                 <div class="d-flex align-items-start">
-                    <!-- Movie Poster -->
+
                     <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w200' + movie.poster_path : 'assets/default-poster.jpg'"
-                         class="img-fluid rounded me-3" style="width: 100px; height: 150px; object-fit: cover;">
-                    
-                    <!-- Movie Details -->
+                        class="img-fluid rounded me-3" style="width: 100px; height: 150px; object-fit: cover;">
+
+
                     <div class="movie-info">
-                        <h3 class="h5 mb-1">{{movie.title}}</h3>
+                        <h3 class="h5 mb-1 w-75">{{movie.title}}</h3>
                         <p class="text-muted small mb-1">
                             {{movie.release_date | date:'d MMM yyyy'}} • {{movie.original_language | uppercase}}
                         </p>
                         <div class="genre-tags">
-                            <span *ngFor="let genre of movie.genres?.slice(0, 3)" class="badge bg-secondary me-1 mb-1">
-                                {{genre.name}}
-                            </span>
 
                             <i class="ri-heart-fill" (click)="removeFromFavorites(movie,$event)"></i>
                         </div>
@@ -31,7 +28,36 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+
+    <div class="d-flex flex-column gap-5 align-items-center" *ngIf="favoriteMovieArr.length > 0; else emptyState">
+
+        <div class="cards w-75 d-flex px-5 rounded py-4 justify-content-between align-items-center"
+            *ngFor="let item of favoriteMovieArr" (click)="navigateToDetails(item.id)">
+
+            <div class="d-flex gap-5">
+
+                <img width="120px" height="170px" [src]="'https://image.tmdb.org/t/p/w200'+item.poster_path" alt="">
+
+                <div>
+                    <h2 class="fs-3">{{item.title}}</h2>
+
+                    <p class="fw-light text-muted">{{item.release_date}}</p>
+
+                    <!-- <p class="text-muted desc" style="font-size: 13px; width: 90%;">{{item.overview}}</p> -->
+                </div>
+
+            </div>
+
+            <i class="ri-heart-fill" (click)="removeFromFavorites(item,$event)"></i>
+
+        </div>
+
+
     </div>
+
+
 
     <!-- Empty State -->
     <ng-template #emptyState>

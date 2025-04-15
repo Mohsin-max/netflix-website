@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -23,7 +22,7 @@ export class FavoriteComponent implements OnInit {
 
   loadFavorites() {
     const favorites = localStorage.getItem('favoriteMovie');
-    this.favoriteMovieArr = favorites ? JSON.parse(favorites) : [];
+    this.favoriteMovieArr = favorites ? JSON.parse(favorites).reverse() : [];
   }
 
   navigateToDetails(movieId: number) {

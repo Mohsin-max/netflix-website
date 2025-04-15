@@ -14,29 +14,40 @@
 .movie-item:hover {
     background-color: #e9ecef;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .movie-info {
     flex: 1;
 }
 
+.cards {
+
+    cursor: pointer;
+    background-color: #f4f4f4;
+    transition: 0.3s;
+}
 
 
-.ri-heart-fill{
-    
-    position: absolute;
-    top: 0;
-    right: 10px;
-    padding: 2px;
-    color: rgba(255, 0, 0, 0.775);
-    font-size: 25px;
-    
+.cards:hover {
+
+    background-color: #e7e7e7;
+    transform: scale(1.02);
 
 }
 
-.ri-heart-fill:hover{
-    
+
+.ri-heart-fill {
+    cursor: pointer;
+    padding: 2px;
+    color: rgba(255, 0, 0, 0.775);
+    font-size: 28px;
+
+
+}
+
+.ri-heart-fill:hover {
+
     transform: scale(1.04);
     color: rgb(255, 0, 0);
 
@@ -48,7 +59,7 @@
     .movie-item {
         padding: 1rem;
     }
-    
+
     .movie-info h3 {
         font-size: 1rem;
     }

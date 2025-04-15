@@ -40,6 +40,7 @@ export class HomeComponent {
   showLoginForm: boolean = false;
   movieCount: number = 0;
 
+
   constructor(
     private service: MovieApiService,
     private authService: AuthService,
@@ -49,6 +50,7 @@ export class HomeComponent {
   ngOnInit(): void {
     this.checkAuthStatus();
     this.loadInitialData();
+
   }
 
   checkAuthStatus() {
@@ -68,9 +70,8 @@ export class HomeComponent {
 
   loadMovieCount() {
     const encryptedCount = localStorage.getItem('movieCount');
-    if (encryptedCount) {
-      this.movieCount = parseInt(this.decryptData(encryptedCount)) || 0;
-    }
+
+    if (encryptedCount) this.movieCount = parseInt(this.decryptData(encryptedCount)) || 0;
   }
 
   saveMovieCount() {
@@ -155,7 +156,6 @@ export class HomeComponent {
   onSignupSuccess() {
     this.showSignupForm = false;
     this.showLoginForm = true;
-    this.movieCount = 0;
     this.saveMovieCount();
     Swal.fire('Success', 'Account created! Please login.', 'success');
   }
@@ -163,7 +163,7 @@ export class HomeComponent {
   onLoginSuccess() {
     this.showLoginForm = false;
     this.isLoggedIn = true;
-    this.loadAllMovies();
+    this.loadAllMovies()
   }
 
   bannerWatchBtn(movieId: any) {
