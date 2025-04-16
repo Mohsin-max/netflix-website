@@ -65,15 +65,17 @@
                 <!-- Forms Section -->
                 <div *ngIf="!isLoggedIn" class="row mt-4 mx-0">
                     <div class="col-12 px-0 px-md-3">
-                        <app-signup *ngIf="showSignupForm" (signupSuccess)="onSignupSuccess()"></app-signup>
-                        <app-login *ngIf="showLoginForm" (loginSuccess)="onLoginSuccess()"></app-login>
+                        <app-signup *ngIf="showSignupForm" (signupSuccess)="onSignupSuccess()"
+                            (showLoginForm)="toggleToLogin()"></app-signup>
+                        <app-login *ngIf="showLoginForm" (loginSuccess)="onLoginSuccess()"
+                            (showSignupForm)="toggleToSignup()"></app-login>
                     </div>
                 </div>
 
             </div>
 
             <!-- Other Movie Sections (Only After Login) -->
-            <div *ngIf="isLoggedIn">
+            <div *ngIf="movieCount < 3 || isLoggedIn">
                 <!-- Action Movies -->
                 <div class="accordion-item border-0 mb-3 mb-md-4">
                     <h2 class="accordion-header mb-5 mb-md-5 border-bottom">

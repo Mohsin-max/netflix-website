@@ -40,7 +40,6 @@ export class HomeComponent {
   showLoginForm: boolean = false;
   movieCount: number = 0;
 
-
   constructor(
     private service: MovieApiService,
     private authService: AuthService,
@@ -50,33 +49,51 @@ export class HomeComponent {
   ngOnInit(): void {
     this.checkAuthStatus();
     this.loadInitialData();
+    this.loadMovieCount();
 
+    // Only load other movies if logged in or movieCount < 3
+    if (this.isLoggedIn || this.movieCount < 3) {
+      this.loadAllMovies();
+    }
   }
 
   checkAuthStatus() {
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
-      if (!status) {
-        this.loadMovieCount();
-        this.showSignupForm = this.movieCount >= 3;
-        this.showLoginForm = false;
-      } else {
+
+      if (status) {
+        // User is logged in
         this.showSignupForm = false;
         this.showLoginForm = false;
         this.loadAllMovies();
+      } else {
+        // User is logged out
+        this.loadMovieCount();
+        this.showSignupForm = this.movieCount >= 3;
+        this.showLoginForm = false;
+
+        // Clear other movie categories when showing forms
+        if (this.showSignupForm || this.showLoginForm) {
+          this.clearMovieData();
+        }
       }
     });
   }
 
   loadMovieCount() {
-    const encryptedCount = localStorage.getItem('movieCount');
-
-    if (encryptedCount) this.movieCount = parseInt(this.decryptData(encryptedCount)) || 0;
+    const count = localStorage.getItem('movieCount');
+    this.movieCount = count ? parseInt(this.decryptData(count)) : 0;
   }
 
   saveMovieCount() {
-    const encrypted = this.encryptData(this.movieCount.toString());
-    localStorage.setItem('movieCount', encrypted);
+    localStorage.setItem('movieCount', this.encryptData(this.movieCount.toString()));
+  }
+
+  clearMovieData() {
+    this.actionData = [];
+    this.adventureData = [];
+    this.animationData = [];
+    this.sciFiData = [];
   }
 
   encryptData(data: string): string {
@@ -89,6 +106,7 @@ export class HomeComponent {
   }
 
   loadInitialData() {
+    // Always load banner and trending data
     this.service.getBannerApi().subscribe(res => this.bannerData = res.results);
     this.service.getTrendingApi().subscribe(res => {
       this.trendingData = res.results;
@@ -98,9 +116,8 @@ export class HomeComponent {
   }
 
   loadAllMovies() {
-
     if (this.isLoggedIn) {
-
+      // Load all movies for logged in users
       this.service.getActionApi().subscribe(res => {
         this.actionData = res.results;
         this.arrAction = new Array(res.results.length).fill(false);
@@ -124,10 +141,14 @@ export class HomeComponent {
         this.arrSciFi = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrSciFi);
       });
-
-
+    } else if (this.movieCount < 3) {
+      // Load limited movies for non-logged in users with <3 clicks
+      this.service.getActionApi().subscribe(res => {
+        this.actionData = res.results.slice(0, 3); // Only show 3 movies
+        this.arrAction = new Array(this.actionData.length).fill(false);
+        this.showDelayedCards(this.arrAction);
+      });
     }
-
   }
 
   showDelayedCards(arr: boolean[]) {
@@ -149,6 +170,7 @@ export class HomeComponent {
       if (this.movieCount >= 3) {
         this.showSignupForm = true;
         this.showLoginForm = false;
+        this.clearMovieData();
       }
     }
   }
@@ -156,22 +178,35 @@ export class HomeComponent {
   onSignupSuccess() {
     this.showSignupForm = false;
     this.showLoginForm = true;
-    this.saveMovieCount();
     Swal.fire('Success', 'Account created! Please login.', 'success');
   }
 
   onLoginSuccess() {
     this.showLoginForm = false;
-    this.isLoggedIn = true;
-    this.loadAllMovies()
+    this.loadAllMovies();
   }
 
   bannerWatchBtn(movieId: any) {
-    if (!this.isLoggedIn && this.movieCount >= 3) {
-      Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
-      this.showSignupForm = true;
+    if (!this.isLoggedIn) {
+      if (this.movieCount >= 3) {
+        Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+        this.showSignupForm = true;
+        this.clearMovieData();
+      } else {
+        this.router.navigate([`/movie-details/${movieId}`]);
+      }
     } else {
       this.router.navigate([`/movie-details/${movieId}`]);
     }
+  }
+
+  toggleToLogin() {
+    this.showSignupForm = false;
+    this.showLoginForm = true;
+  }
+
+  toggleToSignup() {
+    this.showLoginForm = false;
+    this.showSignupForm = true;
   }
 }

@@ -7,13 +7,13 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
 
 
-  private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('user'));
+  private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('currentUser'));
 
   isLoggedIn$ = this.loggedIn.asObservable();
 
   logout() {
     this.loggedIn.next(false);
-    localStorage.removeItem('user');
+    // localStorage.removeItem('user');
 
   }
 

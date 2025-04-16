@@ -14,14 +14,17 @@ export class MovieCardComponent {
 
   isFavorite: boolean = false;
 
-  userData: any = {};
+  users: any;
   currentRoute: string = ''
   constructor(private location: Location) { }
 
   ngOnInit() {
 
 
-    this.userData = JSON.parse(localStorage.getItem('user') || '{}')
+    // this.users = JSON.parse(localStorage.getItem('currentUser') || '[]')
+    this.users = JSON.parse(localStorage.getItem('isLoggedIn') || '')
+    // console.log(JSON.parse(this.users),"moviecard");
+    
     const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
     this.isFavorite = favoriteMovies.some((movie: any) => movie.id === this.movieDetails.id);
 
@@ -32,37 +35,47 @@ export class MovieCardComponent {
   addToFav(event: Event, movie: any) {
     event.stopPropagation();
 
-    let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
-    const movieIndex = favoriteMovies.findIndex((m: any) => m.id === movie.id);
+    if (this.users) {
 
-    if (movieIndex === -1) {
-      // Add to favorites
-      favoriteMovies.push(movie);
-      this.isFavorite = true;
+      let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
+      const movieIndex = favoriteMovies.findIndex((m: any) => m.id === movie.id);
 
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Added to Favorites",
-        showConfirmButton: false,
-        timer: 2000
-      });
+      if (movieIndex === -1) {
+        // Add to favorites
+        favoriteMovies.push(movie);
+        this.isFavorite = true;
+
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Added to Favorites",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      } else {
+        // Remove from favorites
+        favoriteMovies.splice(movieIndex, 1);
+        this.isFavorite = false;
+
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Removed from Favorites",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      }
+
+      localStorage.setItem('favoriteMovie', JSON.stringify(favoriteMovies));
+
     } else {
-      // Remove from favorites
-      favoriteMovies.splice(movieIndex, 1);
-      this.isFavorite = false;
 
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "error",
-        title: "Removed from Favorites",
-        showConfirmButton: false,
-        timer: 2000
-      });
+      Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+
+
     }
 
-    localStorage.setItem('favoriteMovie', JSON.stringify(favoriteMovies));
   }
 }

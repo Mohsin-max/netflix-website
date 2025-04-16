@@ -11,6 +11,7 @@ import * as CryptoJS from "crypto-js";
 })
 export class SignupComponent {
   @Output() signupSuccess = new EventEmitter<void>();
+  @Output() showLoginForm = new EventEmitter<void>();
   private readonly secretKey = "MyMovieApp123!";
 
   signupFormData = new FormGroup({
@@ -36,7 +37,27 @@ export class SignupComponent {
       password: encryptedPassword
     };
 
-    localStorage.setItem('user', JSON.stringify(userData));
+    // Get existing users from localStorage
+    const existingUsersJson = localStorage.getItem('users');
+    let users = [];
+
+    // If users exist, parse them
+    if (existingUsersJson) {
+      users = JSON.parse(existingUsersJson);
+    }
+
+    // Check if user already exists (optional)
+    const userExists = users.some((user: any) => user.email === userData.email);
+    if (userExists) {
+      alert('User with this email already exists!');
+      return;
+    }
+
+    // Add new user to the array
+    users.push(userData);
+
+    // Store updated users array back to localStorage
+    localStorage.setItem('users', JSON.stringify(users));
     this.signupSuccess.emit();
   }
 }

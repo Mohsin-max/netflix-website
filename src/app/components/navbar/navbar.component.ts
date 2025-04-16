@@ -54,14 +54,15 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        // localStorage.removeItem('user');
+        localStorage.setItem('isLoggedIn', JSON.stringify(false));
+        localStorage.removeItem('currentUser');
         this.authService.logout();
 
         Swal.fire({
           title: "Logout!",
           icon: "success"
         });
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       }
     });
   }
@@ -69,8 +70,9 @@ export class NavbarComponent implements OnInit {
   signup() {
 
     window.scrollTo({
-      top: window.innerHeight * 2,
+      top: window.innerHeight * 1.5,
       behavior: 'smooth'
     })
+    this.router.navigate(['/']);
   }
 }

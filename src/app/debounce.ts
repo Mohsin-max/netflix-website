@@ -1,4 +1,3 @@
-import { Movie } from "./interfaces/movie";
 
 // This function takes two parameters: func and delay
 export function debounce(func: Function, delay: number) {
