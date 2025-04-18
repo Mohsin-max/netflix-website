@@ -18,6 +18,6 @@ export const routes: Routes = [
     { path: 'adventure', component: AdventureComponent, canActivate: [authGuard] },
     { path: 'animation', component: AnimationComponent, canActivate: [authGuard] },
     { path: 'scifi', component: ScifiComponent, canActivate: [authGuard] },
-    { path: 'movie-details/:id', component: MovieDetailsComponent, canActivate: [authGuard] },
+    { path: 'movie-details/:id', component: MovieDetailsComponent },
     { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] }
 ];
