@@ -7,16 +7,17 @@ import { AnimationComponent } from './components/animation/animation.component';
 import { ScifiComponent } from './components/scifi/scifi.component';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
 import { FavoriteComponent } from './components/favorite/favorite.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
 
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
-    { path: 'trending', component: TrendingComponent },
-    { path: 'action', component: ActionComponent },
-    { path: 'adventure', component: AdventureComponent },
-    { path: 'animation', component: AnimationComponent },
-    { path: 'scifi', component: ScifiComponent },
-    { path: 'movie-details/:id', component: MovieDetailsComponent },
-    { path: 'favorite', component: FavoriteComponent }
+    { path: 'trending', component: TrendingComponent, canActivate: [authGuard] },
+    { path: 'action', component: ActionComponent, canActivate: [authGuard] },
+    { path: 'adventure', component: AdventureComponent, canActivate: [authGuard] },
+    { path: 'animation', component: AnimationComponent, canActivate: [authGuard] },
+    { path: 'scifi', component: ScifiComponent, canActivate: [authGuard] },
+    { path: 'movie-details/:id', component: MovieDetailsComponent, canActivate: [authGuard] },
+    { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] }
 ];

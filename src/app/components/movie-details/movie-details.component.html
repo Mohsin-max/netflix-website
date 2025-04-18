@@ -25,7 +25,7 @@
                     <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
                 </div>
 
-                <span (click)="addToFav($event,arrMovieDetails)">
+                <span (click)="addToFav($event,arrMovieDetails.id)">
                     <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i>
                 </span>
             </div>

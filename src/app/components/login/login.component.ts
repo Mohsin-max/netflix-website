@@ -4,11 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import * as CryptoJS from "crypto-js";
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,RouterModule],
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {

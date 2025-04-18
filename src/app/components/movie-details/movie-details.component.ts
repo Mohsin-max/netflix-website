@@ -37,9 +37,9 @@ export class MovieDetailsComponent implements OnInit {
     this.service.getMovieDetailsApi(movie_id).subscribe(res => {
 
       this.arrMovieDetails = res
-      const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
+      const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
 
-      this.isFavorite = favoriteMovies.some((movie: any) => movie.id === this.arrMovieDetails.id);
+      this.isFavorite = favoriteMoviesId.some((movie: any) => movie.id === this.arrMovieDetails.id);
 
     })
 
@@ -96,12 +96,12 @@ export class MovieDetailsComponent implements OnInit {
   addToFav(event: Event, movie: any) {
     event.stopPropagation();
 
-    let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
-    const movieIndex = favoriteMovies.findIndex((m: any) => m.id === movie.id);
+    let favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    const movieIndex = favoriteMoviesId.findIndex((m: any) => m === movie);
 
     if (movieIndex === -1) {
       // Add to favorites
-      favoriteMovies.push(movie);
+      favoriteMoviesId.push(movie);
       this.isFavorite = true;
 
       Swal.fire({
@@ -114,7 +114,7 @@ export class MovieDetailsComponent implements OnInit {
       });
     } else {
       // Remove from favorites
-      favoriteMovies.splice(movieIndex, 1);
+      favoriteMoviesId.splice(movieIndex, 1);
       this.isFavorite = false;
 
       Swal.fire({
@@ -127,7 +127,7 @@ export class MovieDetailsComponent implements OnInit {
       });
     }
 
-    localStorage.setItem('favoriteMovie', JSON.stringify(favoriteMovies));
+    localStorage.setItem('favoriteMovieId', JSON.stringify(favoriteMoviesId));
   }
 
 }

@@ -61,19 +61,19 @@ body {
 
 @media (min-width: 2000px) {
     .xxl-display-4 {
-        font-size: 4.5rem;
+        font-size: 4rem;
         font-weight: bold;
         margin-bottom: 1.5rem;
     }
 
     .xxl-fs-2 {
-        font-size: 2.5rem !important;
+        font-size: 2rem !important;
         margin: 0 auto 2rem;
     }
 
     .xxl-btn-lg {
-        padding: 0.75rem 1.5rem;
-        font-size: 2.3rem;
+        padding: 0.70rem 1.5rem;
+        font-size: 2rem;
     }
 
     .carousel-control-prev-icon,
@@ -84,49 +84,8 @@ body {
 
     .accordion-item h4 a {
 
-        font-size: 50px;
+        font-size: 40px;
 
-    }
-
-    .xxl-signup-form {
-        padding: 3rem 0 !important;
-    }
-
-    .xxl-signup-title {
-        font-size: 2.5rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-
-    .xxl-signup-subtitle {
-        font-size: 1.6rem !important;
-        margin-bottom: 2rem !important;
-    }
-
-    .xxl-signup-container {
-        gap: 2rem !important;
-    }
-
-    .xxl-input-container {
-        max-width: 600px !important;
-    }
-
-    .xxl-signup-input {
-        font-size: 1.6rem !important;
-        padding: 1.2rem 1.5rem !important;
-        // border-radius: 1rem !important;
-        border-width: 2px !important;
-    }
-
-    .xxl-error-message {
-        font-size: 1.7rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    .xxl-signup-btn {
-        max-width: 600px !important;
-        font-size: 2rem !important;
-        padding: 1.2rem !important;
-        // border-radius: 1rem !important;
     }
 
 }

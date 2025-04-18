@@ -20,4 +20,15 @@ export class AuthService {
   login() {
     this.loggedIn.next(true);
   }
+
+  private selectdGenre = new BehaviorSubject<string>('All')
+
+  selectdGenre$ = this.selectdGenre.asObservable();
+
+  sendNavVal(val: any) {
+
+    this.selectdGenre.next(val)
+
+  }
+
 }

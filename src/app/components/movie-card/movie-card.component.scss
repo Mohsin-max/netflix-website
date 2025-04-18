@@ -1,10 +1,8 @@
 .card-body {
-
     width: 100%;
     color: white;
     backdrop-filter: blur(15px);
     height: 50px;
-
 }
 
 .card-title {
@@ -12,7 +10,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 80%;
-    font-size: 18px
+    font-size: 18px;
 }
 
 .icon {
@@ -20,92 +18,113 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-
 }
 
 .card {
-
     transition: 0.15s;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3)
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 12rem;
+    height: 15rem;
 }
 
 .card:hover {
-
     transform: scale(1.05);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.594)
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.594);
 }
 
 .ri-heart-line {
-
     position: absolute;
     top: 0;
     right: 10px;
     padding: 2px;
     color: rgba(255, 255, 255, 0.59);
     font-size: 25px;
-    // display: none;
-    
 }
 
-.ri-heart-fill{
-    
+.ri-heart-fill {
     position: absolute;
     top: 0;
     right: 10px;
     padding: 2px;
     color: rgba(255, 0, 0, 0.775);
     font-size: 25px;
-    
-
 }
 
 .ri-heart-line:hover {
-    
     transform: scale(1.04);
     color: rgb(255, 255, 255);
-    
 }
 
-.ri-heart-fill:hover{
-    
+.ri-heart-fill:hover {
     transform: scale(1.04);
     color: rgb(255, 0, 0);
-
-
 }
 
-@media (min-width: 2000px) {
-
+/* Responsive styles for screens below 786px */
+@media (max-width: 786px) {
     .card {
-
-        width: 23rem !important;
-        height: 25rem !important;
-
+        width: 10rem !important;
+        height: 12rem !important;
+        margin: 0 auto; /* Center cards on mobile */
     }
 
     .card-title {
+        font-size: 0.9rem;
+    }
 
+    .card-body {
+        height: 40px;
+    }
+
+    .icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .ri-heart-line,
+    .ri-heart-fill {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 436px) {
+    .card {
+        width: 8rem !important;
+        height: 10rem !important;
+    }
+
+    .card-title {
+        font-size: 0.8rem;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+
+@media (min-width: 2000px) {
+    .card {
+        width: 23rem !important;
+        height: 25rem !important;
+    }
+
+    .card-title {
         font-size: 2rem;
     }
 
     .card-body {
-
         height: 80px;
-        width: 100%;
-
     }
 
     .icon {
-
         width: 45px;
         height: 45px;
-
     }
 
-    .ri-heart-line,.ri-heart-fill{
-
+    .ri-heart-line,
+    .ri-heart-fill {
         font-size: 40px;
-
     }
-
 }

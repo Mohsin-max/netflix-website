@@ -20,13 +20,10 @@ export class MovieCardComponent {
 
   ngOnInit() {
 
-
-    // this.users = JSON.parse(localStorage.getItem('currentUser') || '[]')
     this.users = JSON.parse(localStorage.getItem('isLoggedIn') || '')
-    // console.log(JSON.parse(this.users),"moviecard");
-    
-    const favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
-    this.isFavorite = favoriteMovies.some((movie: any) => movie.id === this.movieDetails.id);
+
+    const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    this.isFavorite = favoriteMoviesId.some((movieId: any) => movieId === this.movieDetails.id);
 
     this.currentRoute = this.location.path()
 
@@ -37,12 +34,13 @@ export class MovieCardComponent {
 
     if (this.users) {
 
-      let favoriteMovies = JSON.parse(localStorage.getItem('favoriteMovie') || '[]');
-      const movieIndex = favoriteMovies.findIndex((m: any) => m.id === movie.id);
+      let favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+      const movieIndex = favoriteMoviesId.findIndex((m: any) => m === movie);
+      
 
       if (movieIndex === -1) {
         // Add to favorites
-        favoriteMovies.push(movie);
+        favoriteMoviesId.push(movie);
         this.isFavorite = true;
 
         Swal.fire({
@@ -55,7 +53,7 @@ export class MovieCardComponent {
         });
       } else {
         // Remove from favorites
-        favoriteMovies.splice(movieIndex, 1);
+        favoriteMoviesId.splice(movieIndex, 1);
         this.isFavorite = false;
 
         Swal.fire({
@@ -68,7 +66,7 @@ export class MovieCardComponent {
         });
       }
 
-      localStorage.setItem('favoriteMovie', JSON.stringify(favoriteMovies));
+      localStorage.setItem('favoriteMovieId', JSON.stringify(favoriteMoviesId));
 
     } else {
 

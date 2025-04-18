@@ -1,34 +1,36 @@
-<form [formGroup]="loginFormData" class="formBox py-3 py-md-4" (ngSubmit)="login()">
-    <h3 class="h5 mb-2 text-center">Login to continue watching</h3>
-    <p class="small text-muted mb-3 text-center">Enter your credentials to access all movies.</p>
+<form [formGroup]="loginFormData" class="formBox py-3 py-md-4 xxl-signup-form" (ngSubmit)="login()">
+    <h3 class="h5 mb-2 text-center xxl-signup-title">Login to continue watching</h3>
+    <p class="small text-muted mb-3 text-center xxl-signup-subtitle">Enter your credentials to access all movies.</p>
 
-    <div class="d-flex flex-column align-items-center gap-3 w-100 px-3 px-md-0">
-        <div class="w-100" style="max-width: 400px;">
-            <input type="email" class="form-control border-dark w-100 rounded-2" 
-                   placeholder="Enter your email..." formControlName="email">
-            <div *ngIf="email.touched && email.invalid" class="text-danger small mt-1">
-                *Valid email is required
+    <div
+        class="ff d-flex flex-column align-items-center justify-content-center gap-3 gap-md-4 w-100 px-3 px-md-0 xxl-signup-container">
+
+        <div class="w-100 xxl-input-container" style="max-width: 400px;">
+            <input type="email" class="form-control border-dark w-100 rounded-2 xxl-signup-input"
+                placeholder="Enter your email..." formControlName="email">
+            <div *ngIf="email.touched || email.dirty" class="position-relative">
+                <span class="errorMessage xxl-error-message" *ngIf="email.errors?.['required']">*email
+                    is required</span>
             </div>
         </div>
 
-        <div class="w-100" style="max-width: 400px;">
-            <input type="password" class="form-control border-dark w-100 rounded-2" 
-                   placeholder="Enter your password..." formControlName="password">
-            <div *ngIf="password.touched && password.invalid" class="text-danger small mt-1">
-                *Password is required
+        <div class="w-100 xxl-input-container" style="max-width: 400px;">
+            <input type="password" class="form-control border-dark w-100 rounded-2 xxl-signup-input"
+                placeholder="Enter your password..." formControlName="password">
+            <div *ngIf="password.touched || password.dirty" class="position-relative">
+                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['required']">*password is
+                    required</span>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary rounded-3 w-100" style="max-width: 400px;"
-                [disabled]="loginFormData.invalid">
-            Login
-        </button>
+        <button type="submit" class="btn btn-primary rounded-3 w-100 xxl-signup-btn" style="max-width: 400px;"
+            [disabled]="loginFormData.invalid">Login</button>
     </div>
 
     <div class="text-center mt-3">
-        <p class="small text-muted">
-            Don't have an account? 
-            <a href="javascript:void(0)" class="text-primary" (click)="showSignupForm.emit()">Sign up</a>
+        <p class="link small text-muted">
+            Don't have an account?
+            <a router class="text-primary" (click)="showSignupForm.emit()">Sign up</a>
         </p>
     </div>
 </form>

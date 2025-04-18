@@ -1,27 +1,49 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { debounce } from '../../debounce';
 import { MovieApiService } from '../../services/movie-api.service';
-import { CommonModule } from '@angular/common';
-import { Route, Router, RouterModule } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
+import { NavigationEnd, Route, Router, RouterModule } from '@angular/router';
 import { Movie } from '../../interfaces/movie';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private service: MovieApiService, private authService: AuthService, private router: Router) { }
+  constructor(
+    private service: MovieApiService,
+    private authService: AuthService,
+    private router: Router,
+    private location: Location
+  ) { }
 
   searchedMovie: Movie[] = []
 
   isLoggedIn: any;
 
+  selectedGenre: string = 'All'
+
+  currentLocation: string = ''
+
   ngOnInit(): void {
+
+
+    this.router.events.subscribe(event=>{
+
+
+      if (event instanceof NavigationEnd) {
+        
+        this.currentLocation = this.location.path()
+      }
+
+    })
+
 
     this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
 
@@ -75,4 +97,12 @@ export class NavbarComponent implements OnInit {
     })
     this.router.navigate(['/']);
   }
+
+
+  genreChange() {
+
+    this.authService.sendNavVal(this.selectedGenre)
+
+  }
+
 }

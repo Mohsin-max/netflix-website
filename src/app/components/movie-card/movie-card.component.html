@@ -1,6 +1,6 @@
 <div class="card rounded-4 overflow-hidden position-relative" style="width: 12rem; height: 15rem; cursor: pointer;">
 
-    <i *ngIf="currentRoute !== '/favorite'" [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'" (click)="addToFav($event,movieDetails)"></i>
+    <i *ngIf="currentRoute !== '/favorite'" [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'" (click)="addToFav($event,movieDetails.id)"></i>
 
     <img src="https://image.tmdb.org/t/p/original/{{movieDetails.poster_path}}" class="img-fluid"
         alt="{{movieDetails.title}}">

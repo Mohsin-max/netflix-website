@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import * as CryptoJS from "crypto-js";
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  imports: [CommonModule, ReactiveFormsModule,],
+  imports: [CommonModule, ReactiveFormsModule,RouterModule],
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
