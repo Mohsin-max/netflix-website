@@ -116,7 +116,7 @@ export class HomeComponent {
   }
 
   loadAllMovies() {
-    if (this.isLoggedIn) {
+    if (this.isLoggedIn || this.movieCount < 3) {
       // Load all movies for logged in users
       this.service.getActionApi().subscribe(res => {
         this.actionData = res.results;
@@ -141,14 +141,7 @@ export class HomeComponent {
         this.arrSciFi = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrSciFi);
       });
-    } else if (this.movieCount < 3) {
-      // Load limited movies for non-logged in users with <3 clicks
-      this.service.getActionApi().subscribe(res => {
-        this.actionData = res.results.slice(0, 3); // Only show 3 movies
-        this.arrAction = new Array(this.actionData.length).fill(false);
-        this.showDelayedCards(this.arrAction);
-      });
-    }
+    } 
   }
 
   showDelayedCards(arr: boolean[]) {
