@@ -98,7 +98,7 @@
                     <!-- User Icon Button -->
                     <button class="bg-transparent border-0 dropdown-toggle d-flex align-items-center" type="button"
                         id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://i.pravatar.cc/40" alt="User" class="rounded-circle me-2" width="32"
+                        <img src="https://i.pinimg.com/736x/b0/2b/5c/b02b5c48401aab8eb2e076dbd4764a41.jpg" alt="User" class="rounded-circle me-2" width="32"
                             height="32">
                     </button>
 
@@ -111,7 +111,11 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item text-primary" href="#">Forgot password</a></li>
+                        <li><a class="dropdown-item text-primary" style="cursor: pointer;" (click)="changePassword()">Change password</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-primary" style="cursor: pointer;" (click)="resetPassword()">Reset password</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

@@ -8,6 +8,7 @@ import { ScifiComponent } from './components/scifi/scifi.component';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
 import { FavoriteComponent } from './components/favorite/favorite.component';
 import { authGuard } from './guards/auth.guard';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 export const routes: Routes = [
 
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: 'animation', component: AnimationComponent, canActivate: [authGuard] },
     { path: 'scifi', component: ScifiComponent, canActivate: [authGuard] },
     { path: 'movie-details/:id', component: MovieDetailsComponent },
-    { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] }
+    { path: 'favorite', component: FavoriteComponent, canActivate: [authGuard] },
+    { path: 'reset-password', component: ResetPasswordComponent }
 ];

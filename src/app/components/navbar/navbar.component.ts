@@ -7,6 +7,8 @@ import { Movie } from '../../interfaces/movie';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import * as CryptoJS from "crypto-js";
+
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +17,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
+
+  private readonly secretKey = "MyMovieApp123!";
+
 
   constructor(
     private service: MovieApiService,
@@ -33,9 +38,15 @@ export class NavbarComponent implements OnInit {
 
   currentLocation: string = ''
 
+  decryptedPasswod: any = ''
+
   ngOnInit(): void {
 
-    this.authService.currentUser$.subscribe(res=> this.user = res)
+    this.authService.currentUser$.subscribe(res => this.user = res)
+
+    const bytes = CryptoJS.AES.decrypt(this.user.password, this.secretKey);
+    this.decryptedPasswod = bytes.toString(CryptoJS.enc.Utf8);
+    console.log(this.decryptedPasswod);
 
     this.router.events.subscribe(event => {
 
@@ -105,6 +116,63 @@ export class NavbarComponent implements OnInit {
 
     this.authService.sendNavVal(this.selectedGenre)
 
+  }
+
+  changePassword() {
+    Swal.fire({
+      title: 'Enter Passwords',
+      html:
+        `<input type="password" id="password1" class="swal2-input" placeholder="Current Password">` +
+        `<input type="password" id="password2" class="swal2-input" placeholder="New Password">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      preConfirm: () => {
+        const password1 = (document.getElementById('password1') as HTMLInputElement).value;
+        const password2 = (document.getElementById('password2') as HTMLInputElement).value;
+
+        if (!password1 || !password2) {
+          Swal.showValidationMessage('Both fields are required!');
+          return false;
+        }
+
+        if (this.decryptedPasswod !== password1) {
+          Swal.showValidationMessage("Current password is incorrect!");
+          return false;
+        }
+
+        return { password1, password2 };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const newPassword = result.value.password2;
+
+        // 🔐 Encrypt new password
+        const encryptedPassword = CryptoJS.AES.encrypt(newPassword, this.secretKey).toString();
+
+        // ✅ Update currentUser
+        this.user.password = encryptedPassword;
+        localStorage.setItem('currentUser', JSON.stringify(this.user));
+
+        // ✅ Update users array
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const updatedUsers = users.map((user: any) => {
+          if (user.email === this.user.email) {
+            return { ...user, password: encryptedPassword };
+          }
+          return user;
+        });
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+        Swal.fire('Success', 'Password changed successfully!', 'success');
+      }
+    });
+  }
+
+  resetPassword() {
+
+
+    
   }
 
 }
