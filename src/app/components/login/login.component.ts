@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 export class LoginComponent {
   @Output() loginSuccess = new EventEmitter<void>();
   @Output() showSignupForm = new EventEmitter<void>();
+
   private readonly secretKey = "MyMovieApp123!";
 
   loginFormData = new FormGroup({
@@ -59,7 +60,9 @@ export class LoginComponent {
 
     if (decryptedPassword === loginPassword) {
       // Store current user data in localStorage or session for the active session
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      // localStorage.setItem('currentUser', JSON.stringify(user));
+
+      this.authService.setUser(user)
       localStorage.setItem('isLoggedIn', JSON.stringify(true));
 
       this.authService.login();

@@ -86,12 +86,40 @@
                     </div>
                 </form>
 
-                <button class="btn btn-outline-danger ms-3" (click)="logout()" *ngIf="isLoggedIn">
+                <!-- <button class="btn btn-outline-danger ms-3" (click)="logout()" *ngIf="isLoggedIn">
                     <i class="ri-logout-box-r-line me-2"></i>Logout
-                </button>
+                </button>-->
+
                 <button class="btn btn-outline-primary fw-bold ms-3" (click)="signup()" *ngIf="!isLoggedIn">
                     <i class="ri-user-add-line me-2"></i>Sign Up
                 </button>
+
+                <div class="dropdown text-end" *ngIf="isLoggedIn">
+                    <!-- User Icon Button -->
+                    <button class="bg-transparent border-0 dropdown-toggle d-flex align-items-center" type="button"
+                        id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://i.pravatar.cc/40" alt="User" class="rounded-circle me-2" width="32"
+                            height="32">
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="userMenu">
+                        <li class="px-3 py-1">
+                            <strong>{{user.username}}</strong><br>
+                            <small class="text-muted">{{user.email}}</small>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-primary" href="#">Forgot password</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" style="cursor: pointer;" (click)="logout()">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>

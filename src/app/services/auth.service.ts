@@ -31,4 +31,26 @@ export class AuthService {
 
   }
 
+  private currentUser = new BehaviorSubject<any>(null)
+
+  currentUser$ = this.currentUser.asObservable()
+
+  constructor() {
+
+    let user = localStorage.getItem('currentUser')
+
+    if (user) this.currentUser.next(JSON.parse(user))
+
+
+
+  }
+
+  setUser(user:any){
+
+    localStorage.setItem('currentUser',JSON.stringify(user))
+
+    this.currentUser.next(user)
+
+  }
+
 }

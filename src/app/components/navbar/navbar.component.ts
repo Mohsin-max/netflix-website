@@ -29,20 +29,22 @@ export class NavbarComponent implements OnInit {
 
   selectedGenre: string = 'All'
 
+  user: any;
+
   currentLocation: string = ''
 
   ngOnInit(): void {
 
+    this.authService.currentUser$.subscribe(res=> this.user = res)
 
-    this.router.events.subscribe(event=>{
+    this.router.events.subscribe(event => {
 
 
-      if (event instanceof NavigationEnd) {
-        
-        this.currentLocation = this.location.path()
-      }
+      if (event instanceof NavigationEnd) this.currentLocation = this.location.path()
+
 
     })
+
 
 
     this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
