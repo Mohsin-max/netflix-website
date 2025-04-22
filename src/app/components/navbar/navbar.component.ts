@@ -106,7 +106,7 @@ export class NavbarComponent implements OnInit {
           title: "Logout!",
           icon: "success"
         });
-        // this.router.navigate(['/']);
+        this.router.navigate(['/']);
       }
     });
   }
