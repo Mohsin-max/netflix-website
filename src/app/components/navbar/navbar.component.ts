@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { debounce } from '../../debounce';
 import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule, Location } from '@angular/common';
-import { NavigationEnd, Route, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Movie } from '../../interfaces/movie';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -18,7 +18,13 @@ import * as CryptoJS from "crypto-js";
 })
 export class NavbarComponent implements OnInit {
 
+
   private readonly secretKey = "MyMovieApp123!";
+
+  // This function will prevent dropdown from closing on text selection
+  onDropdownMenuMouseDown(event: MouseEvent): void {
+    event.stopPropagation();
+  }
 
 
   constructor(
@@ -47,7 +53,7 @@ export class NavbarComponent implements OnInit {
       this.user = res
 
       console.log(this.user);
-      
+
 
       if (this.user && this.user.password) {
 
@@ -179,10 +185,6 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  resetPassword() {
-
-
-
-  }
 
 }
+

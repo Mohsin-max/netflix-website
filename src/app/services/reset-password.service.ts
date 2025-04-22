@@ -14,14 +14,14 @@ export class ResetPasswordService {
 
   
 
-  getOtp(email: string): Observable<any> {
+  getOtp(email: any): Observable<any> {
 
     return this.http.post(`${this.baseURL}/generate-otp`, { email })
     // return this.http.post(this.baseURL, email)
 
   }
 
-  verifyOtp(email: string, otp: string): Observable<any> {
+  verifyOtp(email: any, otp: string): Observable<any> {
 
     return this.http.post(`${this.baseURL}/verify-otp`, { email, otp })
 

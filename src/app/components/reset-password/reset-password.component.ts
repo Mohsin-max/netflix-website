@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ResetPasswordService } from '../../services/reset-password.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
 })
@@ -30,13 +30,26 @@ export class ResetPasswordComponent {
   varificationForm: boolean = false
   resetPasswordForm: boolean = false
 
-  generateOtp() {
+  emailForm = new FormGroup({
+
+    email: new FormControl('', [Validators.required, Validators.email])
+
+  })
+
+
+  get email() { return this.emailForm.controls['email']; }
+
+
+  sendOtp() {
+
+    const { email } = this.emailForm.value
+
     const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-    const matchedUser = users.find((user: any) => user.email === this.userEmail);
+    const matchedUser = users.find((user: any) => user.email === this.emailForm.value.email);
 
     if (matchedUser) {
-      this.service.getOtp(this.userEmail).subscribe(res => {
+      this.service.getOtp(email).subscribe(res => {
         if (res) {
           this.generateOtpForm = false;
           this.varificationForm = true;
@@ -58,9 +71,12 @@ export class ResetPasswordComponent {
 
   verifyOtp() {
 
+    const { email } = this.emailForm.value
+
+
     if (this.receivedOtp === this.otp) {
 
-      this.service.verifyOtp(this.userEmail, this.otp).subscribe(res => {
+      this.service.verifyOtp(email, this.otp).subscribe(res => {
 
         if (res) {
           this.resetPasswordForm = true
@@ -113,6 +129,9 @@ export class ResetPasswordComponent {
 
   resetPassword() {
 
+    const { email } = this.emailForm.value
+
+
     let user: any;
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -124,7 +143,7 @@ export class ResetPasswordComponent {
     }
     else {
 
-      const foundUser = users.find((user: any) => user.email === this.userEmail);
+      const foundUser = users.find((user: any) => user.email === email);
       user = foundUser;
     }
     if (user) {

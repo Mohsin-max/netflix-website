@@ -112,7 +112,7 @@ export class FavoriteComponent implements OnInit {
     this.loadFavorites();
 
     Toast.fire({
-      icon: "error",
+      // icon: "error",
       title: "Removed from Favorites"
     });
   }
