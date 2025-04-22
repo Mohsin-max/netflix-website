@@ -20,7 +20,7 @@ export class MovieCardComponent {
 
   ngOnInit() {
 
-    this.users = JSON.parse(localStorage.getItem('isLoggedIn') || '')
+    this.users = JSON.parse(localStorage.getItem('isLoggedIn') || 'false')
 
     const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
     this.isFavorite = favoriteMoviesId.some((movieId: any) => movieId === this.movieDetails.id);

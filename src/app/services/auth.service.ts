@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
 
@@ -40,8 +41,6 @@ export class AuthService {
     let user = localStorage.getItem('currentUser')
 
     if (user) this.currentUser.next(JSON.parse(user))
-
-
 
   }
 

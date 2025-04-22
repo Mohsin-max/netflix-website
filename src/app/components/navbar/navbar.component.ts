@@ -42,11 +42,20 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.authService.currentUser$.subscribe(res => this.user = res)
+    this.authService.currentUser$.subscribe(res => {
 
-    const bytes = CryptoJS.AES.decrypt(this.user.password, this.secretKey);
-    this.decryptedPasswod = bytes.toString(CryptoJS.enc.Utf8);
-    console.log(this.decryptedPasswod);
+      this.user = res
+
+      console.log(this.user);
+      
+
+      if (this.user && this.user.password) {
+
+        const bytes = CryptoJS.AES.decrypt(this.user.password, this.secretKey);
+        this.decryptedPasswod = bytes.toString(CryptoJS.enc.Utf8);
+      }
+
+    })
 
     this.router.events.subscribe(event => {
 
@@ -56,9 +65,9 @@ export class NavbarComponent implements OnInit {
 
     })
 
-
-
     this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
+
+
 
   }
 
@@ -147,14 +156,15 @@ export class NavbarComponent implements OnInit {
       if (result.isConfirmed && result.value) {
         const newPassword = result.value.password2;
 
-        // 🔐 Encrypt new password
+        // Encrypt new password
         const encryptedPassword = CryptoJS.AES.encrypt(newPassword, this.secretKey).toString();
 
-        // ✅ Update currentUser
+        // Update currentUser
         this.user.password = encryptedPassword;
-        localStorage.setItem('currentUser', JSON.stringify(this.user));
+        // localStorage.setItem('currentUser', JSON.stringify(this.user));
+        this.authService.setUser(this.user)
 
-        // ✅ Update users array
+        // Update users array
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const updatedUsers = users.map((user: any) => {
           if (user.email === this.user.email) {
@@ -172,7 +182,7 @@ export class NavbarComponent implements OnInit {
   resetPassword() {
 
 
-    
+
   }
 
 }

@@ -20,6 +20,7 @@
             <div *ngIf="password.touched || password.dirty" class="position-relative">
                 <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['required']">*password is
                     required</span>
+                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['minlength']">*min 6 letters</span>
             </div>
         </div>
 
@@ -30,7 +31,12 @@
     <div class="text-center mt-3">
         <p class="link small text-muted">
             Don't have an account?
-            <a router class="text-primary" (click)="showSignupForm.emit()">Sign up</a>
+            <a router class="text-primary" style="cursor: pointer;" (click)="showSignupForm.emit()">Sign up</a>
+        </p>
+
+        <p class="link small text-muted">
+            Didn't remember password
+            <a router class="text-primary" routerLink="/reset-password">forget password</a>
         </p>
     </div>
 </form>

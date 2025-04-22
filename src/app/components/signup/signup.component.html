@@ -30,6 +30,7 @@
             <div *ngIf="password.touched || password.dirty" class="position-relative">
                 <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['required']">*password is
                     required</span>
+                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['minlength']">*min 6 letters</span>
             </div>
         </div>
 
@@ -40,7 +41,7 @@
     <div class="text-center mt-3">
         <p class="link small text-muted">
             Already have an account? 
-            <a routerLink="#" class="text-primary" (click)="showLoginForm.emit()">Login</a>
+            <a class="text-primary" style="cursor: pointer;" (click)="showLoginForm.emit()">Login</a>
         </p>
     </div>
 </form>
