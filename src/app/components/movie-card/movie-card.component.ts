@@ -2,6 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
 Location
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-movie-card',
   imports: [CommonModule],
@@ -16,11 +17,13 @@ export class MovieCardComponent {
 
   users: any;
   currentRoute: string = ''
-  constructor(private location: Location) { }
+  constructor(private location: Location, private authService: AuthService) { }
 
   ngOnInit() {
 
-    this.users = JSON.parse(localStorage.getItem('isLoggedIn') || 'false')
+    // this.users = JSON.parse(localStorage.getItem('isLoggedIn') || 'false')
+
+    this.authService.isLoggedIn$.subscribe(res => this.users = res)
 
     const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
     this.isFavorite = favoriteMoviesId.some((movieId: any) => movieId === this.movieDetails.id);
@@ -36,7 +39,7 @@ export class MovieCardComponent {
 
       let favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
       const movieIndex = favoriteMoviesId.findIndex((m: any) => m === movie);
-      
+
 
       if (movieIndex === -1) {
         // Add to favorites
