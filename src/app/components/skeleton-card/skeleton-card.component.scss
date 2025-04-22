@@ -1,5 +1,3 @@
-
-
 @media (min-width: 2000px) {
 
     .card {
@@ -7,6 +5,25 @@
         width: 23rem !important;
         height: 25rem !important;
 
+    }
+
+}
+
+@media (max-width: 786px) {
+    .card {
+        width: 10rem !important;
+        height: 12rem !important;
+        margin: 0 auto;
+        /* Center cards on mobile */
+    }
+
+}
+
+
+@media (max-width: 436px) {
+    .card {
+        width: 8rem !important;
+        height: 10rem !important;
     }
 
 }
