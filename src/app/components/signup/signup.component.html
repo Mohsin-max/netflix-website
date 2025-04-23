@@ -30,18 +30,19 @@
             <div *ngIf="password.touched || password.dirty" class="position-relative">
                 <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['required']">*password is
                     required</span>
-                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['minlength']">*min 6 letters</span>
+                <span class="errorMessage xxl-error-message" *ngIf="password.errors?.['minlength']">*min 6
+                    letters</span>
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary rounded-3 w-100 xxl-signup-btn" style="max-width: 400px;"
-            [disabled]="signupFormData.invalid">Sign up</button>
+            [disabled]="signupFormData.invalid">Sign up </button>
     </div>
 
     <div class="text-center mt-3">
         <p class="link small text-muted">
-            Already have an account? 
-            <a class="text-primary" style="cursor: pointer;" (click)="showLoginForm.emit()">Login</a>
+            Already have an account?
+            <a class="text-primary" style="cursor: pointer;" (click)="showLoginForm.emit()">Login </a>
         </p>
     </div>
 </form>

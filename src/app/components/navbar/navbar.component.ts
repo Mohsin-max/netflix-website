@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { debounce } from '../../debounce';
 import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule, Location } from '@angular/common';
@@ -26,6 +26,26 @@ export class NavbarComponent implements OnInit {
     event.stopPropagation();
   }
 
+  @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
+  dropdownVisible: boolean = false;
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    this.dropdownVisible = !this.dropdownVisible;
+  }
+
+  closeDropdown() {
+    this.dropdownVisible = false;
+  }
+
+  // This will run on any global click
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.dropdownMenu && !this.dropdownMenu.nativeElement.contains(event.target)) {
+      this.dropdownVisible = false;
+    }
+  }
+
 
   constructor(
     private service: MovieApiService,
@@ -47,6 +67,7 @@ export class NavbarComponent implements OnInit {
   decryptedPasswod: any = ''
 
   ngOnInit(): void {
+
 
     this.authService.currentUser$.subscribe(res => {
 
@@ -77,8 +98,6 @@ export class NavbarComponent implements OnInit {
     })
 
     this.authService.isLoggedIn$.subscribe(status => this.isLoggedIn = status)
-
-
 
   }
 
@@ -205,37 +224,6 @@ export class NavbarComponent implements OnInit {
 
 
   }
-
-  ngAfterViewInit() {
-    const toggleButton = document.getElementById('userMenu');
-    const dropdownMenu = document.querySelector('.show-on-click');
-  
-    // Show/hide toggle logic
-    toggleButton?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (dropdownMenu?.getAttribute('style')?.includes('none')) {
-        dropdownMenu.setAttribute('style', 'display: block;');
-      } else {
-        dropdownMenu?.setAttribute('style', 'display: none;');
-      }
-    });
-  
-    // Close dropdown if clicked outside
-    document.addEventListener('click', function (event) {
-      if (!toggleButton?.contains(event.target as Node) &&
-          !dropdownMenu?.contains(event.target as Node)) {
-        dropdownMenu?.setAttribute('style', 'display: none;');
-      }
-    });
-  
-    // ✅ Close dropdown when any item is clicked
-    dropdownMenu?.querySelectorAll('a.dropdown-item').forEach(item => {
-      item.addEventListener('click', () => {
-        dropdownMenu.setAttribute('style', 'display: none;');
-      });
-    });
-  }
-  
   
 }
 
