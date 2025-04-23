@@ -10,7 +10,7 @@ export class ResetPasswordService {
   constructor(private http: HttpClient) { }
 
   // baseURL: string = `http://localhost:5000`
-  baseURL: string = `https://0061-124-29-238-48.ngrok-free.app`
+  baseURL: string = `https://2a28-124-29-238-48.ngrok-free.app`
 
   
 
