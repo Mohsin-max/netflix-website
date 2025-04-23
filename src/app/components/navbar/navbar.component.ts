@@ -66,7 +66,12 @@ export class NavbarComponent implements OnInit {
     this.router.events.subscribe(event => {
 
 
-      if (event instanceof NavigationEnd) this.currentLocation = this.location.path()
+      if (event instanceof NavigationEnd) {
+        
+        this.currentLocation = this.location.path()
+      
+        this.searchedMovie = []
+      }
 
 
     })
@@ -141,6 +146,7 @@ export class NavbarComponent implements OnInit {
         `<input type="password" id="password2" class="swal2-input" placeholder="New Password">`,
       focusConfirm: false,
       showCancelButton: true,
+      width: '400px',
       confirmButtonText: 'Submit',
       preConfirm: () => {
         const password1 = (document.getElementById('password1') as HTMLInputElement).value;
@@ -180,11 +186,56 @@ export class NavbarComponent implements OnInit {
         });
         localStorage.setItem('users', JSON.stringify(updatedUsers));
 
-        Swal.fire('Success', 'Password changed successfully!', 'success');
+        // Swal.fire('Success', 'Password changed successfully!', 'success');
+
+              Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: "success",
+                title: "Password changed successfully!",
+                showConfirmButton: false,
+                timer: 2000
+              });
+        
+        
       }
     });
+
+
+
+
   }
 
-
+  ngAfterViewInit() {
+    const toggleButton = document.getElementById('userMenu');
+    const dropdownMenu = document.querySelector('.show-on-click');
+  
+    // Show/hide toggle logic
+    toggleButton?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (dropdownMenu?.getAttribute('style')?.includes('none')) {
+        dropdownMenu.setAttribute('style', 'display: block;');
+      } else {
+        dropdownMenu?.setAttribute('style', 'display: none;');
+      }
+    });
+  
+    // Close dropdown if clicked outside
+    document.addEventListener('click', function (event) {
+      if (!toggleButton?.contains(event.target as Node) &&
+          !dropdownMenu?.contains(event.target as Node)) {
+        dropdownMenu?.setAttribute('style', 'display: none;');
+      }
+    });
+  
+    // ✅ Close dropdown when any item is clicked
+    dropdownMenu?.querySelectorAll('a.dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        dropdownMenu.setAttribute('style', 'display: none;');
+      });
+    });
+  }
+  
+  
 }
 

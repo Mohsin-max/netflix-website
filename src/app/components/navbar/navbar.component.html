@@ -95,17 +95,17 @@
                 </button>
 
                 <div class="dropdown text-end" *ngIf="isLoggedIn">
-                    <!-- User Icon Button -->
                     <button class="bg-transparent border-0 dropdown-toggle d-flex align-items-center" type="button"
                         id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="3dusericon.jpg" alt="User" class="rounded-circle me-2" width="40" height="40">
                     </button>
 
-                    <!-- Dropdown Menu -->
-                    <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="userMenu">
+                    <ul class="dropdown-menu dropdown-menu-end text-small show-on-click" aria-labelledby="userMenu"
+                        style="display: none;">
                         <li class="px-3 py-1">
+                            <img src="3dusericon.jpg" alt="User" class="rounded-circle me-2" width="40" height="40">
                             <strong>{{user.username}}</strong><br>
-                            <small class="text-muted">{{user.email}}</small>
+                            <small class="text-muted user-email">{{user.email}}</small>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -125,8 +125,25 @@
                     </ul>
                 </div>
 
-
             </div>
         </div>
     </div>
+
 </nav>
+
+<div class="searchBox w-full d-flex flex-column gap-5 py-5" *ngIf="searchedMovie.length > 0">
+
+    <div routerLink="/movie-details/{{search.id}}" class="searchItems d-flex gap-5 px-4" style="cursor: pointer;" *ngFor="let search of searchedMovie">
+
+        <div>
+            <img src="https://image.tmdb.org/t/p/original/{{search.poster_path}}" alt="." width="100" >
+        </div>
+
+        <div>
+            <h3>{{search.title}}</h3>
+            <p>{{search.overview}}</p>
+        </div>
+
+    </div>
+
+</div>

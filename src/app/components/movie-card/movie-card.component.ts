@@ -62,7 +62,7 @@ export class MovieCardComponent {
         Swal.fire({
           toast: true,
           position: "top-end",
-          icon: "error",
+          // icon: "error",
           title: "Removed from Favorites",
           showConfirmButton: false,
           timer: 2000
@@ -73,7 +73,16 @@ export class MovieCardComponent {
 
     } else {
 
-      Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+      // Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Create account first",
+        showConfirmButton: false,
+        timer: 2000
+      });
 
 
     }

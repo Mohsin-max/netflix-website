@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [CommonModule, ReactiveFormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
@@ -39,7 +39,7 @@ export class LoginComponent {
     // Get all users from localStorage
     const storedUsers = localStorage.getItem('users');
     if (!storedUsers) {
-      Swal.fire('Error', 'No accounts found. Please sign up first.', 'error');
+      // Swal.fire('Error', 'No accounts found. Please sign up first.', 'error');
       return;
     }
 
@@ -51,7 +51,23 @@ export class LoginComponent {
     const user = users.find((u: any) => u.email === loginEmail);
 
     if (!user) {
-      Swal.fire('Error', 'No account found with this email.', 'error');
+      // Swal.fire('Error', 'No account found with this email.', 'error');
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "error",
+        title: "No accounts found. Please sign up first."
+      });
       return;
     }
 
@@ -67,9 +83,24 @@ export class LoginComponent {
 
       this.authService.login();
       this.loginSuccess.emit();
-      Swal.fire('Success', 'Logged in successfully!', 'success');
+      // Swal.fire('Success', 'Logged in successfully!', 'success');
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Logged in successfully",
+        showConfirmButton: false,
+        timer: 2000
+      });
     } else {
-      Swal.fire('Error', 'Invalid password', 'error');
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Invalid password",
+        showConfirmButton: false,
+        timer: 2000
+      });
     }
   }
 }

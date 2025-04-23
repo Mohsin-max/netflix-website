@@ -3,11 +3,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import * as CryptoJS from "crypto-js";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  imports: [CommonModule, ReactiveFormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
@@ -50,7 +51,15 @@ export class SignupComponent {
     // Check if user already exists (optional)
     const userExists = users.some((user: any) => user.email === userData.email);
     if (userExists) {
-      alert('User with this email already exists!');
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "This email is already exist",
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
 

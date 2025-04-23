@@ -5,6 +5,7 @@ import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -13,15 +14,16 @@ import Swal from 'sweetalert2';
   styleUrl: './movie-details.component.scss'
 })
 export class MovieDetailsComponent implements OnInit {
-  isFavorite: boolean = false;
-
-  constructor(private route: ActivatedRoute, private service: MovieApiService) { }
-
-
+  
+  constructor(private route: ActivatedRoute, private service: MovieApiService, private authService: AuthService) { }
+  
+  isFavorite: boolean = true;
+  
   arrMovieDetails: any = {};
   movieVideoKey: any;
   arrMovieCast: any;
 
+  isLoggedin: boolean = false;
   p: number = 1
   pSize: number = 15
 
@@ -29,17 +31,18 @@ export class MovieDetailsComponent implements OnInit {
 
   ngOnInit(): void {
 
-
+    this.authService.isLoggedIn$.subscribe(res => this.isLoggedin = res)
+    
     window.scrollTo(0, 0)
-
+    
     let movie_id = this.route.snapshot.paramMap.get('id');
-
+    
     this.service.getMovieDetailsApi(movie_id).subscribe(res => {
-
+      
       this.arrMovieDetails = res
       const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
-
-      this.isFavorite = favoriteMoviesId.some((movie: any) => movie.id === this.arrMovieDetails.id);
+      
+      this.isFavorite = favoriteMoviesId.some((movie: any) => movie.id == this.arrMovieDetails.id);
 
     })
 
@@ -99,35 +102,51 @@ export class MovieDetailsComponent implements OnInit {
     let favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
     const movieIndex = favoriteMoviesId.findIndex((m: any) => m === movie);
 
-    if (movieIndex === -1) {
-      // Add to favorites
-      favoriteMoviesId.push(movie);
-      this.isFavorite = true;
+    if (this.isLoggedin) {
 
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Added to Favorites",
-        showConfirmButton: false,
-        timer: 2000
-      });
-    } else {
-      // Remove from favorites
-      favoriteMoviesId.splice(movieIndex, 1);
-      this.isFavorite = false;
+      if (movieIndex === -1) {
+        // Add to favorites
+        favoriteMoviesId.push(movie);
+        this.isFavorite = false;
+  
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Added to Favorites",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      } else {
+        // Remove from favorites
+        favoriteMoviesId.splice(movieIndex, 1);
+        this.isFavorite = true;
+  
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          // icon: "error",
+          title: "Removed from Favorites",
+          showConfirmButton: false,
+          timer: 2000
+        });
+      }
+  
+      localStorage.setItem('favoriteMovieId', JSON.stringify(favoriteMoviesId));
+
+    }else{
 
       Swal.fire({
         toast: true,
         position: "top-end",
         icon: "error",
-        title: "Removed from Favorites",
+        title: "Create account first",
         showConfirmButton: false,
         timer: 2000
       });
+
     }
 
-    localStorage.setItem('favoriteMovieId', JSON.stringify(favoriteMoviesId));
   }
 
 }

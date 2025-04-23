@@ -54,7 +54,7 @@ export class FavoriteComponent implements OnInit {
       if (res === 'All') {
 
         this.favoriteMovieArr = this.GlobalfavoriteMovieArr;
-      
+
       }
       else {
 
@@ -96,25 +96,18 @@ export class FavoriteComponent implements OnInit {
 
 
     // Show notification
-    const Toast = Swal.mixin({
+    Swal.fire({
       toast: true,
       position: "top-end",
+      // icon: "error",
+      title: "Removed from Favorites",
       showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      }
+      timer: 2000
     });
+
     this.favoriteMovieArr = [];
     this.GlobalfavoriteMovieArr = [];
     this.loadFavorites();
-
-    Toast.fire({
-      // icon: "error",
-      title: "Removed from Favorites"
-    });
   }
 
 

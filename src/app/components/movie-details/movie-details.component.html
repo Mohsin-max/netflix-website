@@ -26,7 +26,11 @@
                 </div>
 
                 <span (click)="addToFav($event,arrMovieDetails.id)">
-                    <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i>
+                    <!-- <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i> -->
+                    <!-- Wait for arrMovieDetails to load before showing icon -->
+                    <i *ngIf="arrMovieDetails"
+                        [class]="isFavorite ? 'ri-heart-line' : 'ri-heart-fill'"></i>
+
                 </span>
             </div>
 

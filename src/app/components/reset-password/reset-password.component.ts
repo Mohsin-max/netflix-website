@@ -54,76 +54,60 @@ export class ResetPasswordComponent {
           this.generateOtpForm = false;
           this.varificationForm = true;
           this.receivedOtp = res.otp;
+          this.copyOtp()
+
         }
       });
     } else {
       Swal.fire({
-        title: "Email not found",
-        icon: "error"
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "email not found",
+        showConfirmButton: false,
+        timer: 2000
       });
     }
   }
 
 
-  // onOtpInput() {
-  //   this.otp = this.otp.replace(/\D/g, '');
-  // }
 
   verifyOtp() {
 
     const { email } = this.emailForm.value
 
+    this.service.verifyOtp(email, this.otp).subscribe({
 
-    if (this.receivedOtp === this.otp) {
+      next: () => {
 
-      this.service.verifyOtp(email, this.otp).subscribe(res => {
+        this.resetPasswordForm = true
+        this.varificationForm = false
 
-        if (res) {
-          this.resetPasswordForm = true
-          this.varificationForm = false
-        }
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "OTP verified",
+          showConfirmButton: false,
+          timer: 2000
+        });
 
-      })
+      },
 
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
+      error: () => {
 
-      Toast.fire({
-        icon: "success",
-        title: "OTP matched"
-      });
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Authentication failed, try again",
+          showConfirmButton: false,
+          timer: 2000
+        });
 
+      }
 
-
-
-    } else {
-
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-
-      Toast.fire({
-        icon: "error",
-        title: "OTP not match"
-      });
-    }
+    })
 
   }
 
@@ -168,9 +152,12 @@ export class ResetPasswordComponent {
       localStorage.setItem('users', JSON.stringify(updatedUsers));
 
       Swal.fire({
-        title: "Good job!",
-        text: "Your New Password has been set!",
-        icon: "success"
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Successfully new password set",
+        showConfirmButton: false,
+        timer: 2000
       });
 
       this.router.navigate(['/'])

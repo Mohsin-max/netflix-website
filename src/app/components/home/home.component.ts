@@ -141,7 +141,7 @@ export class HomeComponent {
         this.arrSciFi = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrSciFi);
       });
-    } 
+    }
   }
 
   showDelayedCards(arr: boolean[]) {
@@ -171,7 +171,16 @@ export class HomeComponent {
   onSignupSuccess() {
     this.showSignupForm = false;
     this.showLoginForm = true;
-    Swal.fire('Success', 'Account created! Please login.', 'success');
+    // Swal.fire('Success', 'Account created! Please login.', 'success');
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Account created! Please login.",
+      showConfirmButton: false,
+      timer: 2000
+    });
+
   }
 
   onLoginSuccess() {
@@ -182,7 +191,15 @@ export class HomeComponent {
   bannerWatchBtn(movieId: any) {
     if (!this.isLoggedIn) {
       if (this.movieCount >= 3) {
-        Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+        // Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
+        Swal.fire({
+                toast: true,
+                position: "top-end",
+                // icon: "error",
+                title: "Create an account to watch movies!",
+                showConfirmButton: false,
+                timer: 2000
+              });
         this.showSignupForm = true;
         this.clearMovieData();
       } else {
