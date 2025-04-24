@@ -35,8 +35,15 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary rounded-3 w-100 xxl-signup-btn" style="max-width: 400px;"
-            [disabled]="signupFormData.invalid">Sign up </button>
+        <button type="submit" *ngIf="!isLoading" class="btn btn-primary rounded-3 w-100 xxl-signup-btn"
+            style="max-width: 400px;" [disabled]="signupFormData.invalid">Sign up </button>
+
+        <!-- spinner -->
+        <button *ngIf="isLoading" type="button" class="d-flex align-items-center justify-content-center btn btn-primary rounded-3 w-100 xxl-signup-btn"
+            disabled>
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Creating…
+        </button>
     </div>
 
     <div class="text-center mt-3">

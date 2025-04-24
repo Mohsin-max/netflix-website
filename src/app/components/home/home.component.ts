@@ -195,7 +195,7 @@ export class HomeComponent {
         Swal.fire({
                 toast: true,
                 position: "top-end",
-                // icon: "error",
+                icon: "info",
                 title: "Create an account to watch movies!",
                 showConfirmButton: false,
                 timer: 2000

@@ -1,107 +1,151 @@
-<div class="container-fluid xxl-movie-container" style="overflow-x: hidden;">
+<!-- Movie‑details skeleton -->
 
-    <!-- Movie Details Section -->
-    <div class="row mt-3 mt-md-5 border-bottom py-1 py-md-4 px-2 px-md-3 position-relative xxl-movie-section"
-        style="min-height: auto;">
-
-        <!-- Left Column Poster -->
-        <div class="col-12 col-lg-6 mb-3 mb-md-0 d-flex justify-content-center position-relative xxl-poster-col">
-            <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
-                class="position-absolute glow-image w-fit h-100 xxl-glow-image"
-                style="filter: blur(20px) brightness(1.5); z-index: 0; object-fit: cover;">
-
-            <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
-                class="img-fluid rounded-3 position-relative z-1 main-poster xxl-main-poster"
-                style="max-height: 400px; width: auto;" alt="{{arrMovieDetails.title}}">
+<div *ngIf="isLoading" class="skeleton-wrapper">
+    <div class="row g-3 mt-4 px-2">
+        <div class="col-12 col-lg-6 d-flex justify-content-center">
+            <div class="skeleton-img w-100 rounded-3"></div>
         </div>
 
-        <!-- Right Column -->
-        <div class="col-12 col-lg-6 position-relative mt-3 mt-md-0 xxl-details-col">
-            <div class="d-flex">
+        <div class="col-12 col-lg-6">
+            <div class="skeleton-text w-75 mb-2"></div>
+            <div class="skeleton-text w-50 mb-3"></div>
+            <div class="skeleton-text w-100 mb-2" *ngFor="let i of [1,2,3]"></div>
 
-                <div>
-                    <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails.title}}</h1>
-                    <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails.tagline}}</h3>
-                    <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
-                </div>
-
-                <span (click)="addToFav($event,arrMovieDetails.id)">
-                    <!-- <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i> -->
-                    <!-- Wait for arrMovieDetails to load before showing icon -->
-                    <i *ngIf="arrMovieDetails"
-                        [class]="isFavorite ? 'ri-heart-line' : 'ri-heart-fill'"></i>
-
-                </span>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <span class="skeleton-pill"></span>
+                <span class="skeleton-pill"></span>
+                <span class="skeleton-pill"></span>
+                <span class="skeleton-pill"></span>
             </div>
 
-            <!-- Tags -->
-            <div class="d-flex flex-wrap gap-2 align-items-center mt-4 xxl-tags-row">
-                <span class="rounded-pill small px-3 py-1 text-white xxl-tag"
-                    [ngClass]="{'bg-success': arrMovieDetails.status == 'Released', 'bg-danger': arrMovieDetails.status != 'Released'}">
-                    {{arrMovieDetails.status}}
-                </span>
-
-                <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
-                    <i class="ri-calendar-2-line me-1"></i>
-                    {{arrMovieDetails.release_date | date:'d MMM yyyy'}}
-                </span>
-
-                <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
-                    <i class="ri-global-line me-1"></i>
-                    {{arrMovieDetails.original_language | uppercase}}
-                </span>
-
-                <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
-                    <i class="ri-time-line me-1"></i>
-                    {{getHoursAndMinutes(arrMovieDetails.runtime)}}
-                </span>
-
-                <span *ngIf="arrMovieDetails.origin_country"
-                    class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
-                    <i class="ri-map-pin-line me-1"></i>
-                    {{arrMovieDetails.origin_country}}
-                </span>
-
-            </div>
-
-            <a href="https://www.themoviedb.org/video/play?key={{movieVideoKey}}" target="_blank"
-                class="d-block mt-4 xxl-trailer-link w-50">
-                <button class="btn btn-danger xxl-trailer-btn">
-                    <i class="ri-play-fill"></i> Watch Trailer
-                </button>
-            </a>
+            <div class="skeleton-btn mt-4"></div>
         </div>
     </div>
 
-    <!-- Top Cast Section -->
-    <div class="row mt-4 mt-md-5 py-4 xxl-cast-section">
-        <div class="col-12">
-            <h2 class="text-center h4 h1-md mb-4 xxl-cast-title">Top Cast</h2>
-        </div>
-
-        <div class="col-12">
-            <div
-                class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-5 justify-content-start xxl-cast-grid">
-                <div *ngFor="let cast of arrMovieCast | paginate:{itemsPerPage:pSize,currentPage:p}"
-                    class="col d-flex justify-content-center xxl-cast-col">
-                    <div class="d-flex align-items-center p-2 rounded-3 bg-body-secondary cast-card xxl-cast-card">
-                        <img [src]="cast.profile_path ? 'https://image.tmdb.org/t/p/original/' + cast.profile_path : 'https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg'"
-                            class="rounded-3 me-2 cast-image xxl-cast-image" style="object-fit: cover; width: 40px;">
-                        <div class="cast-info xxl-cast-info" style="max-width: calc(100% - 60px);">
-                            <h4 class="mb-0 fw-bold text-truncate xxl-character-name" style="font-size: 0.8rem;">
-                                {{cast.character || 'Unknown'}}
-                            </h4>
-                            <p class="mb-0 text-muted text-truncate xxl-actor-name" style="font-size: 0.7rem;">
-                                {{cast.name || 'Unknown'}}
-                            </p>
-                        </div>
-                    </div>
+    <!-- Cast grid skeleton -->
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3">
+        <div class="col" *ngFor="let c of castLoaders">
+            <div class="d-flex align-items-center p-2 rounded-3 bg-body-secondary">
+                <div class="skeleton-avatar me-2"></div>
+                <div class="flex-grow-1">
+                    <div class="skeleton-text w-100 mb-1" style="height:10px"></div>
+                    <div class="skeleton-text w-75" style="height:10px"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Pagination -->
-<pagination-controls class="my-4 text-center xxl-pagination" (pageChange)="p = $event"
-    style="font-size: 0.9rem;"></pagination-controls>
+<!-- 3️⃣  Actual template -->
+<div *ngIf="!isLoading">
+
+    <div class="container-fluid xxl-movie-container" style="overflow-x: hidden;">
+
+        <!-- Movie Details Section -->
+        <div class="row mt-3 mt-md-5 border-bottom py-1 py-md-4 px-2 px-md-3 position-relative xxl-movie-section"
+            style="min-height: auto;">
+
+            <!-- Left Column Poster -->
+            <div class="col-12 col-lg-6 mb-3 mb-md-0 d-flex justify-content-center position-relative xxl-poster-col">
+                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                    class="position-absolute glow-image w-fit h-100 xxl-glow-image"
+                    style="filter: blur(20px) brightness(1.5); z-index: 0; object-fit: cover;">
+
+                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                    class="img-fluid rounded-3 position-relative z-1 main-poster xxl-main-poster"
+                    style="max-height: 400px; width: auto;" alt="{{arrMovieDetails.title}}">
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-12 col-lg-6 position-relative mt-3 mt-md-0 xxl-details-col">
+                <div class="d-flex">
+
+                    <div>
+                        <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails.title}}</h1>
+                        <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails.tagline}}</h3>
+                        <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
+                    </div>
+
+                    <span (click)="addToFav($event,arrMovieDetails.id)">
+                        <!-- <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i> -->
+                        <!-- Wait for arrMovieDetails to load before showing icon -->
+                        <i *ngIf="arrMovieDetails" [class]="isFavorite ? 'ri-heart-fill' : 'ri-heart-line'"></i>
+
+                    </span>
+                </div>
+
+                <!-- Tags -->
+                <div class="d-flex flex-wrap gap-2 align-items-center mt-4 xxl-tags-row">
+                    <span class="rounded-pill small px-3 py-1 text-white xxl-tag"
+                        [ngClass]="{'bg-success': arrMovieDetails.status == 'Released', 'bg-danger': arrMovieDetails.status != 'Released'}">
+                        {{arrMovieDetails.status}}
+                    </span>
+
+                    <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
+                        <i class="ri-calendar-2-line me-1"></i>
+                        {{arrMovieDetails.release_date | date:'d MMM yyyy'}}
+                    </span>
+
+                    <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
+                        <i class="ri-global-line me-1"></i>
+                        {{arrMovieDetails.original_language | uppercase}}
+                    </span>
+
+                    <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
+                        <i class="ri-time-line me-1"></i>
+                        {{getHoursAndMinutes(arrMovieDetails.runtime)}}
+                    </span>
+
+                    <span *ngIf="arrMovieDetails.origin_country"
+                        class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
+                        <i class="ri-map-pin-line me-1"></i>
+                        {{arrMovieDetails.origin_country}}
+                    </span>
+
+                </div>
+
+                <a href="https://www.themoviedb.org/video/play?key={{movieVideoKey}}" target="_blank"
+                    class="d-block mt-4 xxl-trailer-link w-50">
+                    <button class="btn btn-danger xxl-trailer-btn">
+                        <i class="ri-play-fill"></i> Watch Trailer
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Top Cast Section -->
+        <div class="row mt-4 mt-md-5 py-4 xxl-cast-section">
+            <div class="col-12">
+                <h2 class="text-center h4 h1-md mb-4 xxl-cast-title">Top Cast</h2>
+            </div>
+
+            <div class="col-12">
+                <div
+                    class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-md-5 justify-content-start xxl-cast-grid">
+                    <div *ngFor="let cast of arrMovieCast | paginate:{itemsPerPage:pSize,currentPage:p}"
+                        class="col d-flex justify-content-center xxl-cast-col">
+                        <div class="d-flex align-items-center p-2 rounded-3 bg-body-secondary cast-card xxl-cast-card">
+                            <img [src]="cast.profile_path ? 'https://image.tmdb.org/t/p/original/' + cast.profile_path : 'https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg'"
+                                class="rounded-3 me-2 cast-image xxl-cast-image"
+                                style="object-fit: cover; width: 40px;">
+                            <div class="cast-info xxl-cast-info" style="max-width: calc(100% - 60px);">
+                                <h4 class="mb-0 fw-bold text-truncate xxl-character-name" style="font-size: 0.8rem;">
+                                    {{cast.character || 'Unknown'}}
+                                </h4>
+                                <p class="mb-0 text-muted text-truncate xxl-actor-name" style="font-size: 0.7rem;">
+                                    {{cast.name || 'Unknown'}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <pagination-controls class="my-4 text-center xxl-pagination" (pageChange)="p = $event"
+        style="font-size: 0.9rem;"></pagination-controls>
+
+
+</div>

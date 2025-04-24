@@ -14,7 +14,10 @@ import Swal from 'sweetalert2';
 export class SignupComponent {
   @Output() signupSuccess = new EventEmitter<void>();
   @Output() showLoginForm = new EventEmitter<void>();
+
   private readonly secretKey = "MyMovieApp123!";
+
+  isLoading: boolean = false
 
   signupFormData = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -27,10 +30,14 @@ export class SignupComponent {
   get password() { return this.signupFormData.controls['password']; }
 
   encryptData(data: string): string {
+
     return CryptoJS.AES.encrypt(data, this.secretKey).toString();
   }
 
   signup() {
+
+    // this.isLoading = true
+
     if (this.signupFormData.invalid) return;
 
     const encryptedPassword = this.encryptData(this.signupFormData.value.password!);
@@ -44,11 +51,9 @@ export class SignupComponent {
     let users = [];
 
     // If users exist, parse them
-    if (existingUsersJson) {
-      users = JSON.parse(existingUsersJson);
-    }
+    if (existingUsersJson) users = JSON.parse(existingUsersJson);
 
-    // Check if user already exists (optional)
+    // Check if user already exists
     const userExists = users.some((user: any) => user.email === userData.email);
     if (userExists) {
 

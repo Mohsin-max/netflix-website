@@ -21,6 +21,9 @@ export class ResetPasswordComponent {
 
   constructor(private service: ResetPasswordService, private authService: AuthService, private router: Router) { }
 
+  loading = { send: false, verify: false, reset: false };
+
+
   userEmail: string = ''
   otp: string = '';
   receivedOtp: string = '';
@@ -32,7 +35,7 @@ export class ResetPasswordComponent {
 
   emailForm = new FormGroup({
 
-    email: new FormControl('', [Validators.required, Validators.email])
+    email: new FormControl('', [Validators.required, Validators.email]),
 
   })
 
@@ -49,16 +52,21 @@ export class ResetPasswordComponent {
     const matchedUser = users.find((user: any) => user.email === this.emailForm.value.email);
 
     if (matchedUser) {
-      this.service.getOtp(email).subscribe(res => {
-        if (res) {
-          this.generateOtpForm = false;
-          this.varificationForm = true;
-          this.receivedOtp = res.otp;
-          this.copyOtp()
 
-        }
-      });
+      this.loading.send = true
+      this.service.getOtp(email).subscribe(res => {
+        this.loading.send = false
+
+        this.generateOtpForm = false;
+        this.varificationForm = true;
+        this.receivedOtp = res.otp;
+        this.copyOtp()
+
+      })
+
+
     } else {
+
       Swal.fire({
         toast: true,
         position: "top-end",
@@ -66,7 +74,9 @@ export class ResetPasswordComponent {
         title: "email not found",
         showConfirmButton: false,
         timer: 2000
-      });
+      })
+
+
     }
   }
 
@@ -76,10 +86,13 @@ export class ResetPasswordComponent {
 
     const { email } = this.emailForm.value
 
+    this.loading.verify = true
+
     this.service.verifyOtp(email, this.otp).subscribe({
 
       next: () => {
 
+        this.loading.verify = false
         this.resetPasswordForm = true
         this.varificationForm = false
 
@@ -96,6 +109,7 @@ export class ResetPasswordComponent {
 
       error: () => {
 
+        this.loading.verify = false
         Swal.fire({
           toast: true,
           position: "top-end",
@@ -114,6 +128,9 @@ export class ResetPasswordComponent {
   resetPassword() {
 
     const { email } = this.emailForm.value
+
+    // this.loading.reset = true
+
 
 
     let user: any;
