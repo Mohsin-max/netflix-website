@@ -88,9 +88,9 @@ export class NavbarComponent implements OnInit {
 
 
       if (event instanceof NavigationEnd) {
-        
+
         this.currentLocation = this.location.path()
-      
+
         this.searchedMovie = []
       }
 
@@ -119,7 +119,7 @@ export class NavbarComponent implements OnInit {
 
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -133,9 +133,14 @@ export class NavbarComponent implements OnInit {
         this.authService.logout();
 
         Swal.fire({
+          position: "top-end",
+          timer:2000,
+          toast: true,
           title: "Logout!",
-          icon: "success"
+          icon: "success",
+          showConfirmButton: false
         });
+
         this.router.navigate(['/']);
       }
     });
@@ -207,16 +212,16 @@ export class NavbarComponent implements OnInit {
 
         // Swal.fire('Success', 'Password changed successfully!', 'success');
 
-              Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "success",
-                title: "Password changed successfully!",
-                showConfirmButton: false,
-                timer: 2000
-              });
-        
-        
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Password changed successfully!",
+          showConfirmButton: false,
+          timer: 2000
+        });
+
+
       }
     });
 
@@ -224,6 +229,6 @@ export class NavbarComponent implements OnInit {
 
 
   }
-  
+
 }
 

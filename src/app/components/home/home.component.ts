@@ -27,6 +27,21 @@ export class HomeComponent {
   sciFiData: any[] = [];
   bannerData: any[] = [];
 
+  allMovies: any[] = [];
+  filteredarray: any[] = []
+
+  updateCombinedMovies() {
+    this.allMovies = [
+      ...this.actionData,
+      ...this.adventureData,
+      ...this.animationData,
+      ...this.sciFiData
+    ];
+  }
+
+
+  hideShowAccordion: boolean = true
+
   // Skeleton Loaders
   arrTrending: boolean[] = [];
   arrAction: boolean[] = [];
@@ -47,14 +62,37 @@ export class HomeComponent {
   ) { }
 
   ngOnInit(): void {
+
+    console.log(this.allMovies);
+
     this.checkAuthStatus();
     this.loadInitialData();
     this.loadMovieCount();
+
+    this.genreChange()
 
     // Only load other movies if logged in or movieCount < 3
     if (this.isLoggedIn || this.movieCount < 3) {
       this.loadAllMovies();
     }
+  }
+
+  genreChange() {
+    this.authService.selectdGenre$.subscribe((res: any) => {
+
+      if (res === "All") {
+        this.hideShowAccordion = true;
+        this.filteredarray = [];
+      } else {
+        this.hideShowAccordion = false;
+
+        this.filteredarray = this.allMovies.filter(movie =>
+          movie.genres.some((genre: any) => genre.name === res)
+        );
+      }
+
+      console.log(this.filteredarray);
+    });
   }
 
   checkAuthStatus() {
@@ -117,32 +155,37 @@ export class HomeComponent {
 
   loadAllMovies() {
     if (this.isLoggedIn || this.movieCount < 3) {
-      // Load all movies for logged in users
+
       this.service.getActionApi().subscribe(res => {
         this.actionData = res.results;
         this.arrAction = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAction);
+        this.updateCombinedMovies(); // ✅ update combined
       });
 
       this.service.getAdventureApi().subscribe(res => {
         this.adventureData = res.results;
         this.arrAdventure = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAdventure);
+        this.updateCombinedMovies();
       });
 
       this.service.getAnimationApi().subscribe(res => {
         this.animationData = res.results;
         this.arrAnimation = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAnimation);
+        this.updateCombinedMovies();
       });
 
       this.service.getSciFiApi().subscribe(res => {
         this.sciFiData = res.results;
         this.arrSciFi = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrSciFi);
+        this.updateCombinedMovies();
       });
     }
   }
+
 
   showDelayedCards(arr: boolean[]) {
     let index = 0;
@@ -193,13 +236,13 @@ export class HomeComponent {
       if (this.movieCount >= 3) {
         // Swal.fire('Signup Required', 'Create an account to watch movies!', 'info');
         Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "info",
-                title: "Create an account to watch movies!",
-                showConfirmButton: false,
-                timer: 2000
-              });
+          toast: true,
+          position: "top-end",
+          icon: "info",
+          title: "Create an account to watch movies!",
+          showConfirmButton: false,
+          timer: 2000
+        });
         this.showSignupForm = true;
         this.clearMovieData();
       } else {

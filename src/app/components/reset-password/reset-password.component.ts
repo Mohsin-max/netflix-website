@@ -129,10 +129,6 @@ export class ResetPasswordComponent {
 
     const { email } = this.emailForm.value
 
-    // this.loading.reset = true
-
-
-
     let user: any;
 
     const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -147,6 +143,7 @@ export class ResetPasswordComponent {
       const foundUser = users.find((user: any) => user.email === email);
       user = foundUser;
     }
+
     if (user) {
 
       // Encrypt new password
@@ -161,7 +158,7 @@ export class ResetPasswordComponent {
         if (useri.email === user.email) {
           return { ...useri, password: encryptedNewPassword };
         }
-        return user;
+        return useri;
       });
 
       // Save updated data back to localStorage

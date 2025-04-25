@@ -109,7 +109,7 @@
                 </ul>
 
                 <select class="form-select" style="width: 200px;" aria-label="Default select example"
-                    [(ngModel)]="selectedGenre" (change)="genreChange()" *ngIf="currentLocation == '/favorite'">
+                    [(ngModel)]="selectedGenre" (change)="genreChange()" *ngIf="currentLocation == '/favorite' || currentLocation == '/home'">
                     <option selected disabled>Filter Movie</option>
                     <option value="All">All</option>
                     <option value="Action">Action</option>
