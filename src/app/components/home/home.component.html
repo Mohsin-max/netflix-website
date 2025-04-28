@@ -178,4 +178,91 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="shortcutModal" tabindex="-1" aria-labelledby="shortcutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shortcutModalLabel">Advance Filter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="isModalOpen = false"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container">
+                        <form [formGroup]="advanceFilterForm" (ngSubmit)="advanceFilterFormSubmit()">
+                            <!-- Status Select -->
+                            <div class="mb-3">
+                                <label for="statusSelect" class="form-label">Status</label>
+                                <select class="form-select" id="statusSelect" formControlName="status">
+                                    <option value="" selected>Select Status</option>
+
+                                    <!-- <option *ngFor="let status of allStatuses" [value]="status">{{status}}</option> -->
+                                    <option value="Released">Released</option>
+                                    <option value="Post Production">Post Production</option>
+                                </select>
+                            </div>
+
+                            <!-- From Date and To Date Inputs -->
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="fromYearSelect" class="form-label">From Year</label>
+                                    <select class="form-select" id="fromYearSelect" formControlName="fromDate">
+                                        <option value="" selected>Select Year</option>
+                                        <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col">
+                                    <label for="toYearSelect" class="form-label">To Year</label>
+                                    <select class="form-select" id="toYearSelect" formControlName="toDate">
+                                        <option value="" selected>Select Year</option>
+                                        <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <!-- Language Select -->
+                            <div class="mb-3">
+                                <label for="languageSelect" class="form-label">Language</label>
+                                <select class="form-select" id="languageSelect" formControlName="language">
+                                    <option value="" selected>Select Language</option>
+                                    <option value="en">English</option>
+                                    <option value="hindi">Hindi</option>
+                                    <option value="spanish">Spanish</option>
+                                    <option value="french">French</option>
+                                    <!-- Tum aur bhi languages add kar sakte ho -->
+                                </select>
+                            </div>
+
+                            <!-- Genre Select -->
+                            <div class="mb-3">
+                                <label for="genreSelect" class="form-label">Genre</label>
+                                <select class="form-select" id="genreSelect" formControlName="genre">
+                                    <option value="" selected>Select Genre</option>
+                                    <option value="action">Action</option>
+                                    <option value="adventure">Adventure</option>
+                                    <option value="animation">Animation</option>
+                                    <option value="Science Fiction">Sci-fi</option>
+                                    <!-- Tum aur genres add kar sakte ho -->
+                                </select>
+                            </div>
+
+                            <!-- Filter Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>

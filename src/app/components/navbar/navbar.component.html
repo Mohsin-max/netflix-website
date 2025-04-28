@@ -28,7 +28,8 @@
                 </ul>
 
                 <!-- genre filter (sirf favourite page pe) -->
-                <select class="form-select mb-3" [(ngModel)]="selectedGenre" (change)="genreChange()"
+                 
+                <!-- <select class="form-select mb-3" [(ngModel)]="selectedGenre" (change)="genreChange()"
                     *ngIf="currentLocation == '/favorite'">
                     <option selected disabled>Filter Movie</option>
                     <option value="All">All</option>
@@ -36,7 +37,7 @@
                     <option value="Adventure">Adventure</option>
                     <option value="Animation">Animation</option>
                     <option value="Science Fiction">Sci‑fi</option>
-                </select>
+                </select> -->
 
                 <!-- search bar -->
                 <form class="mb-3" *ngIf="isLoggedIn">
@@ -108,7 +109,7 @@
                     </li>
                 </ul>
 
-                <select class="form-select" style="width: 200px;" aria-label="Default select example"
+                <!-- <select class="form-select" style="width: 200px;" aria-label="Default select example"
                     [(ngModel)]="selectedGenre" (change)="genreChange()" *ngIf="currentLocation == '/favorite' || currentLocation == '/home'">
                     <option selected disabled>Filter Movie</option>
                     <option value="All">All</option>
@@ -116,7 +117,7 @@
                     <option value="Adventure">Adventure</option>
                     <option value="Animation">Animation</option>
                     <option value="Science Fiction">Sci-fi</option>
-                </select>
+                </select> -->
 
                 <form class="d-flex ms-lg-3" style="min-width: 150px;" *ngIf="isLoggedIn">
                     <div class="position-relative w-100">

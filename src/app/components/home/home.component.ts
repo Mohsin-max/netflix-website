@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MovieApiService } from '../../services/movie-api.service';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
@@ -9,10 +9,11 @@ import { SkeletonCardComponent } from "../skeleton-card/skeleton-card.component"
 import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { SignupComponent } from "../signup/signup.component";
 import { LoginComponent } from "../login/login.component";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent, RouterModule, SignupComponent, LoginComponent],
+  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent, RouterModule, SignupComponent, LoginComponent, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -42,6 +43,8 @@ export class HomeComponent {
 
   hideShowAccordion: boolean = true
 
+  years: any[] = [];
+
   // Skeleton Loaders
   arrTrending: boolean[] = [];
   arrAction: boolean[] = [];
@@ -55,21 +58,41 @@ export class HomeComponent {
   showLoginForm: boolean = false;
   movieCount: number = 0;
 
+
+  advanceFilterForm = new FormGroup({
+
+    status: new FormControl('', [Validators.required]),
+    fromDate: new FormControl('', [Validators.required]),
+    toDate: new FormControl('', [Validators.required]),
+    language: new FormControl('', [Validators.required]),
+    genre: new FormControl('', [Validators.required]),
+
+  })
+
   constructor(
     private service: MovieApiService,
     private authService: AuthService,
     private router: Router
   ) { }
 
+  allStatuses:any[]=[]
+
   ngOnInit(): void {
 
     console.log(this.allMovies);
+
+    this.allStatuses = [...new Set(this.allMovies.map(movie => movie.status))];
+
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1900; year--) {
+      this.years.push(year);
+    }
 
     this.checkAuthStatus();
     this.loadInitialData();
     this.loadMovieCount();
 
-    this.genreChange()
+    // this.genreChange()  
 
     // Only load other movies if logged in or movieCount < 3
     if (this.isLoggedIn || this.movieCount < 3) {
@@ -77,23 +100,120 @@ export class HomeComponent {
     }
   }
 
-  genreChange() {
-    this.authService.selectdGenre$.subscribe((res: any) => {
+  results: any[] = []
 
-      if (res === "All") {
-        this.hideShowAccordion = true;
-        this.filteredarray = [];
-      } else {
-        this.hideShowAccordion = false;
+  // advanceFilterFormSubmit() {
 
-        this.filteredarray = this.allMovies.filter(movie =>
-          movie.genres.some((genre: any) => genre.name === res)
-        );
-      }
+  //   console.log(this.advanceFilterForm.value);
 
-      console.log(this.filteredarray);
+  //   const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value
+
+  //   this.allMovies.map(m => {
+
+  //     this.service.getMovieDetailsApi(m.id).subscribe(res => {
+
+  //       this.filteredarray.push(res)
+
+  //       const releaseYear = parseInt(res.release_date);
+  //       const fromYear = Number(fromDate);
+  //       const toYear = Number(toDate);
+
+
+  //       // this.results = this.filteredarray.filter((f: any) => (f.status == status ) && (f.original_language == language) && ())
+  //       this.results = this.filteredarray.filter((f: any) => (f.release_date == status ))
+
+  //       if (
+  //         (fromDate ? releaseYear >= fromYear : true) &&
+  //         (toDate ? releaseYear <= toYear : true)
+  //       ) {
+  //         // Agar releaseYear from aur to ke beech hai toh ye movie match karegi
+  //         this.filteredarray.push(res);
+  //       }
+
+
+
+  //       // console.log(this.results.original_language);
+
+  //     })
+
+  //   })
+
+
+  //   this.advanceFilterForm = new FormGroup({
+
+  //     status: new FormControl('', [Validators.required]),
+  //     fromDate: new FormControl('', [Validators.required]),
+  //     toDate: new FormControl('', [Validators.required]),
+  //     language: new FormControl('', [Validators.required]),
+  //     genre: new FormControl('', [Validators.required]),
+
+  //   })
+
+  //   this.modal.hide()
+  //   this.isModalOpen = false;
+
+
+
+  // }
+
+  // genreChange() {
+  //   this.authService.selectdGenre$.subscribe((res: any) => {
+
+  //     if (res === "All") {
+  //       this.hideShowAccordion = true;
+  //       this.filteredarray = [];
+  //     } else {
+  //       this.hideShowAccordion = false;
+
+  //       this.filteredarray = this.allMovies.filter(movie =>
+  //         movie.genres.some((genre: any) => genre.name === res)
+  //       );
+  //     }
+
+  //     console.log(this.filteredarray);
+  //   });
+  // }
+
+  advanceFilterFormSubmit() {
+
+    const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value;
+
+    this.filteredarray = []; // Clear previous results
+
+    this.allMovies.map(m => {
+
+      this.service.getMovieDetailsApi(m.id).subscribe(res => {
+
+        const releaseYear = parseInt(res.release_date);
+        const fromYear = Number(fromDate);
+        const toYear = Number(toDate);
+
+        if ((releaseYear >= fromYear && releaseYear <= toYear) || (res.status == status)) {
+          this.filteredarray.push(res);
+          // console.log(res.status, res.release_date);
+        }
+
+      });
+
     });
+
+    setTimeout(() => {
+      console.log('Filtered Array:', this.filteredarray);
+    }, 1000);
+
+    this.advanceFilterForm.reset({
+      status: '',
+      fromDate: '',
+      toDate: '',
+      language: '',
+      genre: ''
+    });
+
+    this.modal.hide();
+    this.isModalOpen = false;
+
   }
+
 
   checkAuthStatus() {
     this.authService.isLoggedIn$.subscribe(status => {
@@ -261,5 +381,33 @@ export class HomeComponent {
   toggleToSignup() {
     this.showLoginForm = false;
     this.showSignupForm = true;
+  }
+
+  modal: any; // Bootstrap modal ka reference
+  isModalOpen = false; // Modal ka status track karenge
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'i') {
+      event.preventDefault();
+      this.toggleModal();
+    }
+  }
+
+  toggleModal() {
+    const modalElement = document.getElementById('shortcutModal');
+    if (modalElement) {
+      if (!this.modal) {
+        this.modal = new (window as any).bootstrap.Modal(modalElement);
+      }
+
+      if (this.isModalOpen) {
+        this.modal.hide();
+        this.isModalOpen = false;
+      } else {
+        this.modal.show();
+        this.isModalOpen = true;
+      }
+    }
   }
 }
