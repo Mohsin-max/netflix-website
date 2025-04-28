@@ -10,6 +10,7 @@ import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { SignupComponent } from "../signup/signup.component";
 import { LoginComponent } from "../login/login.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -75,7 +76,7 @@ export class HomeComponent {
     private router: Router
   ) { }
 
-  allStatuses:any[]=[]
+  allStatuses: any[] = []
 
   ngOnInit(): void {
 
@@ -175,44 +176,44 @@ export class HomeComponent {
   // }
 
   advanceFilterFormSubmit() {
-
     const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value;
-
+    
     this.filteredarray = []; // Clear previous results
-
-    this.allMovies.map(m => {
-
-      this.service.getMovieDetailsApi(m.id).subscribe(res => {
-
-        const releaseYear = parseInt(res.release_date);
+  
+    const requests = this.allMovies.map(m => this.service.getMovieDetailsApi(m.id));
+  
+    forkJoin(requests).subscribe(responses => {
+      responses.forEach(res => {
+        const releaseYear = parseInt(res.release_date?.slice(0, 4)); // Safe parsing
         const fromYear = Number(fromDate);
         const toYear = Number(toDate);
-
-        if ((releaseYear >= fromYear && releaseYear <= toYear) || (res.status == status)) {
+  
+        // Checking conditions
+        const statusMatch = status ? res.status === status : true;
+        const yearMatch = fromDate && toDate ? (releaseYear >= fromYear && releaseYear <= toYear) : true;
+        const languageMatch = language ? res.original_language === language : true;
+        const genreMatch = genre ? res.genres.some((g:any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
+  
+        if (statusMatch && yearMatch && languageMatch && genreMatch) {
           this.filteredarray.push(res);
-          // console.log(res.status, res.release_date);
         }
-
       });
-
-    });
-
-    setTimeout(() => {
+  
       console.log('Filtered Array:', this.filteredarray);
-    }, 1000);
-
-    this.advanceFilterForm.reset({
-      status: '',
-      fromDate: '',
-      toDate: '',
-      language: '',
-      genre: ''
+  
+      this.advanceFilterForm.reset({
+        status: '',
+        fromDate: '',
+        toDate: '',
+        language: '',
+        genre: ''
+      });
+  
+      this.modal.hide();
+      this.isModalOpen = false;
     });
-
-    this.modal.hide();
-    this.isModalOpen = false;
-
   }
+  
 
 
   checkAuthStatus() {
