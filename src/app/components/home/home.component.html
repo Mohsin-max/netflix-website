@@ -180,8 +180,11 @@
     </div>
 
 
+
     <!-- Filtered Movies -->
+
     <div class="filter-container px-4" *ngIf="filteredarray.length !== undefined && !hideShowAccordion">
+
         <!-- Filter Close Button -->
 
         <i class="ri-close-line fs-3 text-danger" style="cursor: pointer;" (click)="resetFilter()"></i>
@@ -192,10 +195,11 @@
             <div class="row">
                 <h2 class="text-center mb-5">Filtered Movies ({{filteredarray.length}})</h2>
             </div>
-            <!-- Bootstrap Grid for Centered Cards -->
+            
             <div class="row justify-content-start gap-5 px-5">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4" *ngFor="let movie of filteredarray">
-                    <app-movie-card [movieDetails]="movie"></app-movie-card>
+                    <app-movie-card [movieDetails]="movie"
+                        [routerLink]="[`/movie-details/${movie.id}`]"></app-movie-card>
                 </div>
             </div>
         </div>
@@ -213,7 +217,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="shortcutModal" tabindex="-1" aria-labelledby="shortcutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="shortcutModalLabel">Advance Filter</h5>
@@ -227,7 +231,8 @@
                             <!-- Status Select -->
                             <div class="mb-3">
                                 <label for="statusSelect" class="form-label">Status</label>
-                                <select class="form-select" id="statusSelect" formControlName="status">
+                                <select class="form-select" aria-label="Default select example" id="statusSelect"
+                                    formControlName="status">
                                     <option value="" selected>Select Status</option>
                                     <option value="Released">Released</option>
                                     <!-- <option value="Post Production">Post Production</option> -->
@@ -290,4 +295,5 @@
             </div>
         </div>
     </div>
+
 </div>
