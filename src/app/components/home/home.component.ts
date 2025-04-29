@@ -325,10 +325,14 @@ export class HomeComponent {
   isModalOpen = false; // Modal ka status track karenge
 
   @HostListener('document:keydown', ['$event'])
+
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.ctrlKey && event.key === 'i') {
-      event.preventDefault();
-      this.toggleModal();
+    if (this.isLoggedIn) {
+
+      if (event.ctrlKey && event.key === 'i') {
+        event.preventDefault();
+        this.toggleModal();
+      }
     }
   }
 
