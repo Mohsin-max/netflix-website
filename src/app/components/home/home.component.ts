@@ -18,6 +18,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent {
   private readonly secretKey = "MyMovieApp123!";
 
@@ -41,6 +42,14 @@ export class HomeComponent {
     ];
   }
 
+  resetFilter() {
+
+    this.hideShowAccordion = true
+
+    this.filteredarray = [];
+    this.hideShowAccordion = true;
+    // this.advanceFilterForm.reset();
+  }
 
   hideShowAccordion: boolean = true
 
@@ -76,13 +85,10 @@ export class HomeComponent {
     private router: Router
   ) { }
 
-  allStatuses: any[] = []
 
   ngOnInit(): void {
 
     console.log(this.allMovies);
-
-    this.allStatuses = [...new Set(this.allMovies.map(movie => movie.status))];
 
     const currentYear = new Date().getFullYear();
     for (let year = currentYear; year >= 1900; year--) {
@@ -103,104 +109,35 @@ export class HomeComponent {
 
   results: any[] = []
 
-  // advanceFilterFormSubmit() {
-
-  //   console.log(this.advanceFilterForm.value);
-
-  //   const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value
-
-  //   this.allMovies.map(m => {
-
-  //     this.service.getMovieDetailsApi(m.id).subscribe(res => {
-
-  //       this.filteredarray.push(res)
-
-  //       const releaseYear = parseInt(res.release_date);
-  //       const fromYear = Number(fromDate);
-  //       const toYear = Number(toDate);
-
-
-  //       // this.results = this.filteredarray.filter((f: any) => (f.status == status ) && (f.original_language == language) && ())
-  //       this.results = this.filteredarray.filter((f: any) => (f.release_date == status ))
-
-  //       if (
-  //         (fromDate ? releaseYear >= fromYear : true) &&
-  //         (toDate ? releaseYear <= toYear : true)
-  //       ) {
-  //         // Agar releaseYear from aur to ke beech hai toh ye movie match karegi
-  //         this.filteredarray.push(res);
-  //       }
-
-
-
-  //       // console.log(this.results.original_language);
-
-  //     })
-
-  //   })
-
-
-  //   this.advanceFilterForm = new FormGroup({
-
-  //     status: new FormControl('', [Validators.required]),
-  //     fromDate: new FormControl('', [Validators.required]),
-  //     toDate: new FormControl('', [Validators.required]),
-  //     language: new FormControl('', [Validators.required]),
-  //     genre: new FormControl('', [Validators.required]),
-
-  //   })
-
-  //   this.modal.hide()
-  //   this.isModalOpen = false;
-
-
-
-  // }
-
-  // genreChange() {
-  //   this.authService.selectdGenre$.subscribe((res: any) => {
-
-  //     if (res === "All") {
-  //       this.hideShowAccordion = true;
-  //       this.filteredarray = [];
-  //     } else {
-  //       this.hideShowAccordion = false;
-
-  //       this.filteredarray = this.allMovies.filter(movie =>
-  //         movie.genres.some((genre: any) => genre.name === res)
-  //       );
-  //     }
-
-  //     console.log(this.filteredarray);
-  //   });
-  // }
-
   advanceFilterFormSubmit() {
+
+    this.hideShowAccordion = false
     const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value;
-    
+
     this.filteredarray = []; // Clear previous results
-  
+
     const requests = this.allMovies.map(m => this.service.getMovieDetailsApi(m.id));
-  
+
     forkJoin(requests).subscribe(responses => {
+
       responses.forEach(res => {
         const releaseYear = parseInt(res.release_date?.slice(0, 4)); // Safe parsing
         const fromYear = Number(fromDate);
         const toYear = Number(toDate);
-  
+
         // Checking conditions
         const statusMatch = status ? res.status === status : true;
         const yearMatch = fromDate && toDate ? (releaseYear >= fromYear && releaseYear <= toYear) : true;
         const languageMatch = language ? res.original_language === language : true;
-        const genreMatch = genre ? res.genres.some((g:any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
-  
+        const genreMatch = genre ? res.genres.some((g: any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
+
         if (statusMatch && yearMatch && languageMatch && genreMatch) {
           this.filteredarray.push(res);
         }
       });
-  
+
       console.log('Filtered Array:', this.filteredarray);
-  
+
       this.advanceFilterForm.reset({
         status: '',
         fromDate: '',
@@ -208,12 +145,12 @@ export class HomeComponent {
         language: '',
         genre: ''
       });
-  
+
       this.modal.hide();
       this.isModalOpen = false;
     });
   }
-  
+
 
 
   checkAuthStatus() {
