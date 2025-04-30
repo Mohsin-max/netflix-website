@@ -187,15 +187,48 @@
 
         <!-- Filter Close Button -->
 
-        <i class="ri-close-line fs-3 text-danger" style="cursor: pointer;" (click)="resetFilter()"></i>
+        <i class="ri-close-line fs-2 text-danger" style="cursor: pointer;" (click)="resetFilter()"></i>
 
         <!-- Movie List Section -->
         <div *ngIf="filteredarray.length > 0; else noMoviesFound">
 
-            <div class="row">
-                <h2 class="text-center mb-5">Filtered Movies ({{filteredarray.length}})</h2>
+            <div class="row mb-5">
+                <h3 class="text-center mb-4">Applied Filters ({{filteredarray.length}})</h3>
+
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                    <span *ngIf="advanceFilterForm.value.search" class="badge bg-primary px-4 py-2 rounded-pill fs-6">
+                        Search: {{ advanceFilterForm.value.search }}
+                    </span>
+
+                    <span *ngIf="advanceFilterForm.value.status" class="badge bg-success px-4 py-2 rounded-pill fs-6">
+                        Status: {{ advanceFilterForm.value.status }}
+                    </span>
+
+                    <span *ngIf="advanceFilterForm.value.fromDate"
+                        class="badge bg-info text-dark px-4 py-2 rounded-pill fs-6">
+                        From Date: {{ advanceFilterForm.value.fromDate }}
+                    </span>
+
+                    <span *ngIf="advanceFilterForm.value.toDate"
+                        class="badge bg-info text-dark px-4 py-2 rounded-pill fs-6">
+                        To Date: {{ advanceFilterForm.value.toDate }}
+                    </span>
+
+                    <span *ngIf="advanceFilterForm.value.language"
+                        class="badge bg-warning text-dark px-4 py-2 rounded-pill fs-6">
+                        Language: {{ advanceFilterForm.value.language }}
+                    </span>
+
+                    <span *ngIf="advanceFilterForm.value.genre" class="badge bg-danger px-4 py-2 rounded-pill fs-6">
+                        Genre: {{ advanceFilterForm.value.genre }}
+                    </span>
+
+                </div>
+
+
             </div>
-            
+
             <div class="row justify-content-start gap-5 px-5">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4" *ngFor="let movie of filteredarray">
                     <app-movie-card [movieDetails]="movie"
@@ -207,7 +240,7 @@
         <!-- No Movies Found Template -->
         <ng-template #noMoviesFound>
             <div class="text-center">
-                No movies found based on the selected filters.
+                No movies found.
             </div>
         </ng-template>
     </div>
@@ -227,7 +260,26 @@
                 <div class="modal-body">
 
                     <div class="container">
+                        <!-- 
+                        <form class="d-flex ms-lg-3" style="min-width: 150px;" *ngIf="isLoggedIn">
+
+                        </form> -->
+
                         <form [formGroup]="advanceFilterForm" (ngSubmit)="advanceFilterFormSubmit()">
+
+                            <!-- Search Bar -->
+                            <div class="mb-3">
+
+                                <label for="searchBar" class="form-label">Search</label>
+                                <div class="position-relative w-100" style="min-width: 150px;">
+                                    <i
+                                        class="ri-search-line fs-5 position-absolute top-50 start-0 translate-middle-y ps-3"></i>
+                                    <input class="form-control rounded-2 py-2 ps-5" type="search"
+                                        placeholder="Seach Movie.." aria-label="Search" id="searchBar"
+                                        formControlName="search">
+                                </div>
+
+                            </div>
                             <!-- Status Select -->
                             <div class="mb-3">
                                 <label for="statusSelect" class="form-label">Status</label>
@@ -280,13 +332,17 @@
                                     <option value="action">Action</option>
                                     <option value="adventure">Adventure</option>
                                     <option value="animation">Animation</option>
-                                    <option value="Science Fiction">Sci-fi</option>
+                                    <option value="thriller">Thriller</option>
+                                    <option value="comedy">Comedy</option>
+                                    <option value="horror">Horror</option>
+                                    <option value="fantasy">Fantasy</option>
                                 </select>
                             </div>
 
                             <!-- Filter Button -->
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                                <button type="submit" class="btn btn-primary"
+                                    [disabled]="!isAnyFieldFilled">Apply</button>
                             </div>
                         </form>
 

@@ -68,16 +68,9 @@ export class HomeComponent {
   showLoginForm: boolean = false;
   movieCount: number = 0;
 
+  isAnyFieldFilled: boolean = false;
 
-  advanceFilterForm = new FormGroup({
 
-    status: new FormControl('', [Validators.required]),
-    fromDate: new FormControl('', [Validators.required]),
-    toDate: new FormControl('', [Validators.required]),
-    language: new FormControl('', [Validators.required]),
-    genre: new FormControl('', [Validators.required]),
-
-  })
 
   constructor(
     private service: MovieApiService,
@@ -85,10 +78,30 @@ export class HomeComponent {
     private router: Router
   ) { }
 
+  advanceFilterForm = new FormGroup({
+    status: new FormControl(''),
+    fromDate: new FormControl(''),
+    toDate: new FormControl(''),
+    language: new FormControl(''),
+    genre: new FormControl(''),
+    search: new FormControl('')
+  });
+
 
   ngOnInit(): void {
 
     console.log(this.allMovies);
+
+    this.advanceFilterForm.valueChanges.subscribe(values => {
+      const { status, fromDate, toDate, language, genre, search } = values;
+
+      // Agar koi bhi ek field filled hai
+      if (status || fromDate || toDate || language || genre || search) {
+        this.isAnyFieldFilled = true;
+      } else {
+        this.isAnyFieldFilled = false;
+      }
+    });
 
     const currentYear = new Date().getFullYear();
     for (let year = currentYear; year >= 1900; year--) {
@@ -112,43 +125,55 @@ export class HomeComponent {
   advanceFilterFormSubmit() {
 
     this.hideShowAccordion = false
-    const { status, fromDate, toDate, language, genre } = this.advanceFilterForm.value;
-
+    this.modal.hide();
+    this.isModalOpen = false;
+    const { status, fromDate, toDate, language, genre, search } = this.advanceFilterForm.value;
     this.filteredarray = []; // Clear previous results
 
-    const requests = this.allMovies.map(m => this.service.getMovieDetailsApi(m.id));
+    if (search == '') {
 
-    forkJoin(requests).subscribe(responses => {
+      const requests = this.allMovies.map(m => this.service.getMovieDetailsApi(m.id));
 
-      responses.forEach(res => {
-        const releaseYear = parseInt(res.release_date?.slice(0, 4)); // Safe parsing
-        const fromYear = Number(fromDate);
-        const toYear = Number(toDate);
+      forkJoin(requests).subscribe(responses => {
 
-        // Checking conditions
-        const statusMatch = status ? res.status === status : true;
-        const yearMatch = fromDate && toDate ? (releaseYear >= fromYear && releaseYear <= toYear) : true;
-        const languageMatch = language ? res.original_language === language : true;
-        const genreMatch = genre ? res.genres.some((g: any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
+        responses.forEach(res => {
+          const releaseYear = parseInt(res.release_date?.slice(0, 4)); // Safe parsing
+          const fromYear = Number(fromDate);
+          const toYear = Number(toDate);
 
-        if (statusMatch && yearMatch && languageMatch && genreMatch) {
-          this.filteredarray.push(res);
-        }
+          // Checking conditions
+          const statusMatch = status ? res.status === status : true;
+          const yearMatch = fromDate && toDate ? (releaseYear >= fromYear && releaseYear <= toYear) : true;
+          const languageMatch = language ? res.original_language === language : true;
+          const genreMatch = genre ? res.genres.some((g: any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
+
+          if (statusMatch && yearMatch && languageMatch && genreMatch) {
+
+            const alreadyExists = this.filteredarray.some(m => m.id === res.id);
+
+            if (!alreadyExists) {
+
+              this.filteredarray.push(res);
+            }
+          }
+        });
+
+        console.log('Filtered Array:', this.filteredarray);
+
       });
 
-      console.log('Filtered Array:', this.filteredarray);
+    } else if (search !== '') {
 
-      this.advanceFilterForm.reset({
-        status: '',
-        fromDate: '',
-        toDate: '',
-        language: '',
-        genre: ''
-      });
+      this.service.getSearchedApi(search).subscribe(res => {
 
-      this.modal.hide();
-      this.isModalOpen = false;
-    });
+        this.filteredarray = res.results
+        console.log(this.filteredarray);
+
+      })
+
+    }
+
+
   }
 
 
@@ -329,7 +354,17 @@ export class HomeComponent {
   handleKeyboardEvent(event: KeyboardEvent) {
     if (this.isLoggedIn) {
 
-      if (event.ctrlKey && event.key === 'i') {
+      if (event.ctrlKey && event.key === 'q') {
+
+        this.advanceFilterForm.reset({
+          status: '',
+          fromDate: '',
+          toDate: '',
+          language: '',
+          genre: '',
+          search: ''
+        });
+
         event.preventDefault();
         this.toggleModal();
       }
