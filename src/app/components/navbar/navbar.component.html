@@ -122,8 +122,8 @@
                 <form class="d-flex ms-lg-3" style="min-width: 150px;" *ngIf="isLoggedIn">
                     <div class="position-relative w-100">
                         <i class="ri-search-line fs-5 position-absolute top-50 start-0 translate-middle-y ps-3"></i>
-                        <input class="form-control rounded-2 py-2 ps-5" type="search" placeholder="Ctrl Q or Search here.."
-                            aria-label="Search" (input)="debouncedFunc($event)">
+                        <input class="form-control rounded-2 py-2 ps-5" type="search"
+                            placeholder="Ctrl Q or Search here.." aria-label="Search" (input)="debouncedFunc($event)">
                     </div>
                 </form>
 
@@ -174,21 +174,30 @@
     </div>
 
 </nav>
+<div *ngIf="searchedMovie.length > 0" class="searchBox w-full d-flex flex-column gap-5 py-5">
 
-<div class="searchBox w-full d-flex flex-column gap-5 py-5" *ngIf="searchedMovie.length > 0">
-
-    <div routerLink="/movie-details/{{search.id}}" class="searchItems d-flex gap-5 px-4" style="cursor: pointer;"
-        *ngFor="let search of searchedMovie">
-
-        <div>
-            <img src="https://image.tmdb.org/t/p/original/{{search.poster_path}}" alt="." width="100">
-        </div>
-
-        <div>
-            <h3>{{search.title}}</h3>
-            <p>{{search.overview}}</p>
-        </div>
-
+    <div
+      routerLink="/movie-details/{{search.id}}"
+      class="searchItems d-flex gap-5 px-4"
+      style="cursor: pointer;"
+      *ngFor="let search of searchedMovie"
+    >
+      <div>
+        <img src="https://image.tmdb.org/t/p/original/{{search.poster_path}}" alt="." width="100">
+      </div>
+  
+      <div>
+        <h3>{{search.title}}</h3>
+        <p>{{search.overview}}</p>
+      </div>
     </div>
-
-</div>
+  
+  </div>
+  
+  <!-- No Movies Found Template (sirf agar user ne search kiya aur kuch mila nahi) -->
+  <ng-template [ngIf]="hasSearched && searchedMovie.length == 0">
+    <div class="text-center py-5 fs-4 text-muted">
+      No movies found.
+    </div>
+  </ng-template>
+  

@@ -66,6 +66,8 @@ export class NavbarComponent implements OnInit {
 
   decryptedPasswod: any = ''
 
+  hasSearched: boolean = false
+
   ngOnInit(): void {
 
 
@@ -106,11 +108,17 @@ export class NavbarComponent implements OnInit {
   // it contains a wrapper function.
   debouncedFunc = debounce((event: any) => {
 
+    this.hasSearched = true
+
     // The API will be hit, and the user's text will be sent from the event.
 
     this.service.getSearchedApi(event).subscribe(res => {
       this.searchedMovie = res.results
 
+      if (this.searchedMovie == null) {
+        this.hasSearched = false
+
+      }
     })
 
   }, 500)
@@ -134,7 +142,7 @@ export class NavbarComponent implements OnInit {
 
         Swal.fire({
           position: "top-end",
-          timer:2000,
+          timer: 2000,
           toast: true,
           title: "Logout!",
           icon: "success",

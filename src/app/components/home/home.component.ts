@@ -48,6 +48,17 @@ export class HomeComponent {
 
     this.filteredarray = [];
     this.hideShowAccordion = true;
+
+    this.advanceFilterForm.reset({
+      status: '',
+      fromDate: '',
+      toDate: '',
+      language: '',
+      country: '',
+      genre: '',
+      search: ''
+    });
+
     // this.advanceFilterForm.reset();
   }
 
@@ -70,6 +81,10 @@ export class HomeComponent {
 
   isAnyFieldFilled: boolean = false;
 
+  isLoading: boolean = false;
+
+  badgesVal: any;
+
 
 
   constructor(
@@ -83,6 +98,7 @@ export class HomeComponent {
     fromDate: new FormControl(''),
     toDate: new FormControl(''),
     language: new FormControl(''),
+    country: new FormControl(''),
     genre: new FormControl(''),
     search: new FormControl('')
   });
@@ -93,10 +109,11 @@ export class HomeComponent {
     console.log(this.allMovies);
 
     this.advanceFilterForm.valueChanges.subscribe(values => {
-      const { status, fromDate, toDate, language, genre, search } = values;
+
+      const { status, fromDate, toDate, language, country, genre, search } = values;
 
       // Agar koi bhi ek field filled hai
-      if (status || fromDate || toDate || language || genre || search) {
+      if (status || fromDate || toDate || language || country || genre || search) {
         this.isAnyFieldFilled = true;
       } else {
         this.isAnyFieldFilled = false;
@@ -121,13 +138,16 @@ export class HomeComponent {
   }
 
   results: any[] = []
-
   advanceFilterFormSubmit() {
 
     this.hideShowAccordion = false
     this.modal.hide();
     this.isModalOpen = false;
-    const { status, fromDate, toDate, language, genre, search } = this.advanceFilterForm.value;
+    this.isLoading = true; // 🚀 Start loading spinner
+
+    this.badgesVal = this.advanceFilterForm.value
+
+    const { status, fromDate, toDate, language, country, genre, search } = this.advanceFilterForm.value;
     this.filteredarray = []; // Clear previous results
 
     if (search == '') {
@@ -137,28 +157,26 @@ export class HomeComponent {
       forkJoin(requests).subscribe(responses => {
 
         responses.forEach(res => {
-          const releaseYear = parseInt(res.release_date?.slice(0, 4)); // Safe parsing
+          const releaseYear = parseInt(res.release_date?.slice(0, 4));
           const fromYear = Number(fromDate);
           const toYear = Number(toDate);
 
-          // Checking conditions
           const statusMatch = status ? res.status === status : true;
           const yearMatch = fromDate && toDate ? (releaseYear >= fromYear && releaseYear <= toYear) : true;
           const languageMatch = language ? res.original_language === language : true;
+          const countryMatch = country ? res.origin_country[0].toLowerCase() === country.toLowerCase() : true
           const genreMatch = genre ? res.genres.some((g: any) => g.name.toLowerCase() === genre.toLowerCase()) : true;
 
-          if (statusMatch && yearMatch && languageMatch && genreMatch) {
+          if (statusMatch && yearMatch && languageMatch && genreMatch && countryMatch) {
 
             const alreadyExists = this.filteredarray.some(m => m.id === res.id);
+            if (!alreadyExists) this.filteredarray.push(res);
 
-            if (!alreadyExists) {
-
-              this.filteredarray.push(res);
-            }
           }
         });
 
         console.log('Filtered Array:', this.filteredarray);
+        this.isLoading = false; // ❌ Stop loading spinner
 
       });
 
@@ -168,11 +186,11 @@ export class HomeComponent {
 
         this.filteredarray = res.results
         console.log(this.filteredarray);
+        this.isLoading = false; // ❌ Stop loading spinner
 
       })
 
     }
-
 
   }
 
@@ -355,15 +373,6 @@ export class HomeComponent {
     if (this.isLoggedIn) {
 
       if (event.ctrlKey && event.key === 'q') {
-
-        this.advanceFilterForm.reset({
-          status: '',
-          fromDate: '',
-          toDate: '',
-          language: '',
-          genre: '',
-          search: ''
-        });
 
         event.preventDefault();
         this.toggleModal();
