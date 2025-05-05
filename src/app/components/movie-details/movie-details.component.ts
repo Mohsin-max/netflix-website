@@ -5,6 +5,11 @@ import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { MovieDetails } from '../../interfaces/movie-details.model';
+import { movieCastCrew } from '../../interfaces/movie-cast-crew.model';
+import { MovieCastCrewResponse } from '../../interfaces/movie-cast-crew-response.model';
+import { MovieVideoResponse } from '../../interfaces/movie-video-response.model';
+import { MovieVideo } from '../../interfaces/movie-video.model';
 
 @Component({
   selector: 'app-movie-details',
@@ -22,9 +27,9 @@ export class MovieDetailsComponent implements OnInit {
   isLoggedin = false;
 
   /* ---------- data ---------- */
-  arrMovieDetails: any = {};
-  arrMovieCast: any[] = [];
-  movieVideoKey = '';
+  arrMovieDetails?: MovieDetails;
+  arrMovieCast: movieCastCrew[] = [];
+  movieVideoKey: string = '';
 
   /* ---------- pagination ---------- */
   p = 1;
@@ -48,21 +53,21 @@ export class MovieDetailsComponent implements OnInit {
     const movie_id = this.route.snapshot.paramMap.get('id')!;
 
     /* ----- MOVIE DETAILS ----- */
-    this.service.getMovieDetailsApi(movie_id).subscribe(details => {
+    this.service.getMovieDetailsApi(movie_id as string).subscribe((details: MovieDetails) => {
       this.arrMovieDetails = details;
-      this.updateFavState(details.id);
+      this.updateFavState(this.arrMovieDetails.id);
       this.checkAllLoaded();
     });
 
     /* ----- CAST ----- */
-    this.service.getMovieCastApi(movie_id).subscribe(res => {
+    this.service.getMovieCastApi(movie_id as string).subscribe((res: MovieCastCrewResponse) => {
       this.arrMovieCast = res.cast;
       this.checkAllLoaded();
     });
 
     /* ----- VIDEO KEY ----- */
-    this.service.getMovieVideoApi(movie_id).subscribe(res => {
-      const teaser = res.results.find((v: any) => v.type === 'Teaser');
+    this.service.getMovieVideoApi(movie_id as string).subscribe((res: MovieVideoResponse) => {
+      const teaser = res.results.find((v: MovieVideo) => v.type === 'Teaser');
       this.movieVideoKey = teaser?.key || '';
       this.checkAllLoaded();   // video done
     });
@@ -76,7 +81,9 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   /** runtime */
-  getHoursAndMinutes(time: number) {
+  getHoursAndMinutes(time?: number) {
+
+    if (!time) return
     const h = Math.floor(time / 60);
     const m = time % 60;
     return `${h}h ${m}m`;
@@ -89,7 +96,10 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   /** add / remove favourite */
-  addToFav(event: Event, movieId: number) {
+  addToFav(event: Event, movieId?: number) {
+
+    if (!movieId) return
+
     event.stopPropagation();
 
     if (!this.isLoggedin) {

@@ -9,8 +9,11 @@ import { SkeletonCardComponent } from "../skeleton-card/skeleton-card.component"
 import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { SignupComponent } from "../signup/signup.component";
 import { LoginComponent } from "../login/login.component";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
+import { MovieResponse } from '../../interfaces/movie-response.model';
+import { Movie } from '../../interfaces/movie.model';
+
 
 @Component({
   selector: 'app-home',
@@ -23,12 +26,12 @@ export class HomeComponent {
   private readonly secretKey = "MyMovieApp123!";
 
   // Movie Data Arrays
-  trendingData: any[] = [];
-  actionData: any[] = [];
-  adventureData: any[] = [];
-  animationData: any[] = [];
-  sciFiData: any[] = [];
-  bannerData: any[] = [];
+  bannerData: Movie[] = [];
+  trendingData: Movie[] = [];
+  actionData: Movie[] = [];
+  adventureData: Movie[] = [];
+  animationData: Movie[] = [];
+  sciFiData: Movie[] = [];
 
   allMovies: any[] = [];
   filteredarray: any[] = []
@@ -211,7 +214,7 @@ export class HomeComponent {
         this.showSignupForm = this.movieCount >= 3;
         this.showLoginForm = false;
 
-        // Clear other movie categories when showing forms
+        // Clear other movie categories when showing forms    
         if (this.showSignupForm || this.showLoginForm) {
           this.clearMovieData();
         }
@@ -246,8 +249,8 @@ export class HomeComponent {
 
   loadInitialData() {
     // Always load banner and trending data
-    this.service.getBannerApi().subscribe(res => this.bannerData = res.results);
-    this.service.getTrendingApi().subscribe(res => {
+    this.service.getBannerApi().subscribe((res: MovieResponse) => this.bannerData = res.results);
+    this.service.getTrendingApi().subscribe((res: MovieResponse) => {
       this.trendingData = res.results;
       this.arrTrending = new Array(res.results.length).fill(false);
       this.showDelayedCards(this.arrTrending);
@@ -257,28 +260,28 @@ export class HomeComponent {
   loadAllMovies() {
     if (this.isLoggedIn || this.movieCount < 3) {
 
-      this.service.getActionApi().subscribe(res => {
+      this.service.getActionApi().subscribe((res: MovieResponse) => {
         this.actionData = res.results;
         this.arrAction = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAction);
         this.updateCombinedMovies(); // ✅ update combined
       });
 
-      this.service.getAdventureApi().subscribe(res => {
+      this.service.getAdventureApi().subscribe((res: MovieResponse) => {
         this.adventureData = res.results;
         this.arrAdventure = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAdventure);
         this.updateCombinedMovies();
       });
 
-      this.service.getAnimationApi().subscribe(res => {
+      this.service.getAnimationApi().subscribe((res: MovieResponse) => {
         this.animationData = res.results;
         this.arrAnimation = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrAnimation);
         this.updateCombinedMovies();
       });
 
-      this.service.getSciFiApi().subscribe(res => {
+      this.service.getSciFiApi().subscribe((res: MovieResponse) => {
         this.sciFiData = res.results;
         this.arrSciFi = new Array(res.results.length).fill(false);
         this.showDelayedCards(this.arrSciFi);

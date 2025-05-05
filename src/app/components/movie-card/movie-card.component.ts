@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 Location
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { MovieDetails } from '../../interfaces/movie-details.model';
 @Component({
   selector: 'app-movie-card',
   imports: [CommonModule],
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class MovieCardComponent {
 
-  @Input() movieDetails: any
+  @Input() movieDetails?: MovieDetails;
 
   isFavorite: boolean = false;
 
@@ -26,13 +27,16 @@ export class MovieCardComponent {
     this.authService.isLoggedIn$.subscribe(res => this.users = res)
 
     const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
-    this.isFavorite = favoriteMoviesId.some((movieId: any) => movieId === this.movieDetails.id);
+    this.isFavorite = favoriteMoviesId.some((movieId: number) => movieId === this.movieDetails?.id);
 
     this.currentRoute = this.location.path()
 
   }
 
-  addToFav(event: Event, movie: any) {
+  addToFav(event: Event, movie?: number) {
+
+    if (!movie) return
+
     event.stopPropagation();
 
     if (this.users) {

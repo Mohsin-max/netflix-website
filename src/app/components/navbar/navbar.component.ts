@@ -3,11 +3,12 @@ import { debounce } from '../../debounce';
 import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule, Location } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { Movie } from '../../interfaces/movie';
+import { Movie } from '../../interfaces/movie.model';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import * as CryptoJS from "crypto-js";
+import { MovieResponse } from '../../interfaces/movie-response.model';
 
 
 @Component({
@@ -108,17 +109,24 @@ export class NavbarComponent implements OnInit {
   // it contains a wrapper function.
   debouncedFunc = debounce((event: any) => {
 
-    this.hasSearched = true
 
     // The API will be hit, and the user's text will be sent from the event.
 
-    this.service.getSearchedApi(event).subscribe(res => {
+    this.service.getSearchedApi(event).subscribe((res: MovieResponse) => {
       this.searchedMovie = res.results
 
-      if (this.searchedMovie == null) {
+      if (this.searchedMovie.length > 1) {
+
+        console.log('tr');
+
         this.hasSearched = false
 
+      } else {
+
+        this.hasSearched = true
+        console.log('fl');
       }
+
     })
 
   }, 500)

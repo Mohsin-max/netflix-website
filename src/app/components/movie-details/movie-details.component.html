@@ -47,13 +47,13 @@
 
             <!-- Left Column Poster -->
             <div class="col-12 col-lg-6 mb-3 mb-md-0 d-flex justify-content-center position-relative xxl-poster-col">
-                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails?.backdrop_path}}"
                     class="position-absolute glow-image w-fit h-100 xxl-glow-image"
                     style="filter: blur(20px) brightness(1.5); z-index: 0; object-fit: cover;">
 
-                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails.backdrop_path}}"
+                <img src="https://image.tmdb.org/t/p/original{{arrMovieDetails?.backdrop_path}}"
                     class="img-fluid rounded-3 position-relative z-1 main-poster xxl-main-poster"
-                    style="max-height: 400px; width: auto;" alt="{{arrMovieDetails.title}}">
+                    style="max-height: 400px; width: auto;" alt="{{arrMovieDetails?.title}}">
             </div>
 
             <!-- Right Column -->
@@ -61,12 +61,12 @@
                 <div class="d-flex">
 
                     <div>
-                        <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails.title}}</h1>
-                        <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails.tagline}}</h3>
-                        <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails.overview}}</p>
+                        <h1 class="h3 h1-md xxl-movie-title">{{arrMovieDetails?.title}}</h1>
+                        <h3 class="fs-6 mt-2 text-muted xxl-tagline">{{arrMovieDetails?.tagline}}</h3>
+                        <p class="small text-muted mt-3 xxl-overview">{{arrMovieDetails?.overview}}</p>
                     </div>
 
-                    <span (click)="addToFav($event,arrMovieDetails.id)">
+                    <span (click)="addToFav($event,arrMovieDetails?.id)">
                         <!-- <i [class]="isFavorite ? 'ri-heart-fill':'ri-heart-line'"></i> -->
                         <!-- Wait for arrMovieDetails to load before showing icon -->
                         <i *ngIf="arrMovieDetails" [class]="isFavorite ? 'ri-heart-fill' : 'ri-heart-line'"></i>
@@ -77,29 +77,29 @@
                 <!-- Tags -->
                 <div class="d-flex flex-wrap gap-2 align-items-center mt-4 xxl-tags-row">
                     <span class="rounded-pill small px-3 py-1 text-white xxl-tag"
-                        [ngClass]="{'bg-success': arrMovieDetails.status == 'Released', 'bg-danger': arrMovieDetails.status != 'Released'}">
-                        {{arrMovieDetails.status}}
+                        [ngClass]="{'bg-success': arrMovieDetails?.status == 'Released', 'bg-danger': arrMovieDetails?.status != 'Released'}">
+                        {{arrMovieDetails?.status}}
                     </span>
 
                     <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
                         <i class="ri-calendar-2-line me-1"></i>
-                        {{arrMovieDetails.release_date | date:'d MMM yyyy'}}
+                        {{arrMovieDetails?.release_date | date:'d MMM yyyy'}}
                     </span>
 
                     <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
                         <i class="ri-global-line me-1"></i>
-                        {{arrMovieDetails.original_language | uppercase}}
+                        {{arrMovieDetails?.original_language | uppercase}}
                     </span>
 
                     <span class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
                         <i class="ri-time-line me-1"></i>
-                        {{getHoursAndMinutes(arrMovieDetails.runtime)}}
+                        {{getHoursAndMinutes(arrMovieDetails?.runtime)}}
                     </span>
 
-                    <span *ngIf="arrMovieDetails.origin_country"
+                    <span *ngIf="arrMovieDetails?.origin_country"
                         class="rounded-pill small px-3 py-1 bg-light text-dark border xxl-tag">
                         <i class="ri-map-pin-line me-1"></i>
-                        {{arrMovieDetails.origin_country}}
+                        {{arrMovieDetails?.origin_country}}
                     </span>
 
                 </div>

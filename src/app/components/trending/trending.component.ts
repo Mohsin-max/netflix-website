@@ -3,7 +3,7 @@ import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule } from '@angular/common';
 import { SkeletonCardComponent } from "../skeleton-card/skeleton-card.component";
 import { MovieCardComponent } from "../movie-card/movie-card.component";
-import { Movie } from '../../interfaces/movie';
+import { Movie } from '../../interfaces/movie.model';
 import { RouterModule } from '@angular/router';
 
 @Component({
