@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 Location
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
-import { MovieDetails } from '../../interfaces/movie-details.model';
+import { Movie } from '../../interfaces/movie.model';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-movie-card',
   imports: [CommonModule],
@@ -12,21 +13,19 @@ import { MovieDetails } from '../../interfaces/movie-details.model';
 })
 export class MovieCardComponent {
 
-  @Input() movieDetails?: MovieDetails;
+  @Input() movieDetails?: Movie;
 
   isFavorite: boolean = false;
 
   users: any;
   currentRoute: string = ''
-  constructor(private location: Location, private authService: AuthService) { }
+  constructor(private location: Location, private authService: AuthService, private storageService: StorageService) { }
 
   ngOnInit() {
 
-    // this.users = JSON.parse(localStorage.getItem('isLoggedIn') || 'false')
-
     this.authService.isLoggedIn$.subscribe(res => this.users = res)
 
-    const favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    const favoriteMoviesId = this.storageService.getFavoriteMovieId()
     this.isFavorite = favoriteMoviesId.some((movieId: number) => movieId === this.movieDetails?.id);
 
     this.currentRoute = this.location.path()
@@ -41,7 +40,7 @@ export class MovieCardComponent {
 
     if (this.users) {
 
-      let favoriteMoviesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+      let favoriteMoviesId = this.storageService.getFavoriteMovieId();
       const movieIndex = favoriteMoviesId.findIndex((m: any) => m === movie);
 
 
@@ -73,7 +72,7 @@ export class MovieCardComponent {
         });
       }
 
-      localStorage.setItem('favoriteMovieId', JSON.stringify(favoriteMoviesId));
+      this.storageService.setFavoriteMovieId(favoriteMoviesId)
 
     } else {
 

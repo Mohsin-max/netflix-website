@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import * as CryptoJS from "crypto-js";
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 
 
@@ -19,7 +20,12 @@ export class ResetPasswordComponent {
   private readonly secretKey = "MyMovieApp123!";
 
 
-  constructor(private service: ResetPasswordService, private authService: AuthService, private router: Router) { }
+  constructor(
+    private service: ResetPasswordService,
+    private authService: AuthService,
+    private router: Router,
+    private storageService: StorageService
+  ) { }
 
   loading = { send: false, verify: false, reset: false };
 
@@ -47,7 +53,7 @@ export class ResetPasswordComponent {
 
     const { email } = this.emailForm.value
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = this.storageService.getUser()
 
     const matchedUser = users.find((user: any) => user.email === this.emailForm.value.email);
 
@@ -131,11 +137,11 @@ export class ResetPasswordComponent {
 
     let user: any;
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = this.storageService.getUser()
 
     if (this.currentUser) {
 
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      this.currentUser = this.storageService.getCurrentUser()
       user = this.currentUser
     }
     else {
@@ -162,8 +168,9 @@ export class ResetPasswordComponent {
       });
 
       // Save updated data back to localStorage
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      this.storageService.setCurrentUser(users)
+      this.storageService.setUser(updatedUsers)
+
 
       Swal.fire({
         toast: true,

@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { MovieApiService } from '../../services/movie-api.service';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-favorite',
   imports: [RouterModule, CommonModule, FormsModule],
@@ -17,7 +18,12 @@ export class FavoriteComponent implements OnInit {
   GlobalfavoriteMovieArr: any[] = []
   favoritesId: any[] = []
 
-  constructor(private router: Router, private service: MovieApiService, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private service: MovieApiService,
+    private authService: AuthService,
+    private storageService: StorageService
+  ) { }
 
 
 
@@ -32,7 +38,7 @@ export class FavoriteComponent implements OnInit {
   // load initially all favorites
   loadFavorites() {
 
-    this.favoritesId = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    this.favoritesId = this.storageService.getFavoriteMovieId();
 
     for (let i = 0; i < this.favoritesId.length; i++) {
       this.service.getMovieDetailsApi(this.favoritesId[i]).subscribe(res => {
@@ -84,22 +90,18 @@ export class FavoriteComponent implements OnInit {
   removeFromFavorites(movie: any, event: Event) {
     event.stopPropagation(); // Prevent navigation when clicking heart
 
-    console.log(movie);
-
     // Remove from array.
     this.favoritesId = this.favoritesId.filter(m => m !== movie);
 
-
-
     // Update localStorage
-    localStorage.setItem('favoriteMovieId', JSON.stringify(this.favoritesId));
+    this.storageService.setFavoriteMovieId(this.favoritesId)
 
 
     // Show notification
     Swal.fire({
       toast: true,
       position: "top-end",
-      // icon: "error",
+      icon: "info",
       title: "Removed from Favorites",
       showConfirmButton: false,
       timer: 2000
@@ -109,7 +111,5 @@ export class FavoriteComponent implements OnInit {
     this.GlobalfavoriteMovieArr = [];
     this.loadFavorites();
   }
-
-
 
 }

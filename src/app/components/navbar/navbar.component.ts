@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import * as CryptoJS from "crypto-js";
 import { MovieResponse } from '../../interfaces/movie-response.model';
+import { StorageService } from '../../services/storage.service';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class NavbarComponent implements OnInit {
     private service: MovieApiService,
     private authService: AuthService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private storageService: StorageService
   ) { }
 
   searchedMovie: Movie[] = []
@@ -75,9 +77,6 @@ export class NavbarComponent implements OnInit {
     this.authService.currentUser$.subscribe(res => {
 
       this.user = res
-
-      console.log(this.user);
-
 
       if (this.user && this.user.password) {
 
@@ -104,38 +103,43 @@ export class NavbarComponent implements OnInit {
 
   }
 
-
-
   // it contains a wrapper function.
   debouncedFunc = debounce((event: any) => {
+    const query = event;
 
+    // If input is empty, reset both variables
+    if (query === '') {
+      this.searchedMovie = [];
+      this.hasSearched = false;
+      return;
+    }
 
-    // The API will be hit, and the user's text will be sent from the event.
+    this.service.getSearchedApi(query).subscribe({
+      next: (res) => {
+        this.searchedMovie = res.results;
 
-    this.service.getSearchedApi(event).subscribe((res: MovieResponse) => {
-      this.searchedMovie = res.results
-
-      if (this.searchedMovie.length > 1) {
-
-        console.log('tr');
-
-        this.hasSearched = false
-
-      } else {
-
-        this.hasSearched = true
-        console.log('fl');
+        // If no results found
+        if (this.searchedMovie.length === 0) {
+          this.hasSearched = true;
+        } else {
+          this.hasSearched = false;
+        }
+      },
+      error: (err) => {
+        console.error('API Error:', err);
+        this.searchedMovie = [];
+        this.hasSearched = true;
       }
+    });
+  }, 500);
 
-    })
 
-  }, 500)
+
 
   logout() {
 
     Swal.fire({
       title: "Are you sure?",
-      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -144,7 +148,7 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        localStorage.setItem('isLoggedIn', JSON.stringify(false));
+        this.storageService.setIsLoggedIn(false);
         localStorage.removeItem('currentUser');
         this.authService.logout();
 
@@ -213,20 +217,18 @@ export class NavbarComponent implements OnInit {
 
         // Update currentUser
         this.user.password = encryptedPassword;
-        // localStorage.setItem('currentUser', JSON.stringify(this.user));
         this.authService.setUser(this.user)
 
         // Update users array
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const users = this.storageService.getUser();
         const updatedUsers = users.map((user: any) => {
           if (user.email === this.user.email) {
             return { ...user, password: encryptedPassword };
           }
           return user;
         });
-        localStorage.setItem('users', JSON.stringify(updatedUsers));
 
-        // Swal.fire('Success', 'Password changed successfully!', 'success');
+        this.storageService.setUser(updatedUsers);
 
         Swal.fire({
           toast: true,
@@ -240,10 +242,6 @@ export class NavbarComponent implements OnInit {
 
       }
     });
-
-
-
-
   }
 
 }

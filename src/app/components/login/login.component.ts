@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import * as CryptoJS from "crypto-js";
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   @Output() loginSuccess = new EventEmitter<void>();
   @Output() showSignupForm = new EventEmitter<void>();
 
@@ -26,7 +27,17 @@ export class LoginComponent {
   get email() { return this.loginFormData.controls['email']; }
   get password() { return this.loginFormData.controls['password']; }
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private storageService: StorageService) { }
+
+  storedUsers: any[] = []
+
+  ngOnInit(): void {
+
+    this.storedUsers = this.storageService.getUser()
+
+
+  }
+
 
   decryptData(encryptedData: string): string {
     const bytes = CryptoJS.AES.decrypt(encryptedData, this.secretKey);
@@ -36,54 +47,40 @@ export class LoginComponent {
   login() {
     if (this.loginFormData.invalid) return;
 
-    // Get all users from localStorage
-    const storedUsers = localStorage.getItem('users');
-    if (!storedUsers) {
-      // Swal.fire('Error', 'No accounts found. Please sign up first.', 'error');
+    if (!this.storedUsers) {
+      Swal.fire('Error', 'No accounts found. Please sign up first.', 'info');
       return;
     }
 
-    const users = JSON.parse(storedUsers);
+    const users = this.storedUsers;
     const loginEmail = this.loginFormData.value.email;
     const loginPassword = this.loginFormData.value.password;
 
-    // Find the user with matching email
     const user = users.find((u: any) => u.email === loginEmail);
 
+    // ADD THIS CHECK 👇
     if (!user) {
-      // Swal.fire('Error', 'No account found with this email.', 'error');
-      const Toast = Swal.mixin({
+      Swal.fire({
         toast: true,
         position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        }
-      });
-
-      Toast.fire({
         icon: "error",
-        title: "No accounts found. Please sign up first."
+        title: "Account not found",
+        showConfirmButton: false,
+        timer: 2000
       });
       return;
     }
 
-    // Decrypt and verify password
     const decryptedPassword = this.decryptData(user.password);
 
     if (decryptedPassword === loginPassword) {
-      // Store current user data in localStorage or session for the active session
-      // localStorage.setItem('currentUser', JSON.stringify(user));
-
       this.authService.setUser(user)
-      localStorage.setItem('isLoggedIn', JSON.stringify(true));
+      this.storageService.setIsLoggedIn(true)
+      this.storageService.setCurrentUser(user)
 
       this.authService.login();
       this.loginSuccess.emit();
-      // Swal.fire('Success', 'Logged in successfully!', 'success');
+
       Swal.fire({
         toast: true,
         position: "top-end",

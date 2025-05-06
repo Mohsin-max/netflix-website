@@ -10,6 +10,7 @@ import { movieCastCrew } from '../../interfaces/movie-cast-crew.model';
 import { MovieCastCrewResponse } from '../../interfaces/movie-cast-crew-response.model';
 import { MovieVideoResponse } from '../../interfaces/movie-video-response.model';
 import { MovieVideo } from '../../interfaces/movie-video.model';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -38,7 +39,8 @@ export class MovieDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private service: MovieApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -91,7 +93,7 @@ export class MovieDetailsComponent implements OnInit {
 
   /** fav icon ka current state localStorage se nikala */
   updateFavState(id: number) {
-    const favIds: number[] = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    const favIds: number[] = this.storageService.getFavoriteMovieId();
     this.isFavorite = favIds.includes(id);
   }
 
@@ -107,7 +109,7 @@ export class MovieDetailsComponent implements OnInit {
       return;
     }
 
-    let favIds: number[] = JSON.parse(localStorage.getItem('favoriteMovieId') || '[]');
+    let favIds: number[] = this.storageService.getFavoriteMovieId();
     const idx = favIds.indexOf(movieId);
 
     if (idx === -1) {                 // add
@@ -117,15 +119,17 @@ export class MovieDetailsComponent implements OnInit {
     } else {                          // remove
       favIds.splice(idx, 1);
       this.isFavorite = false;
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        title: "Removeform favorites",
-        timer: 2000
-      })
-      // this.toast('', 'Removed from Favorites');
+      // Swal.fire({
+      //   toast: true,
+      //   position: 'top-end',
+      //   title: "Remove form favorites",
+      //   timer: 2000
+      // })
+      this.toast('info', 'Removed from Favorites');
     }
-    localStorage.setItem('favoriteMovieId', JSON.stringify(favIds));
+
+    this.storageService.setFavoriteMovieId(favIds)
+
   }
 
   /** sweetalert helper */

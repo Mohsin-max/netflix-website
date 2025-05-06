@@ -1,12 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthService {
+@Injectable({
+  providedIn: 'root'
+})
 
+export class AuthService  {
+
+  constructor(private storageService: StorageService) { 
+
+    
+    let user = this.storageService.getCurrentUser();
+
+    if (user) this.currentUser.next(user)
+
+  }
 
   private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('currentUser'));
 
@@ -36,17 +49,10 @@ export class AuthService {
 
   currentUser$ = this.currentUser.asObservable()
 
-  constructor() {
+  setUser(user: any) {
 
-    let user = localStorage.getItem('currentUser')
+    // localStorage.setItem('currentUser',JSON.stringify(user))
 
-    if (user) this.currentUser.next(JSON.parse(user))
-
-  }
-
-  setUser(user:any){
-
-    localStorage.setItem('currentUser',JSON.stringify(user))
 
     this.currentUser.next(user)
 

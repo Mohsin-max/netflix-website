@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 import * as CryptoJS from "crypto-js";
 import Swal from 'sweetalert2';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent {
+
+  constructor(private storageService: StorageService) { }
+
   @Output() signupSuccess = new EventEmitter<void>();
   @Output() showLoginForm = new EventEmitter<void>();
 
@@ -47,11 +51,11 @@ export class SignupComponent {
     };
 
     // Get existing users from localStorage
-    const existingUsersJson = localStorage.getItem('users');
+    const existingUsersJson = this.storageService.getUser()
     let users = [];
 
     // If users exist, parse them
-    if (existingUsersJson) users = JSON.parse(existingUsersJson);
+    if (existingUsersJson) users = existingUsersJson
 
     // Check if user already exists
     const userExists = users.some((user: any) => user.email === userData.email);
@@ -72,7 +76,7 @@ export class SignupComponent {
     users.push(userData);
 
     // Store updated users array back to localStorage
-    localStorage.setItem('users', JSON.stringify(users));
+    this.storageService.setUser(users)
     this.signupSuccess.emit();
   }
 }

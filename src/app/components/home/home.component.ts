@@ -13,6 +13,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { MovieResponse } from '../../interfaces/movie-response.model';
 import { Movie } from '../../interfaces/movie.model';
+import { StorageService } from '../../services/storage.service';
 
 
 @Component({
@@ -93,7 +94,8 @@ export class HomeComponent {
   constructor(
     private service: MovieApiService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService
   ) { }
 
   advanceFilterForm = new FormGroup({
@@ -108,8 +110,6 @@ export class HomeComponent {
 
 
   ngOnInit(): void {
-
-    console.log(this.allMovies);
 
     this.advanceFilterForm.valueChanges.subscribe(values => {
 
@@ -178,7 +178,6 @@ export class HomeComponent {
           }
         });
 
-        console.log('Filtered Array:', this.filteredarray);
         this.isLoading = false; // ❌ Stop loading spinner
 
       });
@@ -188,7 +187,6 @@ export class HomeComponent {
       this.service.getSearchedApi(search).subscribe(res => {
 
         this.filteredarray = res.results
-        console.log(this.filteredarray);
         this.isLoading = false; // ❌ Stop loading spinner
 
       })
@@ -223,12 +221,13 @@ export class HomeComponent {
   }
 
   loadMovieCount() {
-    const count = localStorage.getItem('movieCount');
+    const count = this.storageService.getMovieCount();
     this.movieCount = count ? parseInt(this.decryptData(count)) : 0;
   }
 
   saveMovieCount() {
-    localStorage.setItem('movieCount', this.encryptData(this.movieCount.toString()));
+    this.storageService.setMovieCount(this.encryptData(this.movieCount.toString()))
+
   }
 
   clearMovieData() {
@@ -321,10 +320,10 @@ export class HomeComponent {
     // Swal.fire('Success', 'Account created! Please login.', 'success');
     Swal.fire({
       toast: true,
+      showConfirmButton: false,
       position: "top-end",
       icon: "success",
       title: "Account created! Please login.",
-      showConfirmButton: false,
       timer: 2000
     });
 
