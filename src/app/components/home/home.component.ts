@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MovieApiService } from '../../services/movie-api.service';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
@@ -10,10 +10,11 @@ import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { SignupComponent } from "../signup/signup.component";
 import { LoginComponent } from "../login/login.component";
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { MovieResponse } from '../../interfaces/movie-response.model';
 import { Movie } from '../../interfaces/movie.model';
 import { StorageService } from '../../services/storage.service';
+import { LocationUpgradeModule } from '@angular/common/upgrade';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { StorageService } from '../../services/storage.service';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   private readonly secretKey = "MyMovieApp123!";
 
   // Movie Data Arrays
@@ -109,9 +110,12 @@ export class HomeComponent {
   });
 
 
+  private destroy$ = new Subject<void>()
+
   ngOnInit(): void {
 
-    this.advanceFilterForm.valueChanges.subscribe(values => {
+
+    this.advanceFilterForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(values => {
 
       const { status, fromDate, toDate, language, country, genre, search } = values;
 
@@ -398,4 +402,12 @@ export class HomeComponent {
       }
     }
   }
+
+  ngOnDestroy(): void {
+
+    this.destroy$.next()
+    this.destroy$.complete()
+
+  }
+
 }

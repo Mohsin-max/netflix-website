@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
 
     this.storedUsers = this.storageService.getUser()
 
-
   }
 
 

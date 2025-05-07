@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { debounce } from '../../debounce';
+import { debounce } from '../../utils/debounce';
 import { MovieApiService } from '../../services/movie-api.service';
 import { CommonModule, Location } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import * as CryptoJS from "crypto-js";
-import { MovieResponse } from '../../interfaces/movie-response.model';
 import { StorageService } from '../../services/storage.service';
 
 

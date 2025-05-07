@@ -11,6 +11,7 @@ import { MovieCastCrewResponse } from '../../interfaces/movie-cast-crew-response
 import { MovieVideoResponse } from '../../interfaces/movie-video-response.model';
 import { MovieVideo } from '../../interfaces/movie-video.model';
 import { StorageService } from '../../services/storage.service';
+import { getHoursAndMinutes } from '../../utils/hour-min';
 
 @Component({
   selector: 'app-movie-details',
@@ -83,13 +84,21 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   /** runtime */
-  getHoursAndMinutes(time?: number) {
 
-    if (!time) return
-    const h = Math.floor(time / 60);
-    const m = time % 60;
-    return `${h}h ${m}m`;
+  hoursAndMintuesFunc(time: number | undefined) {
+
+    return getHoursAndMinutes(time)
+
   }
+
+
+  // getHoursAndMinutes(time?: number) {
+
+  //   if (!time) return
+  //   const h = Math.floor(time / 60);
+  //   const m = time % 60;
+  //   return `${h}h ${m}m`;
+  // }
 
   /** fav icon ka current state localStorage se nikala */
   updateFavState(id: number) {
