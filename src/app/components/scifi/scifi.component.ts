@@ -5,10 +5,11 @@ import { SkeletonCardComponent } from '../skeleton-card/skeleton-card.component'
 import { CommonModule } from '@angular/common';
 import { Movie } from '../../interfaces/movie.model';
 import { RouterModule } from '@angular/router';
+import { MovieResponse } from '../../interfaces/movie-response.model';
 
 @Component({
   selector: 'app-scifi',
-  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent,RouterModule],
+  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent, RouterModule],
   templateUrl: './scifi.component.html',
   styleUrl: './scifi.component.scss'
 })
@@ -21,7 +22,7 @@ export class ScifiComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getSciFiApi().subscribe(res => {
+    this.service.getSciFiApi().subscribe((res: MovieResponse) => {
 
       this.scifiData = res.results
 

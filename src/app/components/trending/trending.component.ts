@@ -5,10 +5,11 @@ import { SkeletonCardComponent } from "../skeleton-card/skeleton-card.component"
 import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { Movie } from '../../interfaces/movie.model';
 import { RouterModule } from '@angular/router';
+import { MovieResponse } from '../../interfaces/movie-response.model';
 
 @Component({
   selector: 'app-trending',
-  imports: [RouterModule,CommonModule, SkeletonCardComponent, MovieCardComponent],
+  imports: [RouterModule, CommonModule, SkeletonCardComponent, MovieCardComponent],
   templateUrl: './trending.component.html',
   styleUrl: './trending.component.scss'
 })
@@ -21,7 +22,7 @@ export class TrendingComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getTrendingApi().subscribe(res => {
+    this.service.getTrendingApi().subscribe((res: MovieResponse) => {
 
       this.trendingData = res.results
 

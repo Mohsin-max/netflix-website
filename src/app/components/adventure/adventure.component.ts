@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { Movie } from '../../interfaces/movie.model';
 import { RouterModule } from '@angular/router';
+import { MovieResponse } from '../../interfaces/movie-response.model';
 
 @Component({
   selector: 'app-adventure',
-  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent,RouterModule],
+  imports: [CommonModule, SkeletonCardComponent, MovieCardComponent, RouterModule],
   templateUrl: './adventure.component.html',
   styleUrl: './adventure.component.scss'
 })
@@ -21,7 +22,7 @@ export class AdventureComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getAdventureApi().subscribe(res => {
+    this.service.getAdventureApi().subscribe((res: MovieResponse) => {
 
       this.adventureData = res.results
 

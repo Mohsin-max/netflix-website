@@ -5,6 +5,7 @@ import { SkeletonCardComponent } from "../skeleton-card/skeleton-card.component"
 import { MovieCardComponent } from "../movie-card/movie-card.component";
 import { Movie } from '../../interfaces/movie.model';
 import { RouterModule } from '@angular/router';
+import { MovieResponse } from '../../interfaces/movie-response.model';
 
 @Component({
   selector: 'app-action',
@@ -21,7 +22,7 @@ export class ActionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.service.getActionApi().subscribe(res => {
+    this.service.getActionApi().subscribe((res: MovieResponse) => {
 
       this.actionData = res.results
 
